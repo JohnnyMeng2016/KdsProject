@@ -1,7 +1,6 @@
 from flask import Flask,jsonify
 from flask import request
 from topic_manager import TopicManager
-import data_access
 
 import spider
 
