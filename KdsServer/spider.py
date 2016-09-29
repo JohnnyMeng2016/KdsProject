@@ -33,13 +33,15 @@ def __spide_topic_list(eachclass):
 ##
 # 爬帖子内容
 ##
-def __spide_topic_detail(eachclass):
+def __spide_topic_detail(eachclass, topic_id, page):
 
     info = {}
     auth_part = re.search('<!-- 作者信息 -->(.*?)<!-- /作者信息 --> ', eachclass, re.S).group(1)
     content_part = re.search('<!-- 正文 -->(.*?)<!-- /正文 -->', eachclass, re.S).group(1)
     status_part = re.search('<!-- 时间 -->(.*)</div> ', eachclass, re.S).group(1)
 
+    info['topicId'] = topic_id
+    info['pageIndex'] = page
     info['userLink'] = re.search('<a href="(.*?)" class=', auth_part, re.S).group(1)
     info['nickName'] = re.search('<strong style="line-hight:20px;">(.*?)</strong>', auth_part, re.S).group(1)
     info['userName'] = re.search('</strong>(.*?)</a>', auth_part, re.S).group(1)
@@ -59,6 +61,7 @@ def __spide_topic_detail(eachclass):
 # 获取帖子内容
 ##
 def go_topic(topic_url,page):
+    topic_id = re.search('15_(.*?)__',topic_url,re.S).group(1)
     url = baseUrl+topic_url
     if int(page) > 1:
         url = baseUrl + topic_url[:-6]+page+topic_url[-6:]
@@ -67,7 +70,7 @@ def go_topic(topic_url,page):
     topic_item = re.findall('<!-- 作者信息 -->(.*?)<!-- /推荐 楼数 -->', html.text, re.S)
     topic_items = []
     for each in topic_item:
-        topic_items.append(__spide_topic_detail(each))
+        topic_items.append(__spide_topic_detail(each, topic_id, page))
     return_obj = {}
     return_obj['pageCount'] = page_count
     return_obj['topicItems'] = topic_items

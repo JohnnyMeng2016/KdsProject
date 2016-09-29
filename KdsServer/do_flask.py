@@ -1,6 +1,7 @@
 from flask import Flask,jsonify
 from flask import request
 from topic_manager import TopicManager
+from reply_manager import ReplyManager
 
 import spider
 
@@ -35,6 +36,8 @@ def get_topic_list():
 def get_topic_detail():
     topic_url = request.form['topicUrl']
     page = request.form['page']
+    reply_manager = ReplyManager()
+    __replys =reply_manager.get_reply_list(topic_url, page);
     return jsonify(spider.go_topic(topic_url, page))
 
 
