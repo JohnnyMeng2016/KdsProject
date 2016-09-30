@@ -3,8 +3,6 @@ from flask import request
 from topic_manager import TopicManager
 from reply_manager import ReplyManager
 
-import spider
-
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -36,9 +34,11 @@ def get_topic_list():
 def get_topic_detail():
     topic_url = request.form['topicUrl']
     page = request.form['page']
+    page_count = request.form['pageCount']
+    reply_num = request.form['replyNum']
     reply_manager = ReplyManager()
-    __replys =reply_manager.get_reply_list(topic_url, page);
-    return jsonify(spider.go_topic(topic_url, page))
+    __replys = reply_manager.get_reply_list(topic_url, page, page_count, reply_num);
+    return jsonify(__replys)
 
 
 if __name__ == '__main__':

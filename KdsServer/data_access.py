@@ -11,6 +11,7 @@ config = {
     'cursorclass': pymysql.cursors.DictCursor,
 }
 
+
 class ConnectPool:
     connection_pool = []
     lock = threading.Lock()
@@ -46,7 +47,6 @@ class ConnectPool:
 
 
 class ReplyDao:
-
     def __save_one_line(self, params, values):
         __connection = ConnectPool().get_connection();
         try:
@@ -54,11 +54,11 @@ class ReplyDao:
                 # 执行sql语句，插入记录
                 __sql = 'INSERT INTO reply ('
                 for param in params:
-                    __sql += (param+',')
+                    __sql += (param + ',')
                 __sql = __sql[:-1]
-                __sql = __sql+') VALUES ('
+                __sql = __sql + ') VALUES ('
                 for value in values:
-                    __sql += (value+',')
+                    __sql += (value + ',')
                 __sql = __sql[:-1]
                 __sql = __sql + ')'
                 cursor.execute(__sql)
@@ -76,11 +76,12 @@ class ReplyDao:
             values = []
             for k in __reply:
                 params.append(k)
-                if k=="userLink"or k=="nickName" or k == "userName" or k == "content" or k == "time" or k == "floor":
-                    values.append('\''+__reply[k]+'\'')
+                if k == "userLink" or k == "nickName" or k == "userName" or k == "content" or k == "time" \
+                        or k == "floor":
+                    values.append('\'' + __reply[k] + '\'')
                 else:
                     values.append(__reply[k])
-            self.__save_one_line_with(params, values)
+            self.__save_one_line(params, values)
 
     ##
     # 根据topicId、page获取回复集
@@ -92,13 +93,27 @@ class ReplyDao:
             with __connection.cursor() as cursor:
                 # 执行sql语句，查询数据
                 __sql = 'SELECT * FROM REPLY WHERE topicId=%s AND pageIndex=%s'
-                cursor.execute(__sql,(topicId,page))
+                cursor.execute(__sql, (topicId, page))
                 for item in cursor:
                     __replys.append(item)
             return __replys
         finally:
             ConnectPool().release_connection(__connection)
 
+    ##
+    # 根据topicId、page删除对应回复集
+    ##
+    def delete_replys_by_condition(self, topicId, page):
+        __connection = ConnectPool().get_connection();
+        try:
+            with __connection.cursor() as cursor:
+                # 执行sql语句，查询数据
+                __sql = 'DELETE FROM REPLY WHERE topicId=%s AND pageIndex=%s'
+                cursor.execute(__sql, (topicId, page))
+        finally:
+            ConnectPool().release_connection(__connection)
+
+
 if __name__ == '__main__':
     replyDao = ReplyDao()
-    replyDao.get_replys_by_condition(8844621,1)
+    replyDao.get_replys_by_condition(8844621, 1)

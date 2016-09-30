@@ -13,10 +13,23 @@ class ReplyManager(object):
             cls._instance = orig.__new__(cls, *args, **kw)
         return cls._instance
 
-    def get_reply_list(self,topic_url,page):
-        #从数据库里获取回复集
+    def get_reply_list(self, topic_url, page, page_count, reply_num):
+        __topic_id = re.search('15_(.*?)__', topic_url, re.S).group(1)#解析TopicID
         reply_dao = data_access.ReplyDao()
-        __topic_id = re.search('15_(.*?)__', topic_url, re.S).group(1)
+
+        if page==page_count:#最后一页回复
+            if page!=1:
+                __result_dict = spider.go_topic(topic_url, page)
+                __replys = __result_dict["topicItems"]
+                return __replys
+            else:
+                __replys = reply_dao.get_replys_by_condition(__topic_id, page)
+                if len(__replys)==reply_num:
+                    return __replys
+                else:
+                    #更新数据库中改页信息
+                    reply_dao.delete_replys_by_condition(__topic_id, page)
+        #从数据库里获取回复集
         __replys = reply_dao.get_replys_by_condition(__topic_id, page)
         if len(__replys)!=0:
             return __replys;

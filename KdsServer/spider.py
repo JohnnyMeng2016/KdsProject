@@ -16,6 +16,12 @@ def __spide_topic_list(eachclass):
         info['imgPreview'] = re.search('rel="(.*?)"', title_info, re.S).group(1)
     else:
         info['imgPreview'] = "None"
+    if re.search('_(\d)_.html', title_info, re.S):
+        pages = re.findall('_(\d)_.html', title_info, re.S)
+        info['pageCount'] = pages[-1]
+    else:
+        info['pageCount'] = "1"
+
     info['clickNum'] = re.search('<span class="n2">(.*?)</span>', eachclass, re.S).group(1)
     info['replyNum'] = re.search('<span class="n4">(.*?)</span>', eachclass, re.S).group(1)
     detail = re.search('<span class="n4">(.*)', eachclass, re.S).group(1)
