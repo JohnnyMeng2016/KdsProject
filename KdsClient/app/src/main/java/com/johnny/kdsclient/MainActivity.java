@@ -68,18 +68,6 @@ public class MainActivity extends BaseActivity
 
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageSelected(int position) {
-                toolbar.setTitle(mTitles[position]);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
 
         navigationView.setNavigationItemSelectedListener(this);
         fab.setOnClickListener(new View.OnClickListener() {

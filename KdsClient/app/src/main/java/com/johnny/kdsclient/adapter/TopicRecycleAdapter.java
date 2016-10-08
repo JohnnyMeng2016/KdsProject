@@ -1,10 +1,12 @@
 package com.johnny.kdsclient.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.model.Topic;
@@ -52,9 +54,13 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class TopicRecycleHolder extends RecyclerView.ViewHolder{
+        CardView cardView;
+        TextView textView;
 
         public TopicRecycleHolder(View itemView) {
             super(itemView);
+            cardView = (CardView) itemView.findViewById(R.id.id_cardview);
+            textView = (TextView) itemView.findViewById(R.id.id_textview);
         }
     }
 }
