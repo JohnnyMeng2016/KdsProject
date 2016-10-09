@@ -2,9 +2,7 @@ package com.johnny.kdsclient;
 
 import android.app.Application;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.johnny.kdsclient.utils.ApiHelper;
+import com.johnny.kdsclient.api.ApiHelper;
 
 /**
  * 项目名称：KdsClient

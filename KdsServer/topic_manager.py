@@ -28,6 +28,6 @@ class TopicManager(object):
         topic_list = spider.get_topic_list(page)
         list = []
         list.append(datetime.now())
-        list.append(topic_list)
+        list.extend(topic_list)
         self.cache_topic_list[page] = list
         return list[1:]

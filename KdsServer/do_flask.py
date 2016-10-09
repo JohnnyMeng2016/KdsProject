@@ -28,7 +28,12 @@ def signin():
 def get_topic_list():
     page = request.form['page']
     topic_manager = TopicManager()
-    return jsonify(topic_manager.get_topic_list(page))
+    __topic_list = topic_manager.get_topic_list(page);
+    __return_obj = {}
+    __return_obj['statusCode'] = 200
+    __return_obj['message'] = ''
+    __return_obj['topicList'] = __topic_list
+    return jsonify(__return_obj)
 
 @app.route('/getTopicDetail', methods=['GET', 'POST'])
 def get_topic_detail():

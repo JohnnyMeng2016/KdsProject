@@ -1,4 +1,4 @@
-package com.johnny.kdsclient.model;
+package com.johnny.kdsclient.bean;
 
 /**
  * Created by Johnny on 2016/10/5.

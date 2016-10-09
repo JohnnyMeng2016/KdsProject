@@ -1,4 +1,4 @@
-package com.johnny.kdsclient.utils;
+package com.johnny.kdsclient.api;
 
 /**
  * 项目名称：KdsClient
@@ -8,7 +8,7 @@ package com.johnny.kdsclient.utils;
  */
 public class ApiConstant {
 
-    private static final String API_HOST = "http://10.141.10.144:8000/";
+    private static final String API_HOST = "http://10.141.10.151:8000/";
 
     public static final String GET_TOPIC_LIST = API_HOST + "getTopicList";
 
