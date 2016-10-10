@@ -80,7 +80,8 @@ public class TopicDetailActivity extends BaseActivity {
         String topicUrl = topic.getTopicLink();
         int pageCount = topic.getPageCount();
         int replyNum = topic.getReplyNum();
-        ApiHelper.getInstance().getReplyList(topicUrl, page, pageCount, replyNum, new SimpleResponseListener<ReplyListResponse>() {
+        ApiHelper.getInstance().getReplyList(topicUrl, page, pageCount, replyNum,
+                new SimpleResponseListener<ReplyListResponse>() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 swipeRefreshLayout.setRefreshing(false);
@@ -91,17 +92,16 @@ public class TopicDetailActivity extends BaseActivity {
                 swipeRefreshLayout.setRefreshing(false);
                 List<Reply> replyList = response.getReplyList();
                 if (loadedPage > 1) {
-                    replyRecycleAdapter.getDatas().addAll(topicList);
+                    replyRecycleAdapter.getDatas().addAll(replyList);
                 } else {
-                    replyRecycleAdapter.setDatas(topicList);
+                    replyRecycleAdapter.setDatas(replyList);
                 }
-                replyRecycleAdapter.notifyDataSetChanged();
-
-                if (topicList.size() == 0) {
+                if (replyList.size() == 0) {
                     replyRecycleAdapter.setFooterViewType(true);
                 } else {
                     replyRecycleAdapter.setFooterViewType(false);
                 }
+                replyRecycleAdapter.notifyDataSetChanged();
             }
         });
     }

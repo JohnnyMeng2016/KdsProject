@@ -4,10 +4,10 @@
     android:layout_height="wrap_content"
     android:padding="16dp" >
 
-    <com.boredream.boreweibo.widget.WrapHeightGridView
+    <GridView
         android:id="@+id/gv_images"
-        style="@style/GridViewImages"
-        android:layout_width="272dp" />
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
 
     <ImageView
         android:id="@+id/iv_image"

@@ -7,28 +7,40 @@
     android:fitsSystemWindows="true"
     tools:context="com.johnny.kdsclient.activity.TopicDetailActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/id_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:titleTextColor="#FFFFFF" />
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/id_swiperefreshlayout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/id_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="#FFFFFF" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/id_swiperefreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/id_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foregroundGravity="center" />
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

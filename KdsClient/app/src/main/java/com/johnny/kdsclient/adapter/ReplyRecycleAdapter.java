@@ -3,6 +3,7 @@ package com.johnny.kdsclient.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,24 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    public List<Reply> getDatas() {
+        return datas;
+    }
+
+    public void setDatas(List<Reply> datas) {
+        this.datas = datas;
+    }
+
+    public void setFooterViewType(boolean isEnd){
+        if(isEnd){
+            footerViewHolder.progressBar.setVisibility(View.GONE);
+            footerViewHolder.textView.setText("");
+        }else{
+            footerViewHolder.progressBar.setVisibility(View.VISIBLE);
+            footerViewHolder.textView.setText("加载中...");
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (position + 1 == getItemCount()) {
@@ -67,7 +86,13 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        if(holder instanceof ReplyRecycleHolder){
+            ReplyRecycleHolder replyRecycleHolder = (ReplyRecycleHolder) holder;
+            Reply reply = datas.get(position);
+            replyRecycleHolder.tvUserName.setText(reply.getNickName());
+            replyRecycleHolder.tvDateTime.setText(reply.getTime());
+            replyRecycleHolder.tvContent.setText(Html.fromHtml(reply.getContent()));
+        }
     }
 
     @Override

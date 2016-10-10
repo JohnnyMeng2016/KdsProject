@@ -42,8 +42,12 @@ def get_topic_detail():
     page_count = request.form['pageCount']
     reply_num = request.form['replyNum']
     reply_manager = ReplyManager()
-    __replys = reply_manager.get_reply_list(topic_url, page, page_count, reply_num);
-    return jsonify(__replys)
+    __replys = reply_manager.get_reply_list(topic_url, page, page_count, reply_num)
+    __return_obj = {}
+    __return_obj['statusCode'] = 200
+    __return_obj['message'] = ''
+    __return_obj['replyList'] = __replys
+    return jsonify(__return_obj)
 
 
 if __name__ == '__main__':

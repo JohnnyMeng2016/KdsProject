@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.johnny.kdsclient.bean.ReplyListResponse;
 import com.johnny.kdsclient.bean.TopicListResponse;
 
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class ApiHelper {
      * @param listener
      */
     public void getReplyList(String topicUrl, int page, int pageCount, int replyNum,
-                             final SimpleResponseListener<TopicListResponse> listener) {
+                             final SimpleResponseListener<ReplyListResponse> listener) {
         HashMap<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("topicUrl", topicUrl);
         paramMap.put("page", String.valueOf(page));
@@ -94,8 +95,8 @@ public class ApiHelper {
             @Override
             public void onResponse(String response) {
                 try {
-                    TopicListResponse topicListResponse = gson.fromJson(response, TopicListResponse.class);
-                    listener.onResponse(topicListResponse);
+                    ReplyListResponse replyListResponse = gson.fromJson(response, ReplyListResponse.class);
+                    listener.onResponse(replyListResponse);
                 } catch (Exception e) {
                     VolleyError volleyError = new VolleyError();
                     volleyError.setStackTrace(e.getStackTrace());
