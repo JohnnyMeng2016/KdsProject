@@ -1,10 +1,12 @@
 package com.johnny.kdsclient.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Johnny on 2016/10/5.
  */
 
-public class Topic {
+public class Topic implements Serializable{
 
     private int clickNum;
     private String imgPreview;

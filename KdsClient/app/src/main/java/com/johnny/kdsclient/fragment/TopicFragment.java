@@ -105,6 +105,12 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     topicRecycleAdapter.setDatas(topicList);
                 }
                 topicRecycleAdapter.notifyDataSetChanged();
+
+                if (topicList.size() == 0) {
+                    topicRecycleAdapter.setFooterViewType(true);
+                } else {
+                    topicRecycleAdapter.setFooterViewType(false);
+                }
             }
         });
     }

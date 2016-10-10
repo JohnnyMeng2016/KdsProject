@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void initView() {
+        setBackEnable(false);
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

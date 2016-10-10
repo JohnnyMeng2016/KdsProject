@@ -2,7 +2,8 @@ package com.johnny.kdsclient;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import com.github.anzewei.parallaxbacklayout.ParallaxActivityBase;
 
 import butterknife.ButterKnife;
 
@@ -10,7 +11,7 @@ import butterknife.ButterKnife;
  * Created by Johnny on 2016/10/3.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends ParallaxActivityBase {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,15 +26,15 @@ public class BaseActivity extends AppCompatActivity {
      * setContentView()
      * @return
      */
-    protected int layout(){return 0;}
+    protected abstract int layout();
 
     /**
      * after setContextView() and before initView in onCreate()
      */
-    protected void initDate(){}
+    protected abstract void initDate();
 
     /**
      * after initDate() in onCreate()
      */
-    protected void initView(){}
+    protected abstract void initView();
 }

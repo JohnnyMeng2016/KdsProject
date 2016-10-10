@@ -1,6 +1,7 @@
 package com.johnny.kdsclient.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.activity.TopicDetailActivity;
 import com.johnny.kdsclient.bean.Topic;
 
 import org.w3c.dom.Text;
@@ -33,6 +35,7 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context context;
     private List<Topic> datas;
     private LayoutInflater layoutInflater;
+    private FooterViewHolder footerViewHolder;
 
     public TopicRecycleAdapter(Context context) {
         this.context = context;
@@ -48,6 +51,16 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.datas = datas;
     }
 
+    public void setFooterViewType(boolean isEnd){
+        if(isEnd){
+            footerViewHolder.progressBar.setVisibility(View.GONE);
+            footerViewHolder.textView.setText("");
+        }else{
+            footerViewHolder.progressBar.setVisibility(View.VISIBLE);
+            footerViewHolder.textView.setText("加载中...");
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (position + 1 == getItemCount()) {
@@ -61,7 +74,7 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER) {
             View view = layoutInflater.inflate(R.layout.item_foot_loading, parent, false);
-            FooterViewHolder footerViewHolder = new FooterViewHolder(view);
+            footerViewHolder = new FooterViewHolder(view);
             return footerViewHolder;
         } else {
             View view = layoutInflater.inflate(R.layout.item_topic, parent, false);
@@ -74,12 +87,21 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof TopicRecycleHolder) {
             TopicRecycleHolder topicRecycleHolder = (TopicRecycleHolder) holder;
-            Topic topic = datas.get(position);
+            final Topic topic = datas.get(position);
             Glide.with(context).load(topic.getImgPreview()).into(topicRecycleHolder.ivPic);
             topicRecycleHolder.tvTitle.setText(topic.getTitle());
             topicRecycleHolder.tvDatetime.setText(topic.getTopicTime());
             topicRecycleHolder.tvClickNum.setText(String.valueOf(topic.getClickNum()));
             topicRecycleHolder.tvReplyNum.setText(String.valueOf(topic.getReplyNum()));
+            topicRecycleHolder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("topic",topic);
+                    intent.setClass(context, TopicDetailActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
