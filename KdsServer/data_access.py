@@ -77,7 +77,7 @@ class ReplyDao:
             for k in __reply:
                 params.append(k)
                 if k == "userLink" or k == "nickName" or k == "userName" or k == "content" or k == "time" \
-                        or k == "floor":
+                        or k == "floor" or k == "userAvatar":
                     values.append('\'' + __reply[k] + '\'')
                 else:
                     values.append(__reply[k])

@@ -54,10 +54,10 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void setFooterViewType(boolean isEnd){
         if(isEnd){
             footerViewHolder.progressBar.setVisibility(View.GONE);
-            footerViewHolder.textView.setText("");
+            footerViewHolder.textView.setVisibility(View.VISIBLE);
         }else{
             footerViewHolder.progressBar.setVisibility(View.VISIBLE);
-            footerViewHolder.textView.setText("加载中...");
+            footerViewHolder.textView.setVisibility(View.GONE);
         }
     }
 
@@ -88,7 +88,9 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof TopicRecycleHolder) {
             TopicRecycleHolder topicRecycleHolder = (TopicRecycleHolder) holder;
             final Topic topic = datas.get(position);
-            Glide.with(context).load(topic.getImgPreview()).into(topicRecycleHolder.ivPic);
+            if(!"None".equals(topic.getImgPreview())){
+                Glide.with(context).load(topic.getImgPreview()).into(topicRecycleHolder.ivPic);
+            }
             topicRecycleHolder.tvTitle.setText(topic.getTitle());
             topicRecycleHolder.tvDatetime.setText(topic.getTopicTime());
             topicRecycleHolder.tvClickNum.setText(String.valueOf(topic.getClickNum()));

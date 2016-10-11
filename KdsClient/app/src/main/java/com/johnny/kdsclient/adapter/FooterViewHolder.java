@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.johnny.kdsclient.R;
+import com.lsjwzh.widget.materialloadingprogressbar.CircleProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,8 +18,8 @@ import butterknife.ButterKnife;
  * 创建时间：2016/10/9
  */
 public class FooterViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.id_progressBar)
-    ProgressBar progressBar;
+    @BindView(R.id.id_circleProgressBar)
+    CircleProgressBar progressBar;
     @BindView(R.id.id_textview)
     TextView textView;
 

@@ -51,6 +51,7 @@ def __spide_topic_detail(eachclass, topic_id, page):
     info['userLink'] = re.search('<a href="(.*?)" class=', auth_part, re.S).group(1)
     info['nickName'] = re.search('<strong style="line-hight:20px;">(.*?)</strong>', auth_part, re.S).group(1)
     info['userName'] = re.search('</strong>(.*?)</a>', auth_part, re.S).group(1)
+    info['userAvatar'] = re.search('<img width="100" height="100" src="(.*?)"', auth_part, re.S).group(1)
     info['hp'] = re.search('<img src="http://jscss.kdslife.com/club/html/img/hp.gif" />(.*?)\n</span>', auth_part, re.S)\
         .group(1)
     info['pp'] = re.search('<img src="http://jscss.kdslife.com/club/html/img/pp.gif" border="0" />(.*?)</a>', auth_part

@@ -12,6 +12,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.bean.Reply;
 
@@ -55,10 +56,10 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
     public void setFooterViewType(boolean isEnd){
         if(isEnd){
             footerViewHolder.progressBar.setVisibility(View.GONE);
-            footerViewHolder.textView.setText("");
+            footerViewHolder.textView.setVisibility(View.VISIBLE);
         }else{
             footerViewHolder.progressBar.setVisibility(View.VISIBLE);
-            footerViewHolder.textView.setText("加载中...");
+            footerViewHolder.textView.setVisibility(View.GONE);
         }
     }
 
@@ -84,11 +85,14 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         }
     }
 
+
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ReplyRecycleHolder){
             ReplyRecycleHolder replyRecycleHolder = (ReplyRecycleHolder) holder;
             Reply reply = datas.get(position);
+            Glide.with(context).load(reply.getUserAvatar()).into(replyRecycleHolder.ivAvatar);
             replyRecycleHolder.tvUserName.setText(reply.getNickName());
             replyRecycleHolder.tvDateTime.setText(reply.getTime());
             replyRecycleHolder.tvContent.setText(Html.fromHtml(reply.getContent()));

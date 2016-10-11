@@ -10,6 +10,7 @@ public class Reply {
     private String nickName;
     private String userName;
     private String userLink;
+    private String userAvatar;
     private int hp;
     private int pp;
     private String content;
@@ -40,6 +41,14 @@ public class Reply {
 
     public void setUserLink(String userLink) {
         this.userLink = userLink;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
     public int getHp() {

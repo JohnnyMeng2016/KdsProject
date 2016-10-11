@@ -38,6 +38,7 @@ public class TopicDetailActivity extends BaseActivity {
 
     private Topic topic;
     private int loadedPage;
+    private int lastVisibleItem;
 
     @Override
     protected int layout() {
@@ -74,6 +75,23 @@ public class TopicDetailActivity extends BaseActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(replyRecycleAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItem + 1 == replyRecycleAdapter.getItemCount()) {
+                    loadedPage += 1;
+                    loadDate(loadedPage);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+            }
+        });
     }
 
     private void loadDate(int page) {
@@ -96,12 +114,13 @@ public class TopicDetailActivity extends BaseActivity {
                 } else {
                     replyRecycleAdapter.setDatas(replyList);
                 }
-                if (replyList.size() == 0) {
+                replyRecycleAdapter.notifyDataSetChanged();
+
+                if(replyRecycleAdapter.getDatas().size()>=topic.getReplyNum()){
                     replyRecycleAdapter.setFooterViewType(true);
-                } else {
+                }else{
                     replyRecycleAdapter.setFooterViewType(false);
                 }
-                replyRecycleAdapter.notifyDataSetChanged();
             }
         });
     }

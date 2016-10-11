@@ -8,7 +8,7 @@ package com.johnny.kdsclient.api;
  */
 public class ApiConstant {
 
-    private static final String API_HOST = "http://192.168.1.2:8000/";
+    private static final String API_HOST = "http://10.141.10.159:8000/";
 
     public static final String GET_TOPIC_LIST = API_HOST + "getTopicList";
 
