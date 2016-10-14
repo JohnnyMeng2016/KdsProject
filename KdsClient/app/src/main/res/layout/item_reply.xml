@@ -41,6 +41,10 @@
                 android:text="2016-10-10 19:06" />
         </RelativeLayout>
 
+        <include
+            android:id="@+id/include_refrence_layout"
+            layout="@layout/include_refrence"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_content"

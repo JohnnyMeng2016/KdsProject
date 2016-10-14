@@ -4,17 +4,22 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.bean.ContentParsedBean;
 import com.johnny.kdsclient.bean.Reply;
+import com.johnny.kdsclient.utils.CommonUtils;
+import com.johnny.kdsclient.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +39,18 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
+
     private Context context;
     private List<Reply> datas;
     private LayoutInflater layoutInflater;
     private FooterViewHolder footerViewHolder;
+    private int gridImgsLineHeight;
 
     public ReplyRecycleAdapter(Context context) {
         this.context = context;
         this.datas = new ArrayList<Reply>();
         this.layoutInflater = LayoutInflater.from(context);
+        this.gridImgsLineHeight = CommonUtils.dp2Px(context, 100);
     }
 
     public List<Reply> getDatas() {
@@ -53,11 +61,11 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         this.datas = datas;
     }
 
-    public void setFooterViewType(boolean isEnd){
-        if(isEnd){
+    public void setFooterViewType(boolean isEnd) {
+        if (isEnd) {
             footerViewHolder.progressBar.setVisibility(View.GONE);
             footerViewHolder.textView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             footerViewHolder.progressBar.setVisibility(View.VISIBLE);
             footerViewHolder.textView.setVisibility(View.GONE);
         }
@@ -86,16 +94,36 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
     }
 
 
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ReplyRecycleHolder){
+        if (holder instanceof ReplyRecycleHolder) {
             ReplyRecycleHolder replyRecycleHolder = (ReplyRecycleHolder) holder;
             Reply reply = datas.get(position);
             Glide.with(context).load(reply.getUserAvatar()).into(replyRecycleHolder.ivAvatar);
-            replyRecycleHolder.tvUserName.setText(reply.getNickName());
+            StringBuffer userNameShow = new StringBuffer();
+            userNameShow.append(reply.getNickName().replaceAll("(<em>)|(</em>)|(<img.*?>)",""));
+            userNameShow.append("(");
+            userNameShow.append(reply.getUserName());
+            userNameShow.append(")");
+            replyRecycleHolder.tvUserName.setText(userNameShow.toString());
             replyRecycleHolder.tvDateTime.setText(reply.getTime());
-            replyRecycleHolder.tvContent.setText(Html.fromHtml(reply.getContent()));
+
+            ContentParsedBean contentBean = StringUtils.parseReplyContent(reply.getContent());
+
+            if(contentBean.getRefrence()!=null){//加载引用部分
+                replyRecycleHolder.refrenceLayout.setVisibility(View.VISIBLE);
+                SpannableString spannableString = StringUtils.getItemContent(context,
+                        replyRecycleHolder.tvRefContent, contentBean.getRefrence());
+                replyRecycleHolder.tvRefContent.setText(spannableString);
+                setImage(contentBean.getRefrenceImgs(),replyRecycleHolder.refImgLayout);
+            }else{
+                replyRecycleHolder.refrenceLayout.setVisibility(View.GONE);
+            }
+
+            SpannableString spannableString = StringUtils.getItemContent(context,
+                    replyRecycleHolder.tvContent, contentBean.getContent());
+            replyRecycleHolder.tvContent.setText(spannableString);
+            setImage(contentBean.getContentImgs(),replyRecycleHolder.imgLayout);
         }
     }
 
@@ -103,6 +131,30 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return datas.size() + 1;
     }
+
+    private void setImage(List<String> imgs, FrameLayout imgLayout) {
+        if (imgs.size() > 0) {
+            imgLayout.setVisibility(View.VISIBLE);
+            GridView gvImages = (GridView) imgLayout.getChildAt(0);
+            ImageView ivImage = (ImageView) imgLayout.getChildAt(1);
+            if (imgs.size() == 1) {
+                ivImage.setVisibility(View.VISIBLE);
+                gvImages.setVisibility(View.GONE);
+                Glide.with(context).load(imgs.get(0)).into(ivImage);
+            } else {
+                ivImage.setVisibility(View.GONE);
+                gvImages.setVisibility(View.VISIBLE);
+                float lineF = (float) (imgs.size()) / 3.0f;
+                int line = (int) (Math.ceil(lineF));
+                gvImages.getLayoutParams().height = line * gridImgsLineHeight;
+                GridImgAdapter gridImgAdapter = new GridImgAdapter(context, imgs);
+                gvImages.setAdapter(gridImgAdapter);
+            }
+        } else {
+            imgLayout.setVisibility(View.GONE);
+        }
+    }
+
 
     public class ReplyRecycleHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.id_cardview)
@@ -117,10 +169,12 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         TextView tvContent;
         @BindView(R.id.include_img_layout)
         FrameLayout imgLayout;
-        @BindView(R.id.gv_images)
-        GridView gvImages;
-        @BindView(R.id.iv_image)
-        ImageView ivImage;
+        @BindView(R.id.include_refrence_layout)
+        LinearLayout refrenceLayout;
+        @BindView(R.id.tv_refrence_content)
+        TextView tvRefContent;
+        @BindView(R.id.include_refrence_image)
+        FrameLayout refImgLayout;
 
         public ReplyRecycleHolder(View itemView) {
             super(itemView);

@@ -26,7 +26,7 @@ import butterknife.BindView;
  * 创建人：孟忠明
  * 创建时间：2016/10/10
  */
-public class TopicDetailActivity extends BaseActivity {
+public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
     @BindView(R.id.id_toolbar)
     Toolbar toolbar;
     @BindView(R.id.id_swiperefreshlayout)
@@ -61,6 +61,7 @@ public class TopicDetailActivity extends BaseActivity {
             }
         });
 
+        swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -92,6 +93,12 @@ public class TopicDetailActivity extends BaseActivity {
                 lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        loadedPage = 1;
+        loadDate(1);
     }
 
     private void loadDate(int page) {

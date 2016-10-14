@@ -90,6 +90,8 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final Topic topic = datas.get(position);
             if(!"None".equals(topic.getImgPreview())){
                 Glide.with(context).load(topic.getImgPreview()).into(topicRecycleHolder.ivPic);
+            }else{
+                topicRecycleHolder.ivPic.setImageResource(R.mipmap.no_image);
             }
             topicRecycleHolder.tvTitle.setText(topic.getTitle());
             topicRecycleHolder.tvDatetime.setText(topic.getTopicTime());

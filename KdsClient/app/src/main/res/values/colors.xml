@@ -7,4 +7,10 @@
 
     <color name="hint_text_color">#989898</color>
     <color name="bold_text_color">#000000</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="bg_agray">#49dddddd</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
 </resources>
