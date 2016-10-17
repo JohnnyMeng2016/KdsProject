@@ -25,6 +25,9 @@
         <activity
             android:name=".activity.TopicDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activity.ImageBrowserActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

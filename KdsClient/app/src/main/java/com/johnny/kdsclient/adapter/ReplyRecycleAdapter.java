@@ -1,6 +1,9 @@
 package com.johnny.kdsclient.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -8,6 +11,7 @@ import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -16,10 +20,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.activity.ImageBrowserActivity;
 import com.johnny.kdsclient.bean.ContentParsedBean;
 import com.johnny.kdsclient.bean.Reply;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.StringUtils;
+import com.johnny.kdsclient.widget.PhotoView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +107,7 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
             Reply reply = datas.get(position);
             Glide.with(context).load(reply.getUserAvatar()).into(replyRecycleHolder.ivAvatar);
             StringBuffer userNameShow = new StringBuffer();
-            userNameShow.append(reply.getNickName().replaceAll("(<em>)|(</em>)|(<img.*?>)",""));
+            userNameShow.append(reply.getNickName().replaceAll("(<em>)|(</em>)|(<img.*?>)", ""));
             userNameShow.append("(");
             userNameShow.append(reply.getUserName());
             userNameShow.append(")");
@@ -110,20 +116,20 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
 
             ContentParsedBean contentBean = StringUtils.parseReplyContent(reply.getContent());
 
-            if(contentBean.getRefrence()!=null){//加载引用部分
+            if (contentBean.getRefrence() != null) {//加载引用部分
                 replyRecycleHolder.refrenceLayout.setVisibility(View.VISIBLE);
                 SpannableString spannableString = StringUtils.getItemContent(context,
                         replyRecycleHolder.tvRefContent, contentBean.getRefrence());
                 replyRecycleHolder.tvRefContent.setText(spannableString);
-                setImage(contentBean.getRefrenceImgs(),replyRecycleHolder.refImgLayout);
-            }else{
+                setImage(contentBean.getRefrenceImgs(), replyRecycleHolder.refImgLayout);
+            } else {
                 replyRecycleHolder.refrenceLayout.setVisibility(View.GONE);
             }
 
             SpannableString spannableString = StringUtils.getItemContent(context,
                     replyRecycleHolder.tvContent, contentBean.getContent());
             replyRecycleHolder.tvContent.setText(spannableString);
-            setImage(contentBean.getContentImgs(),replyRecycleHolder.imgLayout);
+            setImage(contentBean.getContentImgs(), replyRecycleHolder.imgLayout);
         }
     }
 
@@ -149,6 +155,22 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
                 gvImages.getLayoutParams().height = line * gridImgsLineHeight;
                 GridImgAdapter gridImgAdapter = new GridImgAdapter(context, imgs);
                 gvImages.setAdapter(gridImgAdapter);
+                final String[] imgUrls = new String[imgs.size()];
+                for (int i = 0; i < imgs.size(); i++) {
+                    imgUrls[i] = imgs.get(i);
+                }
+                gvImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(context, ImageBrowserActivity.class);
+                        intent.putExtra("imgUrls", imgUrls);
+                        intent.putExtra("position", position);
+                        PhotoView imageView = (PhotoView) ((ViewGroup) view).getChildAt(0);
+                        intent.putExtra("info",imageView.getInfo());
+                        context.startActivity(intent);
+                        ((Activity) context).overridePendingTransition(0, 0);
+                    }
+                });
             }
         } else {
             imgLayout.setVisibility(View.GONE);
