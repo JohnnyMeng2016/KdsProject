@@ -1,5 +1,6 @@
 package com.johnny.kdsclient.activity;
 
+import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -14,9 +15,6 @@ import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.widget.PhotoInfo;
 import com.johnny.kdsclient.widget.PhotoView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -35,8 +33,8 @@ public class ImageBrowserActivity extends BaseActivity {
     private PhotoView[] photoViewArray;
     private int currentIndex;
     String[] imgUrls;
+    PhotoInfo[] infos;
     int position;
-    PhotoInfo info;
     private boolean isFirst = true;
 
     @Override
@@ -48,7 +46,11 @@ public class ImageBrowserActivity extends BaseActivity {
     protected void initDate() {
         imgUrls = getIntent().getStringArrayExtra("imgUrls");
         position = getIntent().getIntExtra("position", 0);
-        info = getIntent().getParcelableExtra("info");
+        Parcelable[] parcelables = getIntent().getParcelableArrayExtra("infos");
+        infos = new PhotoInfo[parcelables.length];
+        for(int i=0;i<parcelables.length;i++){
+            infos[i] = (PhotoInfo) parcelables[i];
+        }
         photoViewArray = new PhotoView[imgUrls.length];
     }
 
@@ -69,11 +71,11 @@ public class ImageBrowserActivity extends BaseActivity {
             }
 
             @Override
-            public Object instantiateItem(ViewGroup container, int position) {
+            public Object instantiateItem(ViewGroup container, final int position) {
                 PhotoView photoView = new PhotoView(ImageBrowserActivity.this);
                 if (position == ImageBrowserActivity.this.position && isFirst) {
                     isFirst = false;
-                    photoView.animaFrom(info);
+                    photoView.animaFrom(infos[position]);
                 }
                 photoView.setLayoutParams(new AbsListView.LayoutParams((int) (getResources().getDisplayMetrics().density * 100), (int) (getResources().getDisplayMetrics().density * 100)));
                 photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -82,9 +84,14 @@ public class ImageBrowserActivity extends BaseActivity {
                 photoView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((PhotoView) v).animaTo(info, new Runnable() {
+                        ((PhotoView) v).animaTo(infos[position], new Runnable() {
                             @Override
                             public void run() {
+                                try {
+                                    Thread.sleep(200);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 finish();
                             }
                         });
@@ -122,7 +129,7 @@ public class ImageBrowserActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        photoViewArray[currentIndex].animaTo(info, new Runnable() {
+        photoViewArray[currentIndex].animaTo(infos[position], new Runnable() {
             @Override
             public void run() {
                 finish();

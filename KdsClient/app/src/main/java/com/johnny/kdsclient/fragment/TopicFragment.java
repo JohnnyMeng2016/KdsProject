@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 
 import com.android.volley.VolleyError;
 import com.johnny.kdsclient.R;
@@ -19,10 +21,15 @@ import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.bean.TopicListResponse;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
 
 /**
  * Created by Johnny on 2016/10/3.
@@ -100,6 +107,16 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 swipeRefreshLayout.setRefreshing(false);
                 List<Topic> topicList = response.getTopicList();
                 if (loadedPage > 1) {
+                    //两次刷新的内容会有部分重复，剔除
+                    List<Topic> loadedTopicList = topicRecycleAdapter.getDatas();
+                    Iterator<Topic> iterator = topicList.iterator();
+                    while(iterator.hasNext()){
+                        for (Topic loadedTopic : loadedTopicList) {
+                            if (loadedTopic.getTitle().equals(iterator.next().getTitle())) {
+                                iterator.remove();
+                            }
+                        }
+                    }
                     topicRecycleAdapter.getDatas().addAll(topicList);
                 } else {
                     topicRecycleAdapter.setDatas(topicList);

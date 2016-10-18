@@ -3,6 +3,8 @@ package com.johnny.kdsclient.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +27,7 @@ import com.johnny.kdsclient.bean.ContentParsedBean;
 import com.johnny.kdsclient.bean.Reply;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.StringUtils;
+import com.johnny.kdsclient.widget.PhotoInfo;
 import com.johnny.kdsclient.widget.PhotoView;
 
 import java.util.ArrayList;
@@ -155,22 +158,25 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
                 gvImages.getLayoutParams().height = line * gridImgsLineHeight;
                 GridImgAdapter gridImgAdapter = new GridImgAdapter(context, imgs);
                 gvImages.setAdapter(gridImgAdapter);
-                final String[] imgUrls = new String[imgs.size()];
-                for (int i = 0; i < imgs.size(); i++) {
-                    imgUrls[i] = imgs.get(i);
-                }
-                gvImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(context, ImageBrowserActivity.class);
-                        intent.putExtra("imgUrls", imgUrls);
-                        intent.putExtra("position", position);
-                        PhotoView imageView = (PhotoView) ((ViewGroup) view).getChildAt(0);
-                        intent.putExtra("info",imageView.getInfo());
-                        context.startActivity(intent);
-                        ((Activity) context).overridePendingTransition(0, 0);
-                    }
-                });
+//                final String[] imgUrls = new String[imgs.size()];
+//                for (int i = 0; i < imgs.size(); i++) {
+//                    imgUrls[i] = imgs.get(i);
+//                }
+//                gvImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        Intent intent = new Intent(context, ImageBrowserActivity.class);
+//                        intent.putExtra("imgUrls", imgUrls);
+//                        intent.putExtra("position", position);
+//                        PhotoView imageView = (PhotoView) ((ViewGroup) view).getChildAt(0);
+////                        intent.putExtra("info", imageView.getInfo());
+//                        PhotoInfo[] photoInfos = new PhotoInfo[1];
+//                        photoInfos[0] = imageView.getInfo();
+//                        intent.putExtra("infos",photoInfos);
+//                        context.startActivity(intent);
+//                        ((Activity) context).overridePendingTransition(0, 0);
+//                    }
+//                });
             }
         } else {
             imgLayout.setVisibility(View.GONE);

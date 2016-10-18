@@ -8,14 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.activity.TopicDetailActivity;
 import com.johnny.kdsclient.bean.Topic;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +21,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Johnny on 2016/10/5.
+ * 项目名称：KdsClient
+ * 类描述：
+ * 创建人：孟忠明
+ * 创建时间：2016/10/18
  */
-
-public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ImageRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
@@ -37,7 +36,7 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private LayoutInflater layoutInflater;
     private FooterViewHolder footerViewHolder;
 
-    public TopicRecycleAdapter(Context context) {
+    public ImageRecycleAdapter(Context context) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = new ArrayList<>();
@@ -51,11 +50,11 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.datas = datas;
     }
 
-    public void setFooterViewType(boolean isEnd){
-        if(isEnd){
+    public void setFooterViewType(boolean isEnd) {
+        if (isEnd) {
             footerViewHolder.progressBar.setVisibility(View.GONE);
             footerViewHolder.textView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             footerViewHolder.progressBar.setVisibility(View.VISIBLE);
             footerViewHolder.textView.setVisibility(View.GONE);
         }
@@ -77,35 +76,18 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             footerViewHolder = new FooterViewHolder(view);
             return footerViewHolder;
         } else {
-            View view = layoutInflater.inflate(R.layout.item_topic, parent, false);
-            TopicRecycleHolder topicRecycleHolder = new TopicRecycleHolder(view);
+            View view = layoutInflater.inflate(R.layout.item_image, parent, false);
+            ImageRecycleAdapter.ImageRecycleHolder topicRecycleHolder = new ImageRecycleAdapter.ImageRecycleHolder(view);
             return topicRecycleHolder;
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof TopicRecycleHolder) {
-            TopicRecycleHolder topicRecycleHolder = (TopicRecycleHolder) holder;
-            final Topic topic = datas.get(position);
-            if(!"None".equals(topic.getImgPreview())){
-                Glide.with(context).load(topic.getImgPreview()).into(topicRecycleHolder.ivPic);
-            }else{
-                topicRecycleHolder.ivPic.setImageResource(R.mipmap.no_image);
-            }
-            topicRecycleHolder.tvTitle.setText(topic.getTitle());
-            topicRecycleHolder.tvDatetime.setText(topic.getTopicTime());
-            topicRecycleHolder.tvClickNum.setText(String.valueOf(topic.getClickNum()));
-            topicRecycleHolder.tvReplyNum.setText(String.valueOf(topic.getReplyNum()));
-            topicRecycleHolder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent();
-                    intent.putExtra("topic",topic);
-                    intent.setClass(context, TopicDetailActivity.class);
-                    context.startActivity(intent);
-                }
-            });
+        if (holder instanceof ImageRecycleAdapter.ImageRecycleHolder) {
+            ImageRecycleHolder imageRecycleHolder = ((ImageRecycleHolder) holder);
+            Topic topic = datas.get(position);
+            Glide.with(context).load(topic.getImgPreview()).into(imageRecycleHolder.imageView);
         }
     }
 
@@ -114,23 +96,13 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return datas.size() + 1;
     }
 
-
-
-    public class TopicRecycleHolder extends RecyclerView.ViewHolder {
+    class ImageRecycleHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.id_cardview)
         CardView cardView;
-        @BindView(R.id.iv_pic)
-        ImageView ivPic;
-        @BindView(R.id.tv_title)
-        TextView tvTitle;
-        @BindView(R.id.tv_datetime)
-        TextView tvDatetime;
-        @BindView(R.id.tv_click_num)
-        TextView tvClickNum;
-        @BindView(R.id.tv_reply_num)
-        TextView tvReplyNum;
+        @BindView(R.id.iv_image)
+        ImageView imageView;
 
-        public TopicRecycleHolder(View itemView) {
+        public ImageRecycleHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

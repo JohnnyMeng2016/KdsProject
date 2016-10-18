@@ -4,12 +4,25 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.android.volley.VolleyError;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.adapter.ImageRecycleAdapter;
+import com.johnny.kdsclient.adapter.TopicRecycleAdapter;
+import com.johnny.kdsclient.api.ApiHelper;
+import com.johnny.kdsclient.api.SimpleResponseListener;
+import com.johnny.kdsclient.bean.Topic;
+import com.johnny.kdsclient.bean.TopicListResponse;
+
+import java.util.Iterator;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,17 +31,106 @@ import butterknife.ButterKnife;
  * Created by Johnny on 2016/10/3.
  */
 
-public class ImageFragment extends Fragment {
+public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.id_swiperefreshlayout)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.id_recyclerview)
     RecyclerView recyclerview;
 
+    private ImageRecycleAdapter imageRecycleAdapter;
+
+    private int lastVisibleItem;
+    private int loadedPage;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_image,null);
-        ButterKnife.bind(view);
+        View view = inflater.inflate(R.layout.fragment_image, null);
+        ButterKnife.bind(this, view);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+                loadedPage = 1;
+                loadDate(1);
+            }
+        });
+
+        imageRecycleAdapter = new ImageRecycleAdapter(getActivity());
+        final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(3,
+                StaggeredGridLayoutManager.VERTICAL);
+        recyclerview.setLayoutManager(layoutManager);
+        recyclerview.setAdapter(imageRecycleAdapter);
+        recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItem + 1 == imageRecycleAdapter.getItemCount()) {
+                    loadedPage += 1;
+                    loadDate(loadedPage);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+//                lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onRefresh() {
+        loadedPage = 1;
+        loadDate(1);
+    }
+
+    private void loadDate(int page) {
+        ApiHelper.getInstance().getTopicList(page, new SimpleResponseListener<TopicListResponse>() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onResponse(TopicListResponse response) {
+                swipeRefreshLayout.setRefreshing(false);
+                List<Topic> topicList = response.getTopicList();
+                //剔除掉无图的帖子
+                Iterator<Topic> iterator = topicList.iterator();
+                while (iterator.hasNext()) {
+                    if ("None".equals(iterator.next()))
+                        iterator.remove();
+                }
+                if (loadedPage > 1) {
+                    //两次刷新的内容会有部分重复，剔除
+                    List<Topic> loadedTopicList = imageRecycleAdapter.getDatas();
+                    iterator = topicList.iterator();
+                    while (iterator.hasNext()) {
+                        for (Topic loadedTopic : loadedTopicList) {
+                            if (loadedTopic.getTitle().equals(iterator.next().getTitle())) {
+                                iterator.remove();
+                            }
+                        }
+                    }
+                    imageRecycleAdapter.getDatas().addAll(topicList);
+                } else {
+                    imageRecycleAdapter.setDatas(topicList);
+                }
+                imageRecycleAdapter.notifyDataSetChanged();
+
+                if (topicList.size() == 0) {
+                    imageRecycleAdapter.setFooterViewType(true);
+                } else {
+                    imageRecycleAdapter.setFooterViewType(false);
+                }
+            }
+        });
     }
 }
