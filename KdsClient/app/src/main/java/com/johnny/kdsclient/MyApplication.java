@@ -18,6 +18,7 @@ public class MyApplication extends Application {
         super.onCreate();
         //初始化API
         ApiHelper.getInstance().init(getApplicationContext());
+
     }
 
 }

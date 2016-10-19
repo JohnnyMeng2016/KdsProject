@@ -46,7 +46,6 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private int lastVisibleItem;
     private int loadedPage;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

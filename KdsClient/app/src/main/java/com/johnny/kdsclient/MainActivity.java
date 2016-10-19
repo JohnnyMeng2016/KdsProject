@@ -19,20 +19,28 @@ import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
 import com.johnny.kdsclient.fragment.ImageFragment;
 import com.johnny.kdsclient.fragment.TopicFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.tablayout) TabLayout tabLayout;
-    @BindView(R.id.fab) FloatingActionButton fab;
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.nav_view ) NavigationView navigationView;
-    @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tablayout)
+    TabLayout tabLayout;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
 
     private String[] mTitles;
     private List<Fragment> fragmentList;
@@ -66,6 +74,7 @@ public class MainActivity extends BaseActivity
                 mTitles, fragmentList);
         viewPager.setAdapter(tabViewPagerAdapter);
         viewPager.setOffscreenPageLimit(2);
+        viewPager.addOnPageChangeListener(this);
 
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
@@ -114,7 +123,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            Toast.makeText(MainActivity.this,"拍照",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "拍照", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_gallery) {
         } else if (id == R.id.nav_slideshow) {
         } else if (id == R.id.nav_manage) {
@@ -125,4 +134,18 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        EventBus.getDefault().post(new MessageEvent());
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 }

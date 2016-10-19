@@ -1,7 +1,6 @@
 package com.johnny.kdsclient.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +10,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
-import com.johnny.kdsclient.activity.TopicDetailActivity;
 import com.johnny.kdsclient.bean.Topic;
+import com.johnny.kdsclient.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +34,13 @@ public class ImageRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<Topic> datas;
     private LayoutInflater layoutInflater;
     private FooterViewHolder footerViewHolder;
+    private List<Integer> heights;
 
     public ImageRecycleAdapter(Context context) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.datas = new ArrayList<>();
+        this.heights = new ArrayList<>();
     }
 
     public List<Topic> getDatas() {
@@ -85,9 +86,17 @@ public class ImageRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ImageRecycleAdapter.ImageRecycleHolder) {
-            ImageRecycleHolder imageRecycleHolder = ((ImageRecycleHolder) holder);
+            final ImageRecycleHolder imageRecycleHolder = ((ImageRecycleHolder) holder);
+
+            if(heights.size()<=position){
+                heights.add(CommonUtils.dp2Px(context,80)+(int)(Math.random()*300));
+            }
+            imageRecycleHolder.imageView.getLayoutParams().height = heights.get(position);
+
             Topic topic = datas.get(position);
-            Glide.with(context).load(topic.getImgPreview()).into(imageRecycleHolder.imageView);
+            String imgUrl = topic.getImgPreview().replace("128w","256w");
+            imgUrl = imgUrl.replace("128h","256h");
+            Glide.with(context).load(imgUrl).into(imageRecycleHolder.imageView);
         }
     }
 

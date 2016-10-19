@@ -4,22 +4,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
+import com.johnny.kdsclient.MessageEvent;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.adapter.ImageRecycleAdapter;
-import com.johnny.kdsclient.adapter.TopicRecycleAdapter;
 import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.api.SimpleResponseListener;
 import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.bean.TopicListResponse;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +40,9 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     RecyclerView recyclerview;
 
     private ImageRecycleAdapter imageRecycleAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
+    private boolean isFirstShow = true;
     private int lastVisibleItem;
     private int loadedPage;
 
@@ -50,17 +54,9 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         ButterKnife.bind(this, view);
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                loadedPage = 1;
-                loadDate(1);
-            }
-        });
 
         imageRecycleAdapter = new ImageRecycleAdapter(getActivity());
-        final RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(3,
+        layoutManager = new StaggeredGridLayoutManager(3,
                 StaggeredGridLayoutManager.VERTICAL);
         recyclerview.setLayoutManager(layoutManager);
         recyclerview.setAdapter(imageRecycleAdapter);
@@ -78,12 +74,48 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                int[] lastPositions = staggeredGridLayoutManager.findLastVisibleItemPositions(new int[staggeredGridLayoutManager.getSpanCount()]);
+                int size = lastPositions.length;
+                int maxPosition = Integer.MIN_VALUE;
+                for (int i = 0; i < size; i++) {
+                    maxPosition = Math.max(maxPosition, lastPositions[i]);
+                }
+                lastVisibleItem = maxPosition;
             }
         });
 
         return view;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        if (isFirstShow) {
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    loadedPage = 1;
+                    loadDate(1);
+                }
+            });
+            isFirstShow = false;
+        }
+    }
+
+    ;
 
     @Override
     public void onRefresh() {
@@ -105,17 +137,17 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 //剔除掉无图的帖子
                 Iterator<Topic> iterator = topicList.iterator();
                 while (iterator.hasNext()) {
-                    if ("None".equals(iterator.next()))
+                    if ("None".equals(iterator.next().getImgPreview()))
                         iterator.remove();
                 }
                 if (loadedPage > 1) {
                     //两次刷新的内容会有部分重复，剔除
                     List<Topic> loadedTopicList = imageRecycleAdapter.getDatas();
-                    iterator = topicList.iterator();
-                    while (iterator.hasNext()) {
+                    Iterator<Topic> topicIterator = topicList.iterator();
+                    while (topicIterator.hasNext()) {
                         for (Topic loadedTopic : loadedTopicList) {
-                            if (loadedTopic.getTitle().equals(iterator.next().getTitle())) {
-                                iterator.remove();
+                            if (loadedTopic.getTopicLink().equals(topicIterator.next().getTopicLink())) {
+                                topicIterator.remove();
                             }
                         }
                     }

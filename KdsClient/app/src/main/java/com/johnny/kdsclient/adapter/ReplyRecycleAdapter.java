@@ -158,25 +158,6 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
                 gvImages.getLayoutParams().height = line * gridImgsLineHeight;
                 GridImgAdapter gridImgAdapter = new GridImgAdapter(context, imgs);
                 gvImages.setAdapter(gridImgAdapter);
-//                final String[] imgUrls = new String[imgs.size()];
-//                for (int i = 0; i < imgs.size(); i++) {
-//                    imgUrls[i] = imgs.get(i);
-//                }
-//                gvImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        Intent intent = new Intent(context, ImageBrowserActivity.class);
-//                        intent.putExtra("imgUrls", imgUrls);
-//                        intent.putExtra("position", position);
-//                        PhotoView imageView = (PhotoView) ((ViewGroup) view).getChildAt(0);
-////                        intent.putExtra("info", imageView.getInfo());
-//                        PhotoInfo[] photoInfos = new PhotoInfo[1];
-//                        photoInfos[0] = imageView.getInfo();
-//                        intent.putExtra("infos",photoInfos);
-//                        context.startActivity(intent);
-//                        ((Activity) context).overridePendingTransition(0, 0);
-//                    }
-//                });
             }
         } else {
             imgLayout.setVisibility(View.GONE);
