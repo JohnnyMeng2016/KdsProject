@@ -28,6 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
 
 /**
  * Created by Johnny on 2016/10/3.
@@ -59,11 +60,13 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         layoutManager = new StaggeredGridLayoutManager(3,
                 StaggeredGridLayoutManager.VERTICAL);
         recyclerview.setLayoutManager(layoutManager);
-        recyclerview.setAdapter(imageRecycleAdapter);
+        ScaleInAnimationAdapter scaleInAnimationAdapter = new ScaleInAnimationAdapter(imageRecycleAdapter);
+        recyclerview.setAdapter(scaleInAnimationAdapter);
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                System.out.print(lastVisibleItem);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItem + 1 == imageRecycleAdapter.getItemCount()) {
                     loadedPage += 1;
@@ -145,8 +148,9 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     List<Topic> loadedTopicList = imageRecycleAdapter.getDatas();
                     Iterator<Topic> topicIterator = topicList.iterator();
                     while (topicIterator.hasNext()) {
+                        Topic topic = topicIterator.next();
                         for (Topic loadedTopic : loadedTopicList) {
-                            if (loadedTopic.getTopicLink().equals(topicIterator.next().getTopicLink())) {
+                            if (loadedTopic.getTopicLink().equals(topic.getTopicLink())) {
                                 topicIterator.remove();
                             }
                         }

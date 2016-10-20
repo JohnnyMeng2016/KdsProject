@@ -109,9 +109,10 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     //两次刷新的内容会有部分重复，剔除
                     List<Topic> loadedTopicList = topicRecycleAdapter.getDatas();
                     Iterator<Topic> iterator = topicList.iterator();
-                    while(iterator.hasNext()){
+                    while (iterator.hasNext()) {
+                        Topic topic = iterator.next();
                         for (Topic loadedTopic : loadedTopicList) {
-                            if (loadedTopic.getTitle().equals(iterator.next().getTitle())) {
+                            if (loadedTopic.getTitle().equals(topic.getTitle())) {
                                 iterator.remove();
                             }
                         }

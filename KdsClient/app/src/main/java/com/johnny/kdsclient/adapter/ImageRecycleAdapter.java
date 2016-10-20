@@ -1,6 +1,7 @@
 package com.johnny.kdsclient.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.activity.TopicDetailActivity;
 import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 
@@ -93,10 +95,20 @@ public class ImageRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             imageRecycleHolder.imageView.getLayoutParams().height = heights.get(position);
 
-            Topic topic = datas.get(position);
+            final Topic topic = datas.get(position);
             String imgUrl = topic.getImgPreview().replace("128w","256w");
             imgUrl = imgUrl.replace("128h","256h");
             Glide.with(context).load(imgUrl).into(imageRecycleHolder.imageView);
+
+            imageRecycleHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("topic",topic);
+                    intent.setClass(context, TopicDetailActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
