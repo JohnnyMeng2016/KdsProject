@@ -16,9 +16,9 @@
         android:scrollbars="none"
         android:verticalSpacing="4dp" />
 
-    <ImageView
+    <com.johnny.kdsclient.widget.PhotoView
         android:id="@+id/iv_image"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter" />
 

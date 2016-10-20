@@ -145,11 +145,25 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         if (imgs.size() > 0) {
             imgLayout.setVisibility(View.VISIBLE);
             GridView gvImages = (GridView) imgLayout.getChildAt(0);
-            ImageView ivImage = (ImageView) imgLayout.getChildAt(1);
+            PhotoView ivImage = (PhotoView) imgLayout.getChildAt(1);
             if (imgs.size() == 1) {
                 ivImage.setVisibility(View.VISIBLE);
                 gvImages.setVisibility(View.GONE);
                 Glide.with(context).load(imgs.get(0)).into(ivImage);
+
+                final String imgUrl = imgs.get(0);
+                ivImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PhotoInfo photoInfo = ((PhotoView)v).getInfo();
+                        Intent intent = new Intent(context, ImageBrowserActivity.class);
+                        intent.putExtra("imgUrls", new String[]{imgUrl});
+                        intent.putExtra("position", 0);
+                        intent.putExtra("infos",new PhotoInfo[]{photoInfo});
+                        context.startActivity(intent);
+                        ((Activity) context).overridePendingTransition(0, 0);
+                    }
+                });
             } else {
                 ivImage.setVisibility(View.GONE);
                 gvImages.setVisibility(View.VISIBLE);
