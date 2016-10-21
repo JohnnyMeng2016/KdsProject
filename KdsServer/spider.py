@@ -68,17 +68,21 @@ def __spide_topic_detail(eachclass, topic_id, page):
 # 获取帖子内容
 ##
 def go_topic(topic_url,page):
+    return_obj = {}
     topic_id = re.search('15_(.*?)__',topic_url,re.S).group(1)
     url = baseUrl+topic_url
     if int(page) > 1:
         url = baseUrl + topic_url[:-6]+page+topic_url[-6:]
     html = requests.get(url)
+    if re.search('该贴的回复内容不存在，无法显示！', html.text, re.S):
+        return_obj['topicItems'] = None
+        return return_obj
+
     page_count = get_page_count(html.text)
     topic_item = re.findall('<!-- 作者信息 -->(.*?)<!-- /推荐 楼数 -->', html.text, re.S)
     topic_items = []
     for each in topic_item:
         topic_items.append(__spide_topic_detail(each, topic_id, page))
-    return_obj = {}
     return_obj['pageCount'] = page_count
     return_obj['topicItems'] = topic_items
     return return_obj

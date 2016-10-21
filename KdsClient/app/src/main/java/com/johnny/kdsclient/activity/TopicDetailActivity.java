@@ -26,7 +26,7 @@ import butterknife.BindView;
  * 创建人：孟忠明
  * 创建时间：2016/10/10
  */
-public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.id_toolbar)
     Toolbar toolbar;
     @BindView(R.id.id_swiperefreshlayout)
@@ -39,6 +39,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
     private Topic topic;
     private int loadedPage;
     private int lastVisibleItem;
+    private boolean isBottom;
 
     @Override
     protected int layout() {
@@ -71,7 +72,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
             }
         });
 
-        replyRecycleAdapter = new ReplyRecycleAdapter(this);
+        replyRecycleAdapter = new ReplyRecycleAdapter(this,topic);
         final RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -81,7 +82,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem + 1 == replyRecycleAdapter.getItemCount()) {
+                        && lastVisibleItem + 1 == replyRecycleAdapter.getItemCount()&&!isBottom) {
                     loadedPage += 1;
                     loadDate(loadedPage);
                 }
@@ -107,29 +108,33 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
         int replyNum = topic.getReplyNum();
         ApiHelper.getInstance().getReplyList(topicUrl, page, pageCount, replyNum,
                 new SimpleResponseListener<ReplyListResponse>() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
 
-            @Override
-            public void onResponse(ReplyListResponse response) {
-                swipeRefreshLayout.setRefreshing(false);
-                List<Reply> replyList = response.getReplyList();
-                if (loadedPage > 1) {
-                    replyRecycleAdapter.getDatas().addAll(replyList);
-                } else {
-                    replyRecycleAdapter.setDatas(replyList);
-                }
-                replyRecycleAdapter.notifyDataSetChanged();
+                    @Override
+                    public void onResponse(ReplyListResponse response) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        List<Reply> replyList = response.getReplyList();
+                        if(replyList==null||replyList.size()==0){
+                            isBottom = true;
+                        }
+                        if (loadedPage > 1) {
+                            replyRecycleAdapter.getDatas().addAll(replyList);
+                        } else {
+                            replyRecycleAdapter.setDatas(replyList);
+                        }
+                        replyRecycleAdapter.notifyDataSetChanged();
 
-                if(replyRecycleAdapter.getDatas().size()>=topic.getReplyNum()){
-                    replyRecycleAdapter.setFooterViewType(true);
-                }else{
-                    replyRecycleAdapter.setFooterViewType(false);
-                }
-            }
-        });
+                        if (replyRecycleAdapter.getDatas().size() >= topic.getReplyNum()||isBottom) {
+                            replyRecycleAdapter.setFooterViewType(true);
+                            isBottom = true;
+                        } else {
+                            replyRecycleAdapter.setFooterViewType(false);
+                        }
+                    }
+                });
     }
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     tools:context="com.johnny.kdsclient.activity.TopicDetailActivity">
 
@@ -34,8 +34,7 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/id_swiperefreshlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/id_recyclerview"

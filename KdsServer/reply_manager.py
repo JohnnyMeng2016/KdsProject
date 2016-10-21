@@ -36,6 +36,7 @@ class ReplyManager(object):
         #数据库里没有，爬+存
         __result_dict = spider.go_topic(topic_url, page)
         __replys = __result_dict["topicItems"]
-        reply_dao.save_replys(__replys)
+        if None!=__replys:
+            reply_dao.save_replys(__replys)
         return __replys;
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
+    app:cardElevation="4dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
@@ -18,8 +19,8 @@
             android:id="@+id/iv_pic"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@mipmap/no_image"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@mipmap/no_image" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,9 +29,9 @@
 
             <TextView
                 android:id="@+id/tv_title"
+                style="@style/BigBoldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BigBoldText"
                 android:text="主题" />
 
             <TextView

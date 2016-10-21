@@ -25,6 +25,7 @@ import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.activity.ImageBrowserActivity;
 import com.johnny.kdsclient.bean.ContentParsedBean;
 import com.johnny.kdsclient.bean.Reply;
+import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.StringUtils;
 import com.johnny.kdsclient.widget.PhotoInfo;
@@ -54,12 +55,14 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
     private LayoutInflater layoutInflater;
     private FooterViewHolder footerViewHolder;
     private int gridImgsLineHeight;
+    private Topic topic;
 
-    public ReplyRecycleAdapter(Context context) {
+    public ReplyRecycleAdapter(Context context, Topic topic) {
         this.context = context;
         this.datas = new ArrayList<Reply>();
         this.layoutInflater = LayoutInflater.from(context);
         this.gridImgsLineHeight = CommonUtils.dp2Px(context, 100);
+        this.topic = topic;
     }
 
     public List<Reply> getDatas() {
@@ -114,6 +117,12 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
             userNameShow.append("(");
             userNameShow.append(reply.getUserName());
             userNameShow.append(")");
+            if (reply.getFloor().equals("楼主")) {
+                replyRecycleHolder.tvTitle.setText("主题：" + topic.getTitle());
+                replyRecycleHolder.tvTitle.setVisibility(View.VISIBLE);
+            } else {
+                replyRecycleHolder.tvTitle.setVisibility(View.GONE);
+            }
             replyRecycleHolder.tvUserName.setText(userNameShow.toString());
             replyRecycleHolder.tvDateTime.setText(reply.getTime());
 
@@ -155,11 +164,11 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
                 ivImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PhotoInfo photoInfo = ((PhotoView)v).getInfo();
+                        PhotoInfo photoInfo = ((PhotoView) v).getInfo();
                         Intent intent = new Intent(context, ImageBrowserActivity.class);
                         intent.putExtra("imgUrls", new String[]{imgUrl});
                         intent.putExtra("position", 0);
-                        intent.putExtra("infos",new PhotoInfo[]{photoInfo});
+                        intent.putExtra("infos", new PhotoInfo[]{photoInfo});
                         context.startActivity(intent);
                         ((Activity) context).overridePendingTransition(0, 0);
                     }
@@ -188,6 +197,8 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         TextView tvUserName;
         @BindView(R.id.tv_datetime)
         TextView tvDateTime;
+        @BindView(R.id.tv_title)
+        TextView tvTitle;
         @BindView(R.id.tv_content)
         TextView tvContent;
         @BindView(R.id.include_img_layout)

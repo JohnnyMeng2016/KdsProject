@@ -45,10 +45,18 @@
             android:id="@+id/include_refrence_layout"
             layout="@layout/include_refrence"
             android:visibility="gone"/>
+        
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="标题"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_content"
-            style="@style/BigBoldText"
+            style="@style/ContentText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="内容" />
