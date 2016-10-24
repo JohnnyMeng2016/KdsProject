@@ -1,5 +1,6 @@
 package com.johnny.kdsclient;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,8 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.johnny.kdsclient.activity.LoginActivity;
 import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
 import com.johnny.kdsclient.fragment.ImageFragment;
 import com.johnny.kdsclient.fragment.TopicFragment;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
@@ -79,6 +84,15 @@ public class MainActivity extends BaseActivity
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
 
+        ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
+        CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
         navigationView.setNavigationItemSelectedListener(this);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +101,7 @@ public class MainActivity extends BaseActivity
                         .setAction("Action", null).show();
             }
         });
+
     }
 
     @Override

@@ -112,4 +112,15 @@ public class ApiHelper {
         getHttpQueue().add(request);
     }
 
+    /**
+     * 用户登录
+     *
+     * @param userName
+     * @param password
+     * @param listener
+     */
+    public void login(String userName, String password, final SimpleResponseListener listener) {
+
+    }
+
 }

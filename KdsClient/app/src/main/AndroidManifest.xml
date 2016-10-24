@@ -23,6 +23,9 @@
         </activity>
 
         <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".activity.TopicDetailActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
