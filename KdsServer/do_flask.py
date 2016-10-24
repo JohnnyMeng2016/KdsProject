@@ -2,6 +2,7 @@ from flask import Flask,jsonify
 from flask import request
 from topic_manager import TopicManager
 from reply_manager import ReplyManager
+from user_manager import UserManager
 
 app = Flask(__name__)
 
@@ -48,6 +49,15 @@ def get_topic_detail():
     __return_obj['message'] = ''
     __return_obj['replyList'] = __replys
     return jsonify(__return_obj)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    _username = request.form['username']
+    _password = request.form['password']
+    _user_manager = UserManager();
+    _user_manager.login(_username, _password)
+    return '<h3>Cock.</h3>'
+
 
 
 if __name__ == '__main__':
