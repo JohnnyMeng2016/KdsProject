@@ -16,10 +16,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.activity.LoginActivity;
 import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
+import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.fragment.ImageFragment;
 import com.johnny.kdsclient.fragment.TopicFragment;
 
@@ -162,5 +165,20 @@ public class MainActivity extends BaseActivity
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(UserData.getInstance().getUserInfo()!=null){
+            UserInfo userInfo = UserData.getInstance().getUserInfo();
+            ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
+            CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
+            TextView tvUserName = (TextView) view.findViewById(R.id.tv_username);
+            TextView tvScore = (TextView) view.findViewById(R.id.tv_score);
+            Glide.with(this).load(userInfo.getAvatarPic()).into(circleImageView);
+            tvUserName.setText(userInfo.getUserName());
+            tvScore.setText("HP:"+userInfo.getHp()+" PP:"+userInfo.getPp());
+        }
     }
 }

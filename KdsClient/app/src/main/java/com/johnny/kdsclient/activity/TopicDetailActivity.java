@@ -63,14 +63,14 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
         });
 
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.post(new Runnable() {
+        swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
                 loadedPage = 1;
                 loadDate(1);
             }
-        });
+        },200);
 
         replyRecycleAdapter = new ReplyRecycleAdapter(this,topic);
         final RecyclerView.LayoutManager layoutManager =

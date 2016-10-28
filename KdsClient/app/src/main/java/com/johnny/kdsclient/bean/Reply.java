@@ -1,12 +1,14 @@
 package com.johnny.kdsclient.bean;
 
+import java.io.Serializable;
+
 /**
  * 项目名称：KdsClient
  * 类描述：
  * 创建人：孟忠明
  * 创建时间：2016/10/10
  */
-public class Reply {
+public class Reply implements Serializable{
     private String nickName;
     private String userName;
     private String userLink;

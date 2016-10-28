@@ -19,6 +19,7 @@ def signin():
 
 @app.route('/getTopicList', methods=['GET', 'POST'])
 def get_topic_list():
+    print("接受请求")
     page = request.form['page']
     topic_manager = TopicManager()
     __topic_list = topic_manager.get_topic_list(page);
@@ -30,6 +31,7 @@ def get_topic_list():
 
 @app.route('/getTopicDetail', methods=['GET', 'POST'])
 def get_topic_detail():
+    print("接受请求")
     topic_url = request.form['topicUrl']
     page = request.form['page']
     page_count = request.form['pageCount']
@@ -44,6 +46,7 @@ def get_topic_detail():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("接受请求")
     _username = request.form['username']
     _password = request.form['password']
     _user_manager = UserManager();
@@ -52,6 +55,7 @@ def login():
 
 @app.route('/goUser',methods=['GET', 'POST'])
 def goUser():
+    print("接受请求")
     _user_url = request.form['userUrl']
     _user_manager = UserManager();
     _return_obj = _user_manager.get_user_detail(_user_url)
@@ -59,6 +63,7 @@ def goUser():
 
 @app.route('/getUserTopicList', methods=['GET', 'POST'])
 def get_my_topic():
+    print("接受请求")
     _username = request.form['username']
     _page = request.form['page']
     _user_manager = UserManager()

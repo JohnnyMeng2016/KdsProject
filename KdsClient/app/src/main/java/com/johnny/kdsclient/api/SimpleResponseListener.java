@@ -8,6 +8,6 @@ import com.android.volley.Response;
  * 创建人：孟忠明
  * 创建时间：2016/10/8
  */
-public interface SimpleResponseListener<T> extends Response.ErrorListener,Response.Listener<T>{
+public interface SimpleResponseListener<T> extends Response.ErrorListener, Response.Listener<T> {
 
 }

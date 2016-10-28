@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Johnny on 2016/10/5.
  */
 
-public class Topic implements Serializable{
+public class Topic implements Serializable {
 
     private int clickNum;
     private String imgPreview;
@@ -16,6 +16,7 @@ public class Topic implements Serializable{
     private String replyUser;
     private String replyUserLink;
     private String title;
+    private String content;
     private String topicLink;
     private String topicTime;
     private String topicUser;
@@ -83,6 +84,14 @@ public class Topic implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTopicLink() {

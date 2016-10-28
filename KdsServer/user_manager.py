@@ -21,12 +21,12 @@ class UserManager(object):
             url = 'http://my.pchome.net/~'+username+'/'
             html = requests.get(url)
             _result['userInfo'] = spider.get_user_info(html.text)
-            _result['isSuccess'] = 1
+            _result['isSuccess'] = True
             _result['sid'] = sid
             return _result
         else:
-            _result['isSuccess'] = 0
-            return msg
+            _result['isSuccess'] = False
+            return _result
 
     ##
     # 获取指定用户发帖列表

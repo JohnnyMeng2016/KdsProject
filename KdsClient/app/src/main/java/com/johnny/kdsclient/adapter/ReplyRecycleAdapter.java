@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.activity.ImageBrowserActivity;
+import com.johnny.kdsclient.activity.UserDetailActivity;
 import com.johnny.kdsclient.bean.ContentParsedBean;
 import com.johnny.kdsclient.bean.Reply;
 import com.johnny.kdsclient.bean.Topic;
@@ -110,8 +113,20 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ReplyRecycleHolder) {
             ReplyRecycleHolder replyRecycleHolder = (ReplyRecycleHolder) holder;
-            Reply reply = datas.get(position);
-            Glide.with(context).load(reply.getUserAvatar()).into(replyRecycleHolder.ivAvatar);
+            final Reply reply = datas.get(position);
+            final ImageView ivAvatar = replyRecycleHolder.ivAvatar;
+            Glide.with(context).load(reply.getUserAvatar()).into(ivAvatar);
+            replyRecycleHolder.ivAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, UserDetailActivity.class);
+                    intent.putExtra(UserDetailActivity.EXTRA_REPLY, reply);
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation((Activity) context,
+                                    ivAvatar, UserDetailActivity.NAME_IMG_AVATAR);
+                    ActivityCompat.startActivity((Activity) context, intent, options.toBundle());
+                }
+            });
             StringBuffer userNameShow = new StringBuffer();
             userNameShow.append(reply.getNickName().replaceAll("(<em>)|(</em>)|(<img.*?>)", ""));
             userNameShow.append("(");

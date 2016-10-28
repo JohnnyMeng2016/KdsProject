@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    app:cardElevation="4dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="8dp"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/BigBoldText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="主题" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/ContentText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:text="内容" />
+
+        <TextView
+            android:id="@+id/tv_datetime"
+            style="@style/SmallHintText"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_alignParentBottom="true"
+            android:text="2016-10-09 11:34" />
+
+        <TextView
+            android:id="@+id/tv_reply_num"
+            style="@style/SmallHintText"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@mipmap/ic_forum_grey"
+            android:text="55" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -134,7 +134,6 @@ def get_user_info(html):
     info['location'] = re.search('<br /> 来自：(.*?)<br />', user_info, re.S).group(1)
     info['register'] = re.search('<br />  注册：(.*?)<br />', user_info, re.S).group(1)
     info['actionCount'] = re.search('<br />  发帖：(.*?)<br />', user_info, re.S).group(1)
-    print(info)
     return info
 
 
@@ -147,15 +146,13 @@ def get_user_topic(html):
     topic_items = []
     for each in topic_list:
         info = {}
-        info['topicTitle'] = re.search('<div id="topic_a">(.*?)</div>', each, re.S).group(1)
-        info['topicDate'] = re.search('<div id="li_1">发贴日期：(.*?)&nbsp', each, re.S).group(1)
-        info['replyCount'] = re.search('\[ (.*?)人评论过 \]', each, re.S).group(1)
-        info['topicContent'] = re.search('<div id="li_8" style="word-break:break-all;" align="left">(.*?)</div>', each,
+        info['title'] = re.search('<div id="topic_a">(.*?)</div>', each, re.S).group(1)
+        info['topicTime'] = re.search('<div id="li_1">发贴日期：(.*?)&nbsp', each, re.S).group(1)
+        info['replyNum'] = re.search('\[ (.*?)人评论过 \]', each, re.S).group(1)
+        info['content'] = re.search('<div id="li_8" style="word-break:break-all;" align="left">(.*?)</div>', each,
                                          re.S).group(1)
-        info['topicLink'] = re.search('href="(.*?)"', each, re.S).group(1)
+        info['topicLink'] = re.search('href="http://club.pchome.net(.*?).html"', each, re.S).group(1)
+        info['topicLink'] = info['topicLink'] +"__.html"
         topic_items.append(info)
     return topic_items
 
-
-html = requests.get("http://my.pchome.net/~sd1231131/")
-get_user_info(html.text)
