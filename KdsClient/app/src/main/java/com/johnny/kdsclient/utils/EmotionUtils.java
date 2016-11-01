@@ -3,6 +3,7 @@ package com.johnny.kdsclient.utils;
 import com.johnny.kdsclient.R;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ public class EmotionUtils {
     public static Map<Integer, Integer> emojiMap;
 
     static {
-        emojiMap = new HashMap<>();
+        emojiMap = new LinkedHashMap<>();
         emojiMap.put(1, R.mipmap.ico1);
         emojiMap.put(2, R.mipmap.ico2);
         emojiMap.put(3, R.mipmap.ico3);

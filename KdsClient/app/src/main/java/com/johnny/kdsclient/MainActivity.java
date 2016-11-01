@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.activity.LoginActivity;
+import com.johnny.kdsclient.activity.WriteTopicActivity;
 import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.fragment.ImageFragment;
@@ -100,8 +101,20 @@ public class MainActivity extends BaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                String sid = UserData.getInstance().getSid();
+//                if (null == sid || "".equals(sid)) {
+//                    Snackbar.make(view, "发帖请先登录账户", Snackbar.LENGTH_LONG)
+//                            .setAction("登录", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                                    startActivity(intent);
+//                                }
+//                            }).show();
+//                } else {
+                    Intent intent = new Intent(MainActivity.this, WriteTopicActivity.class);
+                    startActivity(intent);
+//                }
             }
         });
 
@@ -170,7 +183,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if(UserData.getInstance().getUserInfo()!=null){
+        if (UserData.getInstance().getUserInfo() != null) {
             UserInfo userInfo = UserData.getInstance().getUserInfo();
             ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
             CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
@@ -178,7 +191,7 @@ public class MainActivity extends BaseActivity
             TextView tvScore = (TextView) view.findViewById(R.id.tv_score);
             Glide.with(this).load(userInfo.getAvatarPic()).into(circleImageView);
             tvUserName.setText(userInfo.getUserName());
-            tvScore.setText("HP:"+userInfo.getHp()+" PP:"+userInfo.getPp());
+            tvScore.setText("HP:" + userInfo.getHp() + " PP:" + userInfo.getPp());
         }
     }
 }

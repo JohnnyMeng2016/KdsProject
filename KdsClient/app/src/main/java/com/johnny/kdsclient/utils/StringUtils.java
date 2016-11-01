@@ -28,10 +28,6 @@ public class StringUtils {
     }
 
     public static SpannableString getItemContent(Context context, TextView tv, String content) {
-        String regexAt = "@[\u4e00-\u9fa5\\w]+";
-        String regexTopic = "#[\u4e00-\u9fa5\\w]+#";
-        String regexEmoji = "\\{\u4e00-\u9fa5\\w]+\\}";
-
         String regex = "(\\{emoji)(.*?)(\\})";
 
         SpannableString spannableString = new SpannableString(content);

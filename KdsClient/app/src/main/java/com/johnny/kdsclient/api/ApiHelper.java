@@ -62,7 +62,6 @@ public class ApiHelper {
         Request request = new SimplePostRequest(ApiConstant.GET_TOPIC_LIST, paramMap, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG,response);
                 try {
                     TopicListResponse topicListResponse = gson.fromJson(response, TopicListResponse.class);
                     listener.onResponse(topicListResponse);
@@ -79,8 +78,6 @@ public class ApiHelper {
             }
         });
         getHttpQueue().add(request);
-        Log.d(TAG,request.toString());
-        Log.d(TAG,paramMap.toString());
     }
 
     /**
@@ -102,7 +99,6 @@ public class ApiHelper {
         Request request = new SimplePostRequest(ApiConstant.GET_REPLY_LIST, paramMap, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG,response);
                 try {
                     ReplyListResponse replyListResponse = gson.fromJson(response, ReplyListResponse.class);
                     listener.onResponse(replyListResponse);
@@ -119,8 +115,6 @@ public class ApiHelper {
             }
         });
         getHttpQueue().add(request);
-        Log.d(TAG,request.toString());
-        Log.d(TAG,paramMap.toString());
     }
 
     /**
@@ -135,7 +129,6 @@ public class ApiHelper {
         Request request = new SimplePostRequest(ApiConstant.GET_USER_DETAIL, paramMap, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG,response);
                 try {
                     UserDetailResponse userDetailResponse = gson.fromJson(response, UserDetailResponse.class);
                     listener.onResponse(userDetailResponse);
@@ -152,8 +145,6 @@ public class ApiHelper {
             }
         });
         getHttpQueue().add(request);
-        Log.d(TAG,request.toString());
-        Log.d(TAG,paramMap.toString());
     }
 
     /**
@@ -170,7 +161,6 @@ public class ApiHelper {
         Request request = new SimplePostRequest(ApiConstant.LOGIN, paramMap, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG,response);
                 try {
                     LoginResponse loginResponse = gson.fromJson(response, LoginResponse.class);
                     listener.onResponse(loginResponse);
@@ -187,8 +177,6 @@ public class ApiHelper {
             }
         });
         getHttpQueue().add(request);
-        Log.d(TAG,request.toString());
-        Log.d(TAG,paramMap.toString());
     }
 
 }
