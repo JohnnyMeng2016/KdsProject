@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <GridView
+        android:id="@+id/gv_images"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:cacheColorHint="@color/transparent"
+        android:horizontalSpacing="4dp"
+        android:listSelector="@color/transparent"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:verticalSpacing="4dp" />
+
+    <com.johnny.kdsclient.widget.PhotoView
+        android:id="@+id/iv_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop" />
+
+</FrameLayout>

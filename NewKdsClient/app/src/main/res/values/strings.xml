@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">KdsClient</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="welcome">欢迎</string>
+    <string name="sign_in">登录</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="username_and_password_error">用户名或密码错误</string>
+    <string name="username_and_password_input">请确保用户名密码输入完整</string>
+    <string name="login_success">登录成功</string>
+</resources>
