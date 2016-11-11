@@ -74,7 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/bg_gray_bar"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_takephoto"
@@ -154,6 +155,106 @@
             </RadioGroup>
         </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_menu_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@mipmap/ic_add_white" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_save"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_above="@id/fab"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@mipmap/ic_save_grey" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_save_text"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignBottom="@id/cv_save"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/cv_save"
+            android:visibility="gone"
+            app:cardElevation="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="保存" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_send"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_above="@id/cv_save"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="20dp"
+            android:visibility="gone"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@mipmap/ic_send_grey" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_send_text"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignBottom="@id/cv_send"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/cv_send"
+            android:visibility="gone"
+            app:cardElevation="6dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="发送" />
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

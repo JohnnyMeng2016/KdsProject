@@ -38,6 +38,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:layout_behavior="com.johnny.kdsclient.widget.ScrollingFABBehavior"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@mipmap/ic_create_white" />
 
 </android.support.design.widget.CoordinatorLayout>

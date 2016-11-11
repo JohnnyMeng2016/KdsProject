@@ -1,16 +1,29 @@
 package com.johnny.kdsclient.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
@@ -37,6 +50,18 @@ import butterknife.OnClick;
 public class WriteTopicActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.tv_menu_bg)
+    TextView tvMenuBg;
+    @BindView(R.id.cv_save)
+    CardView cvSave;
+    @BindView(R.id.cv_save_text)
+    CardView cvSaveText;
+    @BindView(R.id.cv_send)
+    CardView cvSend;
+    @BindView(R.id.cv_send_text)
+    CardView cvSendText;
     @BindView(R.id.et_write_topic)
     EditText etWriteTopic;
     @BindView(R.id.gv_write_topic)
@@ -59,6 +84,7 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
     private WriteTopicGridImgsAdapter writeTopicGridImgsAdapter;
     private EmotionPagerAdapter emotionPagerGvAdapter;
     private ArrayList<Uri> imgUris = new ArrayList<Uri>();
+    private boolean isMenuOpen;
 
     @Override
     protected int layout() {
@@ -87,8 +113,9 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
     }
 
     @OnClick({R.id.iv_takephoto, R.id.iv_image, R.id.iv_image_library, R.id.iv_emoji, R.id.iv_voice,
-            R.id.rb_emotion_dashboard_emoji, R.id.rb_emotion_dashboard_spacial})
-    protected void bottomAction(View view) {
+            R.id.rb_emotion_dashboard_emoji, R.id.rb_emotion_dashboard_spacial, R.id.fab, R.id.cv_send,
+            R.id.cv_send_text, R.id.cv_save, R.id.cv_save_text})
+    protected void onAction(View view) {
         switch (view.getId()) {
             case R.id.iv_takephoto:
                 ImageUtils.pickImageFromCamera(this);
@@ -116,6 +143,66 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
                 break;
             case R.id.rb_emotion_dashboard_spacial:
                 initSpecialEmotion();
+                break;
+            case R.id.fab:
+                if (isMenuOpen) {
+                    isMenuOpen = false;
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", -135, 0);
+                    AnticipateOvershootInterpolator interpolator = new AnticipateOvershootInterpolator();
+                    animator.setInterpolator(interpolator);
+                    animator.setDuration(300);
+                    animator.start();
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(0.7f, 0);
+                    alphaAnimation.setDuration(300);
+                    tvMenuBg.startAnimation(alphaAnimation);
+                    tvMenuBg.setVisibility(View.GONE);
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.2f, 1f, 0.2f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    scaleAnimation.setDuration(100);
+                    cvSave.startAnimation(scaleAnimation);
+                    cvSave.setVisibility(View.GONE);
+                    cvSaveText.startAnimation(scaleAnimation);
+                    cvSaveText.setVisibility(View.GONE);
+                    cvSend.setVisibility(View.GONE);
+                    cvSend.startAnimation(scaleAnimation);
+                    cvSendText.setVisibility(View.GONE);
+                    cvSendText.startAnimation(scaleAnimation);
+                } else {
+                    isMenuOpen = true;
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(view, "rotation", 0, -135);
+                    AnticipateOvershootInterpolator interpolator = new AnticipateOvershootInterpolator();
+                    animator.setInterpolator(interpolator);
+                    animator.setDuration(300);
+                    animator.start();
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(0, 0.7f);
+                    alphaAnimation.setDuration(300);
+                    alphaAnimation.setFillAfter(true);
+                    tvMenuBg.setVisibility(View.VISIBLE);
+                    tvMenuBg.startAnimation(alphaAnimation);
+
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(0.2f, 1f, 0.2f, 1f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    scaleAnimation.setInterpolator(interpolator);
+                    scaleAnimation.setDuration(300);
+                    cvSave.setVisibility(View.VISIBLE);
+                    cvSave.startAnimation(scaleAnimation);
+                    cvSaveText.setVisibility(View.VISIBLE);
+                    cvSaveText.startAnimation(scaleAnimation);
+                    cvSend.setVisibility(View.VISIBLE);
+                    cvSend.startAnimation(scaleAnimation);
+                    cvSendText.setVisibility(View.VISIBLE);
+                    cvSendText.startAnimation(scaleAnimation);
+                }
+                break;
+            case R.id.cv_save:
+            case R.id.cv_save_text:
+
+                break;
+            case R.id.cv_send:
+            case R.id.cv_send_text:
+
                 break;
         }
     }
@@ -225,10 +312,10 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
         Object itemAdapter = parent.getAdapter();
         if (itemAdapter instanceof WriteTopicGridImgsAdapter) {
             WriteTopicGridImgsAdapter imgsAdapter = (WriteTopicGridImgsAdapter) itemAdapter;
-            if(position == imgsAdapter.getCount() - 1) {
+            if (position == imgsAdapter.getCount() - 1) {
                 ImageUtils.showImagePickDialog(this);
             }
-        }else if(itemAdapter instanceof EmotionGvAdapter) {
+        } else if (itemAdapter instanceof EmotionGvAdapter) {
             EmotionGvAdapter emotionAdapter = (EmotionGvAdapter) itemAdapter;
             int emotionCode = emotionAdapter.getItem(position);
             String emotionName = "{emoji" + emotionCode + "}";
