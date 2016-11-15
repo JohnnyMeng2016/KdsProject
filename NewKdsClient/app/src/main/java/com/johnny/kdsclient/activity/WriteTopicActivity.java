@@ -1,44 +1,42 @@
 package com.johnny.kdsclient.activity;
 
-import android.animation.ObjectAnimator;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.UserData;
 import com.johnny.kdsclient.adapter.EmotionGvAdapter;
 import com.johnny.kdsclient.adapter.EmotionPagerAdapter;
 import com.johnny.kdsclient.adapter.WriteTopicGridImgsAdapter;
+import com.johnny.kdsclient.api.ApiHelper;
+import com.johnny.kdsclient.api.SimpleResponseListener;
+import com.johnny.kdsclient.bean.Reply;
+import com.johnny.kdsclient.bean.SendTopicRequest;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.EmotionUtils;
 import com.johnny.kdsclient.utils.ImageUtils;
 import com.johnny.kdsclient.utils.StringUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,9 +75,12 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
     @BindView(R.id.vp_emotion_dashboard)
     ViewPager vpEmoji;
 
+    private ProgressDialog progressDialog;
     private WriteTopicGridImgsAdapter writeTopicGridImgsAdapter;
     private EmotionPagerAdapter emotionPagerGvAdapter;
     private ArrayList<Uri> imgUris = new ArrayList<Uri>();
+    private List<String> imgAttachs = new ArrayList<String>();
+    private String userId;
 
     @Override
     protected int layout() {
@@ -89,6 +90,7 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     protected void initDate() {
         initEmotion();
+        userId = UserData.getInstance().getUserInfo().getUserId();
     }
 
     @Override
@@ -102,6 +104,7 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
                 finish();
             }
         });
+        progressDialog = new ProgressDialog(this);
         writeTopicGridImgsAdapter = new WriteTopicGridImgsAdapter(this, imgUris, gvWriteTopicImgs);
         gvWriteTopicImgs.setAdapter(writeTopicGridImgsAdapter);
         gvWriteTopicImgs.setOnItemClickListener(this);
@@ -158,7 +161,47 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_send) {//发送
+            if ("".equals(etWriteTitle.getText().toString())) {
+                Toast.makeText(this, "请输入标题", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            if ("".equals(etWriteContent.getText().toString()) && imgUris.size() == 0) {
+                Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            progressDialog.setMessage("发送中...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            //上传图片
+            if (imgUris.size() > 0) {
+                imgAttachs.clear();
+                final int imgCount = imgUris.size();
+                for (Uri imgUri : imgUris) {
+                    File file = ImageUtils.uri2file(this, imgUri);
+                    ApiHelper.getInstance().uploadPicture(userId, file, new SimpleResponseListener<String>() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressDialog.dismiss();
+                            Toast.makeText(WriteTopicActivity.this, "发送失败，请再次尝试", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            imgAttachs.add(response);
+                            if (imgCount == imgAttachs.size()) {
+                                sendTopic();
+                            }
+                        }
+                    });
+                }
+            } else {
+                sendTopic();
+            }
+            return true;
+        } else if (id == R.id.action_save) {//保存至草稿箱
+
             return true;
         }
 
@@ -210,7 +253,7 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
      */
     private void initEmotion() {
         int screenWidth = CommonUtils.getScreenWidthPixels(this);
-        int spacing = CommonUtils.dp2Px(this, 16);
+        int spacing = CommonUtils.dp2Px(this, 8);
 
         int itemWidth = (screenWidth - spacing * 8) / 7;
         int gvHeight = itemWidth * 3 + spacing * 4;
@@ -365,5 +408,45 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
         } else {
             gvWriteTopicImgs.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * 发送帖子
+     */
+    private void sendTopic() {
+        String htmlCode = etWriteContent.getText().toString();
+        htmlCode = htmlCode.replace("\n", "<br/>");
+        htmlCode = htmlCode.replace("emoji", "");
+        for (String imgAttach : imgAttachs) {
+            htmlCode += imgAttach;
+        }
+        SendTopicRequest sendTopicRequest = new SendTopicRequest();
+        sendTopicRequest.setTitle(etWriteTitle.getText().toString());
+        sendTopicRequest.setDescription(" ");
+        sendTopicRequest.setHtmlcode(htmlCode);
+        sendTopicRequest.setPostUserId(userId);
+        ApiHelper.getInstance().sendTopic(sendTopicRequest, new SimpleResponseListener<String>() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onResponse(String response) {
+                progressDialog.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String returnMessage = jsonObject.getString("errMessage");
+                    if ("发帖成功".equals(returnMessage)) {
+                        Toast.makeText(WriteTopicActivity.this, "发帖成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(WriteTopicActivity.this, "发送失败，请再次尝试", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

@@ -19,8 +19,10 @@ import com.johnny.kdsclient.bean.UserDetailResponse;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.bean.UserTopicResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -192,7 +194,7 @@ public class ApiHelper {
      * @param sendTopicRequest
      * @param listener
      */
-    public void sendTopic(SendTopicRequest sendTopicRequest, final SimpleResponseListener<String> listener){
+    public void sendTopic(SendTopicRequest sendTopicRequest, final SimpleResponseListener<String> listener) {
         HashMap<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("htmlcode", sendTopicRequest.getHtmlcode());
         paramMap.put("description", "");
@@ -221,6 +223,39 @@ public class ApiHelper {
         getHttpQueue().add(request);
     }
 
+    public void uploadPicture(String userId, File photoFile, final SimpleResponseListener<String> listener) {
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("appver", "3.1.1");
+        paramMap.put("system", "Android");
+        paramMap.put("topicId", "15");
+        paramMap.put("isTopic", "1");
+        paramMap.put("postUserId", userId);
+        Request request = new MultipartRequest(ApiConstant.UPLOAD_PICTURE, "attachments", photoFile, paramMap
+                , new SimpleResponseListener<String>() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onErrorResponse(error);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String msg = jsonObject.getString("msg");
+                    if (msg.equals("success")) {
+                        jsonObject = jsonObject.getJSONObject("uploadRes");
+                        String htmlCodeBlock = jsonObject.getString("HTMLCodeBlock");
+                        listener.onResponse(htmlCodeBlock);
+                        return;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                listener.onResponse("");
+            }
+        });
+        getHttpQueue().add(request);
+    }
 
 
 }

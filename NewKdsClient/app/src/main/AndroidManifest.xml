@@ -38,7 +38,9 @@
         <activity
             android:name=".activity.WriteTopicActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
+        <activity
+            android:name=".activity.DraftActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
     </application>
 

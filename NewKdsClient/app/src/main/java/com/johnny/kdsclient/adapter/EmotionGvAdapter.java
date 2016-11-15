@@ -43,7 +43,7 @@ public class EmotionGvAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView iv = new ImageView(context);
         LayoutParams params = new LayoutParams(itemWidth, itemWidth);
-        iv.setPadding(itemWidth / 8, itemWidth / 8, itemWidth / 8, itemWidth / 8);
+        iv.setPadding(itemWidth / 4, itemWidth / 4, itemWidth / 4, itemWidth / 4);
         iv.setLayoutParams(params);
         iv.setBackgroundResource(R.drawable.bg_tran2lgray_selector);
         int emotionCode = emotionCodes.get(position);

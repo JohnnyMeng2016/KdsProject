@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.johnny.kdsclient.activity.DraftActivity;
 import com.johnny.kdsclient.activity.LoginActivity;
 import com.johnny.kdsclient.activity.WriteTopicActivity;
 import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
@@ -111,8 +112,8 @@ public class MainActivity extends BaseActivity
 //                                }
 //                            }).show();
 //                } else {
-                    Intent intent = new Intent(MainActivity.this, WriteTopicActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, WriteTopicActivity.class);
+                startActivity(intent);
 //                }
             }
         });
@@ -157,6 +158,8 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_gallery) {
         } else if (id == R.id.nav_slideshow) {
         } else if (id == R.id.nav_manage) {
+            Intent intent = new Intent(this, DraftActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
