@@ -24,6 +24,7 @@ import com.johnny.kdsclient.activity.DraftActivity;
 import com.johnny.kdsclient.activity.LoginActivity;
 import com.johnny.kdsclient.activity.WriteTopicActivity;
 import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
+import com.johnny.kdsclient.bean.TopicListTypeEnum;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.fragment.ImageFragment;
 import com.johnny.kdsclient.fragment.TopicFragment;
@@ -54,6 +55,7 @@ public class MainActivity extends BaseActivity
 
     private String[] mTitles;
     private List<Fragment> fragmentList;
+    private int currentPageIndex;
 
     @Override
     protected int layout() {
@@ -102,19 +104,19 @@ public class MainActivity extends BaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (null == UserData.getInstance().getUserInfo()) {
-//                    Snackbar.make(view, "发帖请先登录账户", Snackbar.LENGTH_LONG)
-//                            .setAction("登录", new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                                    startActivity(intent);
-//                                }
-//                            }).show();
-//                } else {
-                Intent intent = new Intent(MainActivity.this, WriteTopicActivity.class);
-                startActivity(intent);
-//                }
+                if (null == UserData.getInstance().getUserInfo()) {
+                    Snackbar.make(view, "发帖请先登录账户", Snackbar.LENGTH_LONG)
+                            .setAction("登录", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }
+                            }).show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, WriteTopicActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -153,13 +155,40 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            Toast.makeText(MainActivity.this, "拍照", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_gallery) {
-        } else if (id == R.id.nav_slideshow) {
-        } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(this, DraftActivity.class);
-            startActivity(intent);
+        if (id == R.id.nav_normal) {
+            toolbar.setTitle("主页");
+            MessageEvent messageEvent = new MessageEvent();
+            messageEvent.setTypeEnum(TopicListTypeEnum.Normal);
+            messageEvent.setNeedRefreshPage(currentPageIndex);
+            EventBus.getDefault().post(messageEvent);
+        } else if (id == R.id.nav_daily_hot) {
+            toolbar.setTitle("今日热帖");
+            MessageEvent messageEvent = new MessageEvent();
+            messageEvent.setTypeEnum(TopicListTypeEnum.Daliy);
+            messageEvent.setNeedRefreshPage(currentPageIndex);
+            EventBus.getDefault().post(messageEvent);
+        } else if (id == R.id.nav_week_hot) {
+            toolbar.setTitle("本周热帖");
+            MessageEvent messageEvent = new MessageEvent();
+            messageEvent.setTypeEnum(TopicListTypeEnum.Week);
+            messageEvent.setNeedRefreshPage(currentPageIndex);
+            EventBus.getDefault().post(messageEvent);
+        } else if (id == R.id.nav_moonth_hot) {
+            toolbar.setTitle("本月热帖");
+            MessageEvent messageEvent = new MessageEvent();
+            messageEvent.setTypeEnum(TopicListTypeEnum.Month);
+            messageEvent.setNeedRefreshPage(currentPageIndex);
+            EventBus.getDefault().post(messageEvent);
+        } else if (id == R.id.nav_draft) {
+            if (null == UserData.getInstance().getUserInfo()) {
+                Toast.makeText(MainActivity.this, "登录后，可查看草稿箱", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(this, DraftActivity.class);
+                startActivity(intent);
+            }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -174,6 +203,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onPageSelected(int position) {
+        currentPageIndex = position;
         EventBus.getDefault().post(new MessageEvent());
     }
 

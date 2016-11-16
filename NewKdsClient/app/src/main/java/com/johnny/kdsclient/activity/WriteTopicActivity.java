@@ -1,9 +1,12 @@
 package com.johnny.kdsclient.activity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.view.Menu;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
+import com.johnny.kdsclient.MyDbHelper;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.UserData;
 import com.johnny.kdsclient.adapter.EmotionGvAdapter;
@@ -26,8 +30,10 @@ import com.johnny.kdsclient.adapter.EmotionPagerAdapter;
 import com.johnny.kdsclient.adapter.WriteTopicGridImgsAdapter;
 import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.api.SimpleResponseListener;
+import com.johnny.kdsclient.bean.DraftTopic;
 import com.johnny.kdsclient.bean.Reply;
 import com.johnny.kdsclient.bean.SendTopicRequest;
+import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.EmotionUtils;
 import com.johnny.kdsclient.utils.ImageUtils;
@@ -37,7 +43,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -78,8 +86,9 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
     private ProgressDialog progressDialog;
     private WriteTopicGridImgsAdapter writeTopicGridImgsAdapter;
     private EmotionPagerAdapter emotionPagerGvAdapter;
-    private ArrayList<Uri> imgUris = new ArrayList<Uri>();
+    private List<Uri> imgUris = new ArrayList<Uri>();
     private List<String> imgAttachs = new ArrayList<String>();
+    private DraftTopic draftTopic;
     private String userId;
 
     @Override
@@ -89,6 +98,7 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     protected void initDate() {
+        draftTopic = (DraftTopic) getIntent().getParcelableExtra("Draft");
         initEmotion();
         userId = UserData.getInstance().getUserInfo().getUserId();
     }
@@ -101,7 +111,19 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(WriteTopicActivity.this);
+                builder.setMessage("是否把当前内容保存至草稿?")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveTopic();
+                    }
+                }).show();
             }
         });
         progressDialog = new ProgressDialog(this);
@@ -149,6 +171,16 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
                 }
             }
         });
+
+        if (null != draftTopic) {
+            etWriteTitle.setText(draftTopic.getTitle());
+            etWriteContent.setText(draftTopic.getContent());
+            if (null != draftTopic.getImgUris() && draftTopic.getImgUris().size() > 0) {
+                imgUris = draftTopic.getImgUris();
+                writeTopicGridImgsAdapter.setDatas(imgUris);
+                writeTopicGridImgsAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -201,7 +233,7 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
             }
             return true;
         } else if (id == R.id.action_save) {//保存至草稿箱
-
+            saveTopic();
             return true;
         }
 
@@ -448,5 +480,22 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
                 }
             }
         });
+    }
+
+    /**
+     * 保存帖子
+     */
+    private void saveTopic() {
+        DraftTopic draftTopic = new DraftTopic();
+        draftTopic.setTitle(etWriteTitle.getText().toString());
+        draftTopic.setContent(etWriteContent.getText().toString());
+        draftTopic.setImgUris(imgUris);
+        Date date = new Date();
+        String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+        draftTopic.setCreateTime(now);
+        draftTopic.setModifyTime(now);
+        MyDbHelper dbHelper = new MyDbHelper(this);
+        dbHelper.saveDraft(draftTopic);
+        Toast.makeText(this, "已保存至草稿箱", Toast.LENGTH_SHORT).show();
     }
 }

@@ -13,12 +13,18 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 
 import com.android.volley.VolleyError;
+import com.johnny.kdsclient.MessageEvent;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.adapter.TopicRecycleAdapter;
 import com.johnny.kdsclient.api.SimpleResponseListener;
 import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.bean.TopicListResponse;
+import com.johnny.kdsclient.bean.TopicListTypeEnum;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,6 +49,7 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private TopicRecycleAdapter topicRecycleAdapter;
 
+    private TopicListTypeEnum type = TopicListTypeEnum.Normal;
     private int lastVisibleItem;
     private int loadedPage;
 
@@ -94,8 +101,20 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         loadDate(1);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     private void loadDate(int page) {
-        ApiHelper.getInstance().getTopicList(page, new SimpleResponseListener<TopicListResponse>() {
+        ApiHelper.getInstance().getTopicList(type, page, new SimpleResponseListener<TopicListResponse>() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 swipeRefreshLayout.setRefreshing(false);
@@ -130,5 +149,20 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 }
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        if (event.getTypeEnum() != null && event.getTypeEnum() != type) {
+            type = event.getTypeEnum();
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    loadedPage = 1;
+                    loadDate(1);
+                }
+            });
+        }
     }
 }

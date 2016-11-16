@@ -1,6 +1,9 @@
 package com.johnny.kdsclient.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +21,7 @@ import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.api.SimpleResponseListener;
 import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.bean.TopicListResponse;
+import com.johnny.kdsclient.bean.TopicListTypeEnum;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,6 +47,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private ImageRecycleAdapter imageRecycleAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
+    private TopicListTypeEnum type = TopicListTypeEnum.Normal;
     private boolean isFirstShow = true;
     private int lastVisibleItem;
     private int loadedPage;
@@ -66,7 +71,6 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                System.out.print(lastVisibleItem);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastVisibleItem + 1 == imageRecycleAdapter.getItemCount()) {
                     loadedPage += 1;
@@ -103,9 +107,77 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onRefresh() {
+        loadedPage = 1;
+        loadDate(1);
+    }
+
+    private void loadDate(int page) {
+        ApiHelper.getInstance().getTopicList(type, page, new SimpleResponseListener<TopicListResponse>() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onResponse(TopicListResponse response) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        List<Topic> topicList = response.getData();
+                        //剔除掉无图的帖子
+                        Iterator<Topic> iterator = topicList.iterator();
+                        while (iterator.hasNext()) {
+                            if (iterator.next().getPreview().contains("kdsLogo1.png"))
+                                iterator.remove();
+                        }
+                        if (loadedPage > 1) {
+                            //两次刷新的内容会有部分重复，剔除
+                            List<Topic> loadedTopicList = imageRecycleAdapter.getDatas();
+                            Iterator<Topic> topicIterator = topicList.iterator();
+                            while (topicIterator.hasNext()) {
+                                Topic topic = topicIterator.next();
+                                for (Topic loadedTopic : loadedTopicList) {
+                                    if (loadedTopic.getBbsId().equals(topic.getBbsId())) {
+                                        topicIterator.remove();
+                                    }
+                                }
+                            }
+                            imageRecycleAdapter.getDatas().addAll(topicList);
+                        } else {
+                            imageRecycleAdapter.setDatas(topicList);
+                        }
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageRecycleAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        //imageRecycleAdapter.notifyDataSetChanged();
+
+                        if (topicList.size() == 0) {
+                            imageRecycleAdapter.setFooterViewType(true);
+                        } else {
+                            imageRecycleAdapter.setFooterViewType(false);
+                        }
+                    }
+                }
+
+        );
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            imageRecycleAdapter.notifyDataSetChanged();
+        }
+    };
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        if (isFirstShow) {
+        if (null != event.getTypeEnum() && event.getTypeEnum() != type) {
+            type = event.getTypeEnum();
+        }
+        if (isFirstShow || event.getNeedRefreshPage() == 1) {
             swipeRefreshLayout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -116,59 +188,5 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             });
             isFirstShow = false;
         }
-    }
-
-    ;
-
-    @Override
-    public void onRefresh() {
-        loadedPage = 1;
-        loadDate(1);
-    }
-
-    private void loadDate(int page) {
-        ApiHelper.getInstance().getTopicList(page, new SimpleResponseListener<TopicListResponse>() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-
-                @Override
-                public void onResponse(TopicListResponse response) {
-                    swipeRefreshLayout.setRefreshing(false);
-                    List<Topic> topicList = response.getData();
-                    //剔除掉无图的帖子
-                    Iterator<Topic> iterator = topicList.iterator();
-                    while (iterator.hasNext()) {
-                        if (iterator.next().getPreview().contains("kdsLogo1.png"))
-                            iterator.remove();
-                    }
-                    if (loadedPage > 1) {
-                        //两次刷新的内容会有部分重复，剔除
-                        List<Topic> loadedTopicList = imageRecycleAdapter.getDatas();
-                        Iterator<Topic> topicIterator = topicList.iterator();
-                        while (topicIterator.hasNext()) {
-                            Topic topic = topicIterator.next();
-                            for (Topic loadedTopic : loadedTopicList) {
-                                if (loadedTopic.getBbsId().equals(topic.getBbsId())) {
-                                    topicIterator.remove();
-                                }
-                            }
-                        }
-                        imageRecycleAdapter.getDatas().addAll(topicList);
-                    } else {
-                        imageRecycleAdapter.setDatas(topicList);
-                    }
-                    imageRecycleAdapter.notifyDataSetChanged();
-
-                    if (topicList.size() == 0) {
-                        imageRecycleAdapter.setFooterViewType(true);
-                    } else {
-                        imageRecycleAdapter.setFooterViewType(false);
-                    }
-                }
-            }
-
-        );
     }
 }

@@ -3,20 +3,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="主题" />
+            android:id="@+id/nav_normal"
+            android:icon="@mipmap/ic_home_grey"
+            android:title="主页" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="回复" />
+            android:id="@+id/nav_daily_hot"
+            android:icon="@mipmap/ic_whatshot_grey"
+            android:title="今日热帖" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="收藏" />
+            android:id="@+id/nav_week_hot"
+            android:icon="@mipmap/ic_mood_grey"
+            android:title="本周热帖" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
+            android:id="@+id/nav_moonth_hot"
+            android:icon="@mipmap/ic_extension_grey"
+            android:title="本月热帖" />
+        <item
+            android:id="@+id/nav_draft"
+            android:icon="@mipmap/ic_content_paste_grey"
             android:title="草稿" />
     </group>
 

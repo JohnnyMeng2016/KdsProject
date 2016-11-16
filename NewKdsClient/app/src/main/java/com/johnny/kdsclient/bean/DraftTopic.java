@@ -1,5 +1,9 @@
 package com.johnny.kdsclient.bean;
 
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -8,13 +12,37 @@ import java.util.List;
  * 创建人：孟忠明
  * 创建时间：2016/11/15
  */
-public class DraftTopic {
+public class DraftTopic implements Parcelable {
     private int id;
     private String title;
     private String content;
     private String createTime;
     private String modifyTime;
-    private List<String> imgUris;
+    private List<Uri> imgUris;
+
+    public DraftTopic() {
+    }
+
+    protected DraftTopic(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        content = in.readString();
+        createTime = in.readString();
+        modifyTime = in.readString();
+        imgUris = in.createTypedArrayList(Uri.CREATOR);
+    }
+
+    public static final Creator<DraftTopic> CREATOR = new Creator<DraftTopic>() {
+        @Override
+        public DraftTopic createFromParcel(Parcel in) {
+            return new DraftTopic(in);
+        }
+
+        @Override
+        public DraftTopic[] newArray(int size) {
+            return new DraftTopic[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -56,11 +84,26 @@ public class DraftTopic {
         this.modifyTime = modifyTime;
     }
 
-    public List<String> getImgUris() {
+    public List<Uri> getImgUris() {
         return imgUris;
     }
 
-    public void setImgUris(List<String> imgUris) {
+    public void setImgUris(List<Uri> imgUris) {
         this.imgUris = imgUris;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(createTime);
+        dest.writeString(modifyTime);
+        dest.writeTypedList(imgUris);
     }
 }

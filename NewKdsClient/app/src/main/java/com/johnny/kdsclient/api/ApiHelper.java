@@ -15,6 +15,7 @@ import com.johnny.kdsclient.bean.LoginResponse;
 import com.johnny.kdsclient.bean.ReplyListResponse;
 import com.johnny.kdsclient.bean.SendTopicRequest;
 import com.johnny.kdsclient.bean.TopicListResponse;
+import com.johnny.kdsclient.bean.TopicListTypeEnum;
 import com.johnny.kdsclient.bean.UserDetailResponse;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.bean.UserTopicResponse;
@@ -24,6 +25,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
+
+import static com.johnny.kdsclient.bean.TopicListTypeEnum.Daliy;
 
 /**
  * 项目名称：KdsClient
@@ -66,8 +69,22 @@ public class ApiHelper {
      * @param page     给定页码
      * @param listener
      */
-    public void getTopicList(int page, final SimpleResponseListener<TopicListResponse> listener) {
-        String url = ApiConstant.GET_TOPIC_LIST_NORMAL + "?page=" + page + "&topicId=" + 15;
+    public void getTopicList(TopicListTypeEnum type, int page, final SimpleResponseListener<TopicListResponse> listener) {
+        String url = "";
+        switch (type) {
+            case Normal:
+                url = ApiConstant.GET_TOPIC_LIST_NORMAL + "?page=" + page + "&topicId=" + 15;
+                break;
+            case Daliy:
+                url = ApiConstant.GET_TOPIC_LIST_DAILY + "?page=" + page + "&topicId=" + 15;
+                break;
+            case Week:
+                url = ApiConstant.GET_TOPIC_LIST_WEEK + "?page=" + page + "&topicId=" + 15;
+                break;
+            case Month:
+                url = ApiConstant.GET_TOPIC_LIST_MONTH + "?page=" + page + "&topicId=" + 15;
+                break;
+        }
         Request request = new SimpleRequest(url, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {

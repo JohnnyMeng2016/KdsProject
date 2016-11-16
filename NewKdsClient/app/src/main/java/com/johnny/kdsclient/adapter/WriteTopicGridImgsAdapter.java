@@ -15,17 +15,22 @@ import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WriteTopicGridImgsAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Uri> datas;
+    private List<Uri> datas;
     private GridView gv;
 
-    public WriteTopicGridImgsAdapter(Context context, ArrayList<Uri> datas, GridView gv) {
+    public WriteTopicGridImgsAdapter(Context context, List<Uri> datas, GridView gv) {
         this.context = context;
         this.datas = datas;
         this.gv = gv;
+    }
+
+    public void setDatas(List<Uri> datas) {
+        this.datas = datas;
     }
 
     @Override

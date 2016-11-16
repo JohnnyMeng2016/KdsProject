@@ -1,11 +1,17 @@
 package com.johnny.kdsclient.activity;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.johnny.kdsclient.BaseActivity;
+import com.johnny.kdsclient.MyDbHelper;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.adapter.DraftRecycleAdapter;
+import com.johnny.kdsclient.bean.DraftTopic;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -21,6 +27,10 @@ public class DraftActivity extends BaseActivity {
     @BindView(R.id.id_recyclerview)
     RecyclerView recyclerView;
 
+    MyDbHelper myDbHelper;
+    List<DraftTopic> draftTopicList;
+    DraftRecycleAdapter draftRecycleAdapter;
+
     @Override
     protected int layout() {
         return R.layout.activity_draft;
@@ -28,7 +38,8 @@ public class DraftActivity extends BaseActivity {
 
     @Override
     protected void initDate() {
-
+        myDbHelper = new MyDbHelper(this);
+        draftTopicList = myDbHelper.searchDraftList();
     }
 
     @Override
@@ -40,6 +51,12 @@ public class DraftActivity extends BaseActivity {
                 finish();
             }
         });
+
+        draftRecycleAdapter = new DraftRecycleAdapter(this, draftTopicList);
+        RecyclerView.LayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(draftRecycleAdapter);
 
     }
 }
