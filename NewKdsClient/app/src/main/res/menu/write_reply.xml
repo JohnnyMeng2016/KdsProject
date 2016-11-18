@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_search"
-        android:icon="@mipmap/ic_search_white"
-        android:title="搜索"
+        android:id="@+id/action_send"
+        android:icon="@mipmap/ic_send_white"
+        android:title="发送"
         app:showAsAction="always" />
 </menu>

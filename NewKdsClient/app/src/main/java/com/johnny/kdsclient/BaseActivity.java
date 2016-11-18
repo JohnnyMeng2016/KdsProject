@@ -1,7 +1,10 @@
 package com.johnny.kdsclient;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.github.anzewei.parallaxbacklayout.ParallaxActivityBase;
 
@@ -24,6 +27,7 @@ public abstract class BaseActivity extends ParallaxActivityBase {
 
     /**
      * setContentView()
+     *
      * @return
      */
     protected abstract int layout();

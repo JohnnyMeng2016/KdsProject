@@ -46,6 +46,9 @@ public class ApiConstant {
     //上传图片
     public static final String UPLOAD_PICTURE = API_HOST + "/index.php/recommend/kdsUploadPicture";
 
+    //搜索帖子
+    public static final String SEARCH_TOPIC = API_HOST + "/index.php/search";
+
     private ApiConstant() {
 
     }

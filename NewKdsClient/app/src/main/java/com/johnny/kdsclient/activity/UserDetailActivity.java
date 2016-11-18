@@ -33,7 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 项目名称：KdsClient
- * 类描述：
+ * 类描述：用户详情界面
  * 创建人：孟忠明
  * 创建时间：2016/10/27
  */
@@ -91,6 +91,7 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
 
     @Override
     protected void initView() {
+        getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

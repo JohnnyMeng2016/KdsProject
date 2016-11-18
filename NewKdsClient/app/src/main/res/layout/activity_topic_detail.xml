@@ -4,46 +4,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
-    android:fitsSystemWindows="true"
     tools:context="com.johnny.kdsclient.activity.TopicDetailActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.AppBarLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/id_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="#FFFFFF" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_color"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:foregroundGravity="center" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/id_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:titleTextColor="#FFFFFF" />
-
-        </android.support.design.widget.AppBarLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/id_swiperefreshlayout"
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:orientation="vertical"
+        app:layout_behavior="com.johnny.kdsclient.widget.BottomViewBehavior">
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="1px"
+            android:background="@color/divider_gray" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/id_recyclerview"
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp">
+
+            <ImageButton
+                android:id="@+id/ib_ComplexReply"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="10dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_add_circle_outline_grey" />
+
+            <EditText
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:foregroundGravity="center" />
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:hint="随便说两句" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+            <ImageButton
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginLeft="10dp"
+                android:background="#00000000"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_send_grey" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider_gray" />
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -45,6 +45,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     RecyclerView recyclerview;
 
     private ImageRecycleAdapter imageRecycleAdapter;
+    private ScaleInAnimationAdapter scaleInAnimationAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     private TopicListTypeEnum type = TopicListTypeEnum.Normal;
@@ -65,7 +66,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         layoutManager = new StaggeredGridLayoutManager(3,
                 StaggeredGridLayoutManager.VERTICAL);
         recyclerview.setLayoutManager(layoutManager);
-        ScaleInAnimationAdapter scaleInAnimationAdapter = new ScaleInAnimationAdapter(imageRecycleAdapter);
+        scaleInAnimationAdapter = new ScaleInAnimationAdapter(imageRecycleAdapter);
         recyclerview.setAdapter(scaleInAnimationAdapter);
         recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -146,13 +147,8 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                         } else {
                             imageRecycleAdapter.setDatas(topicList);
                         }
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                imageRecycleAdapter.notifyDataSetChanged();
-                            }
-                        });
-                        //imageRecycleAdapter.notifyDataSetChanged();
+                        imageRecycleAdapter.notifyDataSetChanged();
+                        scaleInAnimationAdapter.notifyDataSetChanged();
 
                         if (topicList.size() == 0) {
                             imageRecycleAdapter.setFooterViewType(true);
@@ -164,13 +160,6 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         );
     }
-
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            imageRecycleAdapter.notifyDataSetChanged();
-        }
-    };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {

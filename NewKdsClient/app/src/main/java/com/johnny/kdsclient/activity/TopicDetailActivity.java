@@ -1,10 +1,18 @@
 package com.johnny.kdsclient.activity;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
@@ -19,6 +27,7 @@ import com.johnny.kdsclient.bean.Topic;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 项目名称：KdsClient
@@ -33,6 +42,10 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.id_recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
+    @BindView(R.id.ib_ComplexReply)
+    ImageButton complexReplyButton;
 
     private ReplyRecycleAdapter replyRecycleAdapter;
 
@@ -55,13 +68,13 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     protected void initView() {
         toolbar.setTitle("共" + topic.getReply() + "个回复");
-        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+        getSupportActionBar().hide();
 
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.postDelayed(new Runnable() {
@@ -106,34 +119,44 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
     private void loadDate(int page) {
         String bbsId = topic.getBbsId();
         ApiHelper.getInstance().getReplyList(bbsId, page, isOnlyLandLord,
-            new SimpleResponseListener<ReplyListResponse>() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
+                new SimpleResponseListener<ReplyListResponse>() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
 
-                @Override
-                public void onResponse(ReplyListResponse response) {
-                    swipeRefreshLayout.setRefreshing(false);
-                    List<Reply> replyList = response.getReplys();
-                    if (replyList == null || replyList.size() == 0) {
-                        isBottom = true;
-                    }
-                    if (loadedPage > 1) {
-                        replyRecycleAdapter.getDatas().addAll(replyList);
-                    } else {
-                        replyRecycleAdapter.setDatas(replyList);
-                    }
-                    replyRecycleAdapter.notifyDataSetChanged();
+                    @Override
+                    public void onResponse(ReplyListResponse response) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        List<Reply> replyList = response.getReplys();
+                        if (replyList == null || replyList.size() == 0) {
+                            isBottom = true;
+                        }
+                        if (loadedPage > 1) {
+                            replyRecycleAdapter.getDatas().addAll(replyList);
+                        } else {
+                            replyRecycleAdapter.setDatas(replyList);
+                        }
+                        replyRecycleAdapter.notifyDataSetChanged();
 
-                    if (replyRecycleAdapter.getDatas().size() >= topic.getReply() || isBottom) {
-                        replyRecycleAdapter.setFooterViewType(true);
-                        isBottom = true;
-                    } else {
-                        replyRecycleAdapter.setFooterViewType(false);
+                        if (replyRecycleAdapter.getDatas().size() >= topic.getReply() || isBottom) {
+                            replyRecycleAdapter.setFooterViewType(true);
+                            isBottom = true;
+                        } else {
+                            replyRecycleAdapter.setFooterViewType(false);
+                        }
                     }
-                }
-            });
+                });
+    }
+
+    @OnClick(R.id.ib_ComplexReply)
+    public void onAction(View view) {
+        switch (view.getId()) {
+            case R.id.ib_ComplexReply:
+                Intent intent = new Intent(this, ReplyTopicActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
 }

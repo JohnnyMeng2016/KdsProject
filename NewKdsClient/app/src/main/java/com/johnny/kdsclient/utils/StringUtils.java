@@ -103,9 +103,9 @@ public class StringUtils {
                 iconStr = m.group(2);
                 iconStr = iconStr.substring(iconStr.length() - 2);
                 int icon = -1;
-                try{
+                try {
                     icon = Integer.parseInt(iconStr);
-                }catch (Exception e){
+                } catch (Exception e) {
                     iconStr = iconStr.substring(iconStr.length() - 1);
                     icon = Integer.parseInt(iconStr);
                 }
@@ -120,10 +120,13 @@ public class StringUtils {
             iconStr = m.group(2);
             iconStr = iconStr.substring(iconStr.length() - 2);
             int icon = -1;
-            try{
+            try {
                 icon = Integer.parseInt(iconStr);
-            }catch (Exception e){
+            } catch (Exception e) {
                 iconStr = iconStr.substring(iconStr.length() - 1);
+                if (!StringUtils.isNumeric(iconStr)) {
+                    continue;
+                }
                 icon = Integer.parseInt(iconStr);
             }
             replacement = "{emoji" + icon + "}";
@@ -138,14 +141,14 @@ public class StringUtils {
 
         imgPatterns[0] = Pattern.compile("(<a href=\")(.*?)(\".*?</a>)");
         imgPatterns[1] = Pattern.compile("(<img src=\')(.*?)(\'.*?>)");
-        for(int i=0;i<imgPatterns.length;i++) {
+        for (int i = 0; i < imgPatterns.length; i++) {
             Pattern imgPattern = imgPatterns[i];
             //解析引用部分
             if (refrence != null) {
                 m = imgPattern.matcher(refrence);
                 while (m.find()) {
                     String picUrl = m.group(2);
-                    if(!picUrl.contains("@")){
+                    if (!picUrl.contains("@")) {
                         picUrl += "@1o_1l_600w_90q.jpg";
                     }
                     refrenceImgs.add(picUrl);
@@ -156,7 +159,7 @@ public class StringUtils {
             m = imgPattern.matcher(content);
             while (m.find()) {
                 String picUrl = m.group(2);
-                if(!picUrl.contains("@")){
+                if (!picUrl.contains("@")) {
                     picUrl += "@1o_1l_600w_90q.jpg";
                 }
                 contentImgs.add(picUrl);
@@ -179,7 +182,7 @@ public class StringUtils {
         return contentParsedBean;
     }
 
-    private static String getClearStr(String str){
+    private static String getClearStr(String str) {
         str = str.replaceAll("-==.*?==-", "");
         str = str.replaceAll("(<a.*?>)|(</a>)|(<b>)|(</b>)|(<center>)|(</center>)|(<strong>)|(</strong>)", "");
         str = str.replaceAll("(<em>)|(</em>)|(<FONT.*?>)|(</FONT>)|&.*?;", "");
@@ -189,8 +192,8 @@ public class StringUtils {
         String[] strParts = str.split("\n");
         StringBuffer sb = new StringBuffer();
         boolean hasContent = false;
-        for (String parts : strParts){
-            if(parts.trim().equals("")){
+        for (String parts : strParts) {
+            if (parts.trim().equals("")) {
                 continue;
             }
             hasContent = true;
@@ -198,10 +201,19 @@ public class StringUtils {
             sb.append("\n");
         }
         str = sb.toString();
-        if(hasContent){
-            str = str.substring(0,str.length()-1);
+        if (hasContent) {
+            str = str.substring(0, str.length() - 1);
         }
         return str;
+    }
+
+    public static boolean isNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if (!isNum.matches()) {
+            return false;
+        }
+        return true;
     }
 
 }

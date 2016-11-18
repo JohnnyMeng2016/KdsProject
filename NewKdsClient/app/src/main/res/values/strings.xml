@@ -13,4 +13,5 @@
     <string name="username_and_password_error">用户名或密码错误</string>
     <string name="username_and_password_input">请确保用户名密码输入完整</string>
     <string name="login_success">登录成功</string>
+    <string name="click_avatar_to_login">点击头像登录</string>
 </resources>

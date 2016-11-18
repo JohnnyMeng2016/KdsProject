@@ -15,14 +15,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_avatar"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:src="@mipmap/default_avater"
-            app:civ_border_width="1dp"
-            app:civ_border_color="#FFFFFF"/>
+            app:civ_border_color="#FFFFFF"
+            app:civ_border_width="1dp" />
     </RelativeLayout>
 
     <TextView
@@ -30,13 +30,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="用户名"
+        android:text="@string/click_avatar_to_login"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/tv_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HP" />
+        android:text="" />
 
 </LinearLayout>
