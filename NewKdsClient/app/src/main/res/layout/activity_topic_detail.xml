@@ -75,6 +75,7 @@
                 android:src="@mipmap/ic_add_circle_outline_grey" />
 
             <EditText
+                android:id="@+id/et_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -82,6 +83,7 @@
                 android:hint="随便说两句" />
 
             <ImageButton
+                android:id="@+id/ib_send"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginLeft="10dp"

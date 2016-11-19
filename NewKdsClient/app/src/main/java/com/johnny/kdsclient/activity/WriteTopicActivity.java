@@ -1,6 +1,5 @@
 package com.johnny.kdsclient.activity;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.MyDbHelper;
@@ -31,9 +29,7 @@ import com.johnny.kdsclient.adapter.WriteTopicGridImgsAdapter;
 import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.api.SimpleResponseListener;
 import com.johnny.kdsclient.bean.DraftTopic;
-import com.johnny.kdsclient.bean.Reply;
 import com.johnny.kdsclient.bean.SendTopicRequest;
-import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.EmotionUtils;
 import com.johnny.kdsclient.utils.ImageUtils;

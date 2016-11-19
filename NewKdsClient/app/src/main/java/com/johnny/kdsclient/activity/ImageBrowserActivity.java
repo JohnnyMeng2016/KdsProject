@@ -20,7 +20,7 @@ import butterknife.BindView;
 
 /**
  * 项目名称：KdsClient
- * 类描述：
+ * 类描述：图片浏览界面
  * 创建人：孟忠明
  * 创建时间：2016/10/14
  */
@@ -48,7 +48,7 @@ public class ImageBrowserActivity extends BaseActivity {
         position = getIntent().getIntExtra("position", 0);
         Parcelable[] parcelables = getIntent().getParcelableArrayExtra("infos");
         infos = new PhotoInfo[parcelables.length];
-        for(int i=0;i<parcelables.length;i++){
+        for (int i = 0; i < parcelables.length; i++) {
             infos[i] = (PhotoInfo) parcelables[i];
         }
         photoViewArray = new PhotoView[imgUrls.length];
@@ -129,7 +129,7 @@ public class ImageBrowserActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        photoViewArray[currentIndex].animaTo(infos[position], new Runnable() {
+        photoViewArray[currentIndex].animaTo(infos[currentIndex], new Runnable() {
             @Override
             public void run() {
                 finish();

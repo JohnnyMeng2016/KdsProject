@@ -26,7 +26,8 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.TopicDetailActivity" />
+        <activity android:name=".activity.TopicDetailActivity"
+            android:theme="@style/AppTheme.NoActionBarWithNoColor"/>
         <activity
             android:name=".activity.ImageBrowserActivity"
             android:theme="@style/AppTheme.NoActionBarTran" />

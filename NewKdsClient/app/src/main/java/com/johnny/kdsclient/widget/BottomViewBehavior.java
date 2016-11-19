@@ -23,6 +23,10 @@ public class BottomViewBehavior extends CoordinatorLayout.Behavior<View> {
     private float viewY;//控件距离coordinatorLayout底部距离
     private boolean isAnimate;//动画是否在进行
 
+    public BottomViewBehavior(Context context) {
+        super(context, null);
+    }
+
     public BottomViewBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

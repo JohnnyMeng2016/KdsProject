@@ -1,23 +1,18 @@
 package com.johnny.kdsclient.api;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.johnny.kdsclient.bean.CommonResponse;
 import com.johnny.kdsclient.bean.LoginResponse;
 import com.johnny.kdsclient.bean.ReplyListResponse;
 import com.johnny.kdsclient.bean.SendTopicRequest;
 import com.johnny.kdsclient.bean.TopicListResponse;
 import com.johnny.kdsclient.bean.TopicListTypeEnum;
-import com.johnny.kdsclient.bean.UserDetailResponse;
-import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.bean.UserTopicResponse;
 
 import org.json.JSONException;
@@ -25,8 +20,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
-
-import static com.johnny.kdsclient.bean.TopicListTypeEnum.Daliy;
 
 /**
  * 项目名称：KdsClient
@@ -240,6 +233,12 @@ public class ApiHelper {
         getHttpQueue().add(request);
     }
 
+    /**
+     * 上传图片
+     * @param userId
+     * @param photoFile
+     * @param listener
+     */
     public void uploadPicture(String userId, File photoFile, final SimpleResponseListener<String> listener) {
         HashMap<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("appver", "3.1.1");
@@ -274,5 +273,34 @@ public class ApiHelper {
         getHttpQueue().add(request);
     }
 
+    /**
+     * 帖子回复
+     * @param replyContent 回帖内容
+     * @param bbsId 帖子Id
+     * @param userId 用户Id
+     */
+    public void replyTopic(String replyContent, String bbsId, String userId,
+                           final SimpleResponseListener<CommonResponse> listener){
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("htmlcode", replyContent);
+        paramMap.put("bbsId", bbsId);
+        paramMap.put("postUserId", userId);
+        paramMap.put("message", "");
+        paramMap.put("topicId", "15");
+        Request request = new SimpleRequest(ApiConstant.REPLY_TOPIC,  paramMap, new SimpleResponseListener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                CommonResponse commonResponse = gson.fromJson(response, CommonResponse.class);
+                listener.onResponse(commonResponse);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onErrorResponse(error);
+            }
+        });
+        getHttpQueue().add(request);
+    }
 
 }

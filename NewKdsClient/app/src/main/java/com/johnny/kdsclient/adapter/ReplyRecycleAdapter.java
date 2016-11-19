@@ -3,6 +3,7 @@ package com.johnny.kdsclient.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.activity.ImageBrowserActivity;
 import com.johnny.kdsclient.activity.UserDetailActivity;
@@ -155,11 +161,11 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
             } else if (reply.getQuote_list() != null && reply.getQuote_list().size() != 0) {//加载引用部分
                 replyRecycleHolder.refrenceLayout.setVisibility(View.VISIBLE);
                 StringBuffer refrenceSb = new StringBuffer();
-                for(Quote quote:reply.getQuote_list()){
+                for (Quote quote : reply.getQuote_list()) {
                     refrenceSb.append(quote.getMessage());
                     refrenceSb.append("<br/>");
-                    refrenceSb.append("引用自"+quote.getFloor()+"楼:");
-                    refrenceSb.append(quote.getNickName()+"("+quote.getUserName()+")");
+                    refrenceSb.append("引用自" + quote.getFloor() + "楼:");
+                    refrenceSb.append(quote.getNickName() + "(" + quote.getUserName() + ")");
                     refrenceSb.append("<br/>");
                 }
                 ContentParsedBean content = StringUtils.parseReplyContent(refrenceSb.toString());
@@ -187,11 +193,22 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         if (imgs.size() > 0) {
             imgLayout.setVisibility(View.VISIBLE);
             GridView gvImages = (GridView) imgLayout.getChildAt(0);
-            PhotoView ivImage = (PhotoView) imgLayout.getChildAt(1);
+            final PhotoView ivImage = (PhotoView) imgLayout.getChildAt(1);
             if (imgs.size() == 1) {
                 ivImage.setVisibility(View.VISIBLE);
                 gvImages.setVisibility(View.GONE);
-                Glide.with(context).load(imgs.get(0)).placeholder(R.mipmap.image_placeholder).dontAnimate().into(ivImage);
+
+                Glide.with(context)
+                        .load(imgs.get(0))
+                        .asBitmap()
+                        .placeholder(R.mipmap.image_placeholder)
+                        .dontAnimate()
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                ivImage.setImageBitmap(resource);
+                            }
+                        });
 
                 final String imgUrl = imgs.get(0);
                 ivImage.setOnClickListener(new View.OnClickListener() {

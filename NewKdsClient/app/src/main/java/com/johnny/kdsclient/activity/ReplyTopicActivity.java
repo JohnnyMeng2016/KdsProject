@@ -10,6 +10,7 @@ import android.text.SpannableString;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -17,18 +18,31 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.UserData;
 import com.johnny.kdsclient.adapter.EmotionGvAdapter;
 import com.johnny.kdsclient.adapter.EmotionPagerAdapter;
 import com.johnny.kdsclient.adapter.WriteTopicGridImgsAdapter;
+import com.johnny.kdsclient.api.ApiHelper;
+import com.johnny.kdsclient.api.SimpleResponseListener;
+import com.johnny.kdsclient.bean.CommonResponse;
 import com.johnny.kdsclient.bean.DraftTopic;
+import com.johnny.kdsclient.bean.Reply;
+import com.johnny.kdsclient.bean.SendTopicRequest;
+import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.EmotionUtils;
 import com.johnny.kdsclient.utils.ImageUtils;
 import com.johnny.kdsclient.utils.StringUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +85,7 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
     private EmotionPagerAdapter emotionPagerGvAdapter;
     private List<Uri> imgUris = new ArrayList<Uri>();
     private List<String> imgAttachs = new ArrayList<String>();
-    private DraftTopic draftTopic;
+    private Topic topic;
     private String userId;
 
 
@@ -82,6 +96,8 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     protected void initDate() {
+        userId = UserData.getInstance().getUserInfo().getUserId();
+        topic = (Topic) getIntent().getSerializableExtra("topic");
         initEmotion();
     }
 
@@ -124,6 +140,50 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.write_reply, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_send) {//发送
+            if ("".equals(etWriteContent.getText().toString()) && imgUris.size() == 0) {
+                Toast.makeText(this, "请输入内容", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            progressDialog.setMessage("发送中...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            //上传图片
+            if (imgUris.size() > 0) {
+                imgAttachs.clear();
+                final int imgCount = imgUris.size();
+                for (Uri imgUri : imgUris) {
+                    File file = ImageUtils.uri2file(this, imgUri);
+                    ApiHelper.getInstance().uploadPicture(userId, file, new SimpleResponseListener<String>() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressDialog.dismiss();
+                            Toast.makeText(ReplyTopicActivity.this, "发送失败，请再次尝试", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            imgAttachs.add(response);
+                            if (imgCount == imgAttachs.size()) {
+                                sendReply();
+                            }
+                        }
+                    });
+                }
+            } else {
+                sendReply();
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -333,4 +393,35 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
             gvWriteTopicImgs.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * 回帖
+     */
+    private void sendReply() {
+        String message = etWriteContent.getText().toString();
+        message = message.replace("\n", "<br/>");
+        message = message.replace("emoji", "");
+        for (String imgAttach : imgAttachs) {
+            message += imgAttach;
+        }
+        ApiHelper.getInstance().replyTopic(message, topic.getBbsId(), userId, new SimpleResponseListener<CommonResponse>() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(ReplyTopicActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(CommonResponse response) {
+                progressDialog.dismiss();
+                if (response.getFlag() == 1) {
+                    Toast.makeText(ReplyTopicActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(ReplyTopicActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_only_lord"
+        android:icon="@mipmap/ic_remove_red_eye_white"
+        android:title="只看楼主"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_login"
+        android:icon="@mipmap/ic_account_circle_white"
+        android:title="登录"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@mipmap/ic_share_white"
+        android:title="分享"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_collect"
+        android:icon="@mipmap/ic_send_white"
+        android:title="收藏"
+        app:showAsAction="never" />
+</menu>
