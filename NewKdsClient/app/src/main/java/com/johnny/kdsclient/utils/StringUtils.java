@@ -93,7 +93,7 @@ public class StringUtils {
         /**
          * 替换表情
          */
-        Pattern pattern = Pattern.compile("(<img)(.*?)(.gif.*?/>)");
+        Pattern pattern = Pattern.compile("(<img src=.http://jscss.kdslife.com/club/html/images/icon)(.*?)(.gif.*?/>)");
         String iconStr;
         String replacement;
         //替换引用部分
