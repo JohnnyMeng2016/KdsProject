@@ -67,7 +67,10 @@ public class DraftRecycleAdapter extends RecyclerView.Adapter<DraftRecycleAdapte
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        if (null != datas) {
+            return datas.size();
+        }
+        return 0;
     }
 
     public class DraftRecycleHolder extends RecyclerView.ViewHolder {

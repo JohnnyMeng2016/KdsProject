@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
+import com.johnny.kdsclient.MyDbHelper;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.UserData;
 import com.johnny.kdsclient.adapter.ReplyRecycleAdapter;
@@ -65,6 +66,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
     private boolean isBottom;
     private int isOnlyLandLord;
     private String userId;
+    MyDbHelper myDbHelper;
 
     @Override
     protected int layout() {
@@ -74,6 +76,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     protected void initDate() {
         topic = (Topic) getIntent().getSerializableExtra("topic");
+        myDbHelper = new MyDbHelper(this);
     }
 
     @Override
@@ -173,6 +176,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
         } else if (id == R.id.action_share) {
             return true;
         } else if (id == R.id.action_collect) {
+            myDbHelper.saveCollect(topic);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -197,7 +201,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
                     public void onResponse(ReplyListResponse response) {
                         swipeRefreshLayout.setRefreshing(false);
                         List<Reply> replyList = response.getReplys();
-                        if (replyList == null || replyList.size() < 10 ) {//通常API一次会返回20条，但可能由于删帖导致返回少于20
+                        if (replyList == null || replyList.size() < 10) {//通常API一次会返回20条，但可能由于删帖导致返回少于20
                             isBottom = true;
                         }
                         if (loadedPage > 1) {

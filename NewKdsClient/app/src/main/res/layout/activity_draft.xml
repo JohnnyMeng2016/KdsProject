@@ -26,7 +26,7 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:navigationIcon="?attr/homeAsUpIndicator"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="草稿"
+                app:title="我的草稿"
                 app:titleTextColor="#FFFFFF" />
 
         </android.support.design.widget.AppBarLayout>

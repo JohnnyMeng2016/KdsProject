@@ -51,11 +51,11 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.datas = datas;
     }
 
-    public void setFooterViewType(boolean isEnd){
-        if(isEnd){
+    public void setFooterViewType(boolean isEnd) {
+        if (isEnd) {
             footerViewHolder.progressBar.setVisibility(View.GONE);
             footerViewHolder.textView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             footerViewHolder.progressBar.setVisibility(View.VISIBLE);
             footerViewHolder.textView.setVisibility(View.GONE);
         }
@@ -88,9 +88,9 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof TopicRecycleHolder) {
             TopicRecycleHolder topicRecycleHolder = (TopicRecycleHolder) holder;
             final Topic topic = datas.get(position);
-            if(!topic.getPreview().contains("kdsLogo1.png")){
+            if (!topic.getPreview().contains("kdsLogo1.png")) {
                 Glide.with(context).load(topic.getPreview()).into(topicRecycleHolder.ivPic);
-            }else{
+            } else {
                 topicRecycleHolder.ivPic.setImageResource(R.mipmap.no_image);
             }
             topicRecycleHolder.tvTitle.setText(topic.getTitle());
@@ -101,7 +101,7 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent();
-                    intent.putExtra("topic",topic);
+                    intent.putExtra("topic", topic);
                     intent.setClass(context, TopicDetailActivity.class);
                     context.startActivity(intent);
                 }
@@ -111,9 +111,11 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return datas.size() + 1;
+        if (null != datas) {
+            return datas.size() + 1;
+        }
+        return 1;
     }
-
 
 
     public class TopicRecycleHolder extends RecyclerView.ViewHolder {

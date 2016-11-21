@@ -22,6 +22,10 @@
             android:id="@+id/nav_draft"
             android:icon="@mipmap/ic_content_paste_grey"
             android:title="草稿" />
+        <item
+            android:id="@+id/nav_collect"
+            android:icon="@mipmap/ic_grade_grey"
+            android:title="收藏"/>
     </group>
 
 </menu>

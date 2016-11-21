@@ -1,5 +1,6 @@
 package com.johnny.kdsclient;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.johnny.kdsclient.activity.CollectActivity;
 import com.johnny.kdsclient.activity.DraftActivity;
 import com.johnny.kdsclient.activity.LoginActivity;
 import com.johnny.kdsclient.activity.WriteTopicActivity;
@@ -179,9 +182,19 @@ public class MainActivity extends BaseActivity
             messageEvent.setTypeEnum(TopicListTypeEnum.Month);
             messageEvent.setNeedRefreshPage(currentPageIndex);
             EventBus.getDefault().post(messageEvent);
+        } else if (id == R.id.nav_collect) {
+            if (null == UserData.getInstance().getUserInfo()) {
+                loginDialog();
+            } else {
+                Intent intent = new Intent(this, CollectActivity.class);
+                startActivity(intent);
+            }
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return false;
         } else if (id == R.id.nav_draft) {
             if (null == UserData.getInstance().getUserInfo()) {
-                Toast.makeText(MainActivity.this, "登录后，可查看草稿箱", Toast.LENGTH_SHORT).show();
+                loginDialog();
             } else {
                 Intent intent = new Intent(this, DraftActivity.class);
                 startActivity(intent);
@@ -225,5 +238,21 @@ public class MainActivity extends BaseActivity
             tvUserName.setText(userInfo.getUserName());
             tvScore.setText("HP:" + userInfo.getHp() + " PP:" + userInfo.getPp());
         }
+    }
+
+    private void loginDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("使用该功能需要先登录账号，是否登录?")
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        }).show();
     }
 }
