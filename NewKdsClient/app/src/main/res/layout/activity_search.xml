@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    
+    <com.johnny.kdsclient.widget.KdsSearchBar
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:hint="请输入需要搜索的内容"
+        app:maxSuggestionsCount="10" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_color">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

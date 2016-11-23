@@ -91,6 +91,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
         });
 
         progressDialog = new ProgressDialog(this);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.postDelayed(new Runnable() {
             @Override
@@ -177,6 +178,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
             return true;
         } else if (id == R.id.action_collect) {
             myDbHelper.saveCollect(topic);
+            Toast.makeText(TopicDetailActivity.this, "收藏成功", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

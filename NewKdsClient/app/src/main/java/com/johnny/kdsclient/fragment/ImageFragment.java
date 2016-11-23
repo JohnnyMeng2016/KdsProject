@@ -49,7 +49,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private RecyclerView.LayoutManager layoutManager;
 
     private TopicListTypeEnum type = TopicListTypeEnum.Normal;
-    private boolean isFirstShow = true;
+    private boolean isFirstShow;
     private int lastVisibleItem;
     private int loadedPage;
 
@@ -60,6 +60,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         View view = inflater.inflate(R.layout.fragment_image, null);
         ButterKnife.bind(this, view);
 
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         imageRecycleAdapter = new ImageRecycleAdapter(getActivity());
@@ -94,6 +95,12 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isFirstShow = true;
     }
 
     @Override
@@ -163,10 +170,7 @@ public class ImageFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        if (null != event.getTypeEnum() && event.getTypeEnum() != type) {
-            type = event.getTypeEnum();
-        }
-        if (isFirstShow || event.getNeedRefreshPage() == 1) {
+        if (isFirstShow) {
             swipeRefreshLayout.post(new Runnable() {
                 @Override
                 public void run() {

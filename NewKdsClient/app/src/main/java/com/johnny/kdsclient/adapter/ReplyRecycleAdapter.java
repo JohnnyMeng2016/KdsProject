@@ -139,13 +139,17 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
             userNameShow.append("(");
             userNameShow.append(reply.getUserName());
             userNameShow.append(")");
+            replyRecycleHolder.tvUserName.setText(userNameShow.toString());
             if (reply.getFloor() == 1) {
                 replyRecycleHolder.tvTitle.setText("主题：" + topic.getTitle());
                 replyRecycleHolder.tvTitle.setVisibility(View.VISIBLE);
+                replyRecycleHolder.tvFloor.setText("#楼主");
             } else {
                 replyRecycleHolder.tvTitle.setVisibility(View.GONE);
+                replyRecycleHolder.tvFloor.setText("#" + reply.getFloor() + "楼");
             }
-            replyRecycleHolder.tvUserName.setText(userNameShow.toString());
+            String score = "HP:" + reply.getUserdata().getHp() + " PP:" + reply.getUserdata().getPp();
+            replyRecycleHolder.tvScore.setText(score);
             replyRecycleHolder.tvDateTime.setText(reply.getPostTime());
 
             /**
@@ -245,6 +249,10 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         CircleImageView ivAvatar;
         @BindView(R.id.tv_username)
         TextView tvUserName;
+        @BindView(R.id.tv_floor)
+        TextView tvFloor;
+        @BindView(R.id.tv_score)
+        TextView tvScore;
         @BindView(R.id.tv_datetime)
         TextView tvDateTime;
         @BindView(R.id.tv_title)

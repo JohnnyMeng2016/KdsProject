@@ -6,7 +6,7 @@ android {
     buildToolsVersion "24.0.0"
     defaultConfig {
         applicationId "com.johnny.kdsclient"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -44,6 +44,7 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.github.mancj:MaterialSearchBar:0.3.1'
     compile files('libs/httpmime-4.2.5.jar')
     compile files('libs/httpcore-4.4.5.jar')
 }

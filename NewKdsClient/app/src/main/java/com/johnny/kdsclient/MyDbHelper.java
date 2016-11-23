@@ -35,8 +35,7 @@ public class MyDbHelper extends SQLiteOpenHelper {
                 "bbsId VARCHAR(50), areaId VARCHAR(50), title VARCHAR(200), userId VARCHAR(50), " +
                 "nickName VARCHAR(50), replyNickName VARCHAR(50), createTime VARCHAR(50), postTime VARCHAR(50)," +
                 "replyTime VARCHAR(50), postTS VARCHAR(50), replyTS VARCHAR(50), view INTEGER, reply INTEGER, " +
-                "currentUserId VARCHAR(50), userLog VARCHAR(50), description VARCHAR(200), preview VARCHAR(50)," +
-                "location VARCHAR(50))";
+                "currentUserId VARCHAR(50), userLog VARCHAR(50), description VARCHAR(200), preview VARCHAR(50))";
         db.execSQL(createDraftTopicSql);
         db.execSQL(createDraftImageSql);
         db.execSQL(createCollectImageSql);
@@ -164,7 +163,6 @@ public class MyDbHelper extends SQLiteOpenHelper {
         contentValues.put("userLog", topic.getUserLog());
         contentValues.put("description", topic.getDescription());
         contentValues.put("preview", topic.getPreview());
-        contentValues.put("location", topic.getLocation());
         db.insert("collect", null, contentValues);
     }
 
@@ -207,7 +205,6 @@ public class MyDbHelper extends SQLiteOpenHelper {
                 topic.setUserLog(cursor.getString(cursor.getColumnIndex("userLog")));
                 topic.setDescription(cursor.getString(cursor.getColumnIndex("description")));
                 topic.setPreview(cursor.getString(cursor.getColumnIndex("preview")));
-                topic.setLocation(cursor.getString(cursor.getColumnIndex("location")));
                 topicList.add(topic);
             } while (cursor.moveToNext());
         }

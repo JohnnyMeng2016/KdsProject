@@ -60,8 +60,14 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@id/tv_click_num"
-                android:drawableLeft="@mipmap/ic_forum_grey"
                 android:text="55" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@id/tv_reply_num"
+                android:src="@mipmap/ic_forum_grey" />
         </RelativeLayout>
 
     </LinearLayout>

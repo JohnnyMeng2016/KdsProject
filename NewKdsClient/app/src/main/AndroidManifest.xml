@@ -25,14 +25,16 @@
 
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBarWithNoColor" />
         <activity
             android:name=".activity.TopicDetailActivity"
             android:theme="@style/AppTheme.NoActionBarWithNoColor" />
         <activity
             android:name=".activity.ImageBrowserActivity"
             android:theme="@style/AppTheme.NoActionBarTran" />
-        <activity android:name=".activity.UserDetailActivity" />
+        <activity
+            android:name=".activity.UserDetailActivity"
+            android:theme="@style/AppTheme.NoActionBarWithNoColor" />
         <activity
             android:name=".activity.WriteTopicActivity"
             android:theme="@style/AppTheme.NoActionBar" />

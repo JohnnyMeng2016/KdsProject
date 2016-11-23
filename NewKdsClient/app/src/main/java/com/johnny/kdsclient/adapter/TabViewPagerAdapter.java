@@ -21,6 +21,14 @@ public class TabViewPagerAdapter extends FragmentStatePagerAdapter {
         this.fragmentList = fragmentList;
     }
 
+    public void setTitles(String[] titles) {
+        this.titles = titles;
+    }
+
+    public void setFragmentList(List<Fragment> fragmentList) {
+        this.fragmentList = fragmentList;
+    }
+
     @Override
     public CharSequence getPageTitle(int position) {
         return titles[position];
@@ -34,5 +42,11 @@ public class TabViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return titles.length;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        //解决 notifyDataSetChanged() 页面不刷新问题的方法
+        return POSITION_NONE;
     }
 }

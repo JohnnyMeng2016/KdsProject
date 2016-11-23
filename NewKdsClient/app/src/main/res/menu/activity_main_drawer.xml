@@ -7,6 +7,11 @@
             android:icon="@mipmap/ic_home_grey"
             android:title="主页" />
         <item
+            android:id="@+id/nav_hot"
+            android:icon="@mipmap/ic_whatshot_grey"
+            android:title="热帖" />
+        <!--
+        <item
             android:id="@+id/nav_daily_hot"
             android:icon="@mipmap/ic_whatshot_grey"
             android:title="今日热帖" />
@@ -18,6 +23,7 @@
             android:id="@+id/nav_moonth_hot"
             android:icon="@mipmap/ic_extension_grey"
             android:title="本月热帖" />
+            -->
         <item
             android:id="@+id/nav_draft"
             android:icon="@mipmap/ic_content_paste_grey"
@@ -25,7 +31,7 @@
         <item
             android:id="@+id/nav_collect"
             android:icon="@mipmap/ic_grade_grey"
-            android:title="收藏"/>
+            android:title="收藏" />
     </group>
 
 </menu>

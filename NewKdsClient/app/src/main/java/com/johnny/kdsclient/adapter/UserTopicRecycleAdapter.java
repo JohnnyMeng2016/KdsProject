@@ -108,6 +108,11 @@ public class UserTopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Topic topic = new Topic();
                     topic.setTitle(userTopic.getTitle());
                     topic.setBbsId(userTopic.getBbsId());
+                    topic.setCreateTime(userTopic.getCreateTime());
+                    topic.setPreview(userTopic.getAttachment());
+                    topic.setNickName(userTopic.getPostNickName());
+                    topic.setView(Integer.parseInt(userTopic.getHitNum()));
+                    topic.setReply(Integer.parseInt(userTopic.getReplyNum()));
                     topic.setReply(Integer.parseInt(userTopic.getReplyNum()));
                     intent.putExtra("topic", topic);
                     intent.setClass(context, TopicDetailActivity.class);
@@ -119,9 +124,9 @@ public class UserTopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemCount() {
-        if(null!=datas){
-            return datas.size()+1;
-        }else {
+        if (null != datas) {
+            return datas.size() + 1;
+        } else {
             return 1;
         }
     }

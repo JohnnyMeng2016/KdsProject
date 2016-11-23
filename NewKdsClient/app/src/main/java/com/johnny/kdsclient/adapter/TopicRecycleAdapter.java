@@ -94,7 +94,7 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 topicRecycleHolder.ivPic.setImageResource(R.mipmap.no_image);
             }
             topicRecycleHolder.tvTitle.setText(topic.getTitle());
-            topicRecycleHolder.tvDatetime.setText(topic.getPostTime());
+            topicRecycleHolder.tvDatetime.setText("发表于:" + topic.getPostTime());
             topicRecycleHolder.tvClickNum.setText(String.valueOf(topic.getView()));
             topicRecycleHolder.tvReplyNum.setText(String.valueOf(topic.getReply()));
             topicRecycleHolder.cardView.setOnClickListener(new View.OnClickListener() {

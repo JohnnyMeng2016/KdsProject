@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="tab_titles">
+    <string-array name="normal_tab_titles">
         <item>阅帖</item>
         <item>图阅</item>
+    </string-array>
+
+    <string-array name="hot_tab_titles">
+        <item>今日热帖</item>
+        <item>本周热帖</item>
+        <item>本月热帖</item>
     </string-array>
 </resources>

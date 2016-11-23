@@ -21,38 +21,52 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_avatar"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/iv_avatar"
                 android:text="用户名" />
 
             <TextView
-                android:id="@+id/tv_datetime"
+                android:id="@+id/tv_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_username"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/iv_avatar"
-                android:text="2016-10-10 19:06" />
+                android:text="hp:50 pp:0" />
+
+            <TextView
+                android:id="@+id/tv_floor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="#1楼" />
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:visibility="invisible" />
 
         <include
             android:id="@+id/include_refrence_layout"
             layout="@layout/include_refrence"
-            android:visibility="gone"/>
-        
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/tv_title"
             style="@style/TitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="标题"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_content"
@@ -66,6 +80,12 @@
             layout="@layout/include_reply_image"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/tv_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="2016-10-10 19:06" />
     </LinearLayout>
 
 

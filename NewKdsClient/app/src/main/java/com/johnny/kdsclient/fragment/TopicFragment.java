@@ -50,6 +50,7 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private TopicRecycleAdapter topicRecycleAdapter;
 
     private TopicListTypeEnum type = TopicListTypeEnum.Normal;
+    private boolean isFirstShow = true;
     private int lastVisibleItem;
     private int loadedPage;
 
@@ -59,6 +60,7 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         View view = inflater.inflate(R.layout.fragment_topic, null);
         ButterKnife.bind(this, view);
 
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -96,12 +98,6 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     @Override
-    public void onRefresh() {
-        loadedPage = 1;
-        loadDate(1);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
@@ -111,6 +107,12 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        loadedPage = 1;
+        loadDate(1);
     }
 
     private void loadDate(int page) {
@@ -151,10 +153,13 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         });
     }
 
+    public void setType(TopicListTypeEnum type) {
+        this.type = type;
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        if (event.getTypeEnum() != null && event.getTypeEnum() != type) {
-            type = event.getTypeEnum();
+        if (isFirstShow) {
             swipeRefreshLayout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -163,6 +168,8 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     loadDate(1);
                 }
             });
+            isFirstShow = false;
         }
     }
+
 }

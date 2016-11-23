@@ -1,12 +1,15 @@
 package com.johnny.kdsclient.activity;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,10 +42,13 @@ public class LoginActivity extends BaseActivity {
     EditText etUserName;
     @BindView(R.id.et_password)
     EditText etPassword;
+    @BindView(R.id.cb_autoLogin)
+    CheckBox cbAutoLogin;
     @BindView(R.id.bt_login)
     Button btLogin;
 
     ProgressDialog progressDialog;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected int layout() {
@@ -65,14 +71,17 @@ public class LoginActivity extends BaseActivity {
     protected void initView() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("登录中...");
+
+        sharedPreferences = this.getSharedPreferences("setting", this.MODE_PRIVATE);
     }
 
     @OnClick(R.id.bt_login)
     protected void onBtnLoginClick(final View view) {
-        String userName = etUserName.getText().toString();
-        String password = etPassword.getText().toString();
+        final String userName = etUserName.getText().toString();
+        final String password = etPassword.getText().toString();
         if (null != userName && !"".equals(userName) && null != password && !"".equals(password)) {
             progressDialog.show();
+
             ApiHelper.getInstance().login(userName, password, new SimpleResponseListener<LoginResponse>() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
@@ -84,6 +93,12 @@ public class LoginActivity extends BaseActivity {
                 public void onResponse(LoginResponse response) {
                     progressDialog.dismiss();
                     if (response.getStatus().equals("Succes")) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userName", userName);
+                        editor.putString("password", password);
+                        editor.putBoolean("autoLogin", cbAutoLogin.isChecked());
+                        editor.commit();
+
                         Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                         UserData.getInstance().setUserInfo(response.getUserInfo());
                         finish();

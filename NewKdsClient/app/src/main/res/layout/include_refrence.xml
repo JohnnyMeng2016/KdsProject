@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/tv_refrence_content"
-        style="@style/BigBoldText"
+        style="@style/ContentText"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         />

@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.johnny.kdsclient.bean.CommonResponse;
 import com.johnny.kdsclient.bean.LoginResponse;
 import com.johnny.kdsclient.bean.ReplyListResponse;
+import com.johnny.kdsclient.bean.SearchTopicResponse;
 import com.johnny.kdsclient.bean.SendTopicRequest;
 import com.johnny.kdsclient.bean.TopicListResponse;
 import com.johnny.kdsclient.bean.TopicListTypeEnum;
@@ -235,6 +236,7 @@ public class ApiHelper {
 
     /**
      * 上传图片
+     *
      * @param userId
      * @param photoFile
      * @param listener
@@ -275,24 +277,57 @@ public class ApiHelper {
 
     /**
      * 帖子回复
+     *
      * @param replyContent 回帖内容
-     * @param bbsId 帖子Id
-     * @param userId 用户Id
+     * @param bbsId        帖子Id
+     * @param userId       用户Id
      */
     public void replyTopic(String replyContent, String bbsId, String userId,
-                           final SimpleResponseListener<CommonResponse> listener){
+                           final SimpleResponseListener<CommonResponse> listener) {
         HashMap<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("htmlcode", replyContent);
         paramMap.put("bbsId", bbsId);
         paramMap.put("postUserId", userId);
         paramMap.put("message", "");
         paramMap.put("topicId", "15");
-        Request request = new SimpleRequest(ApiConstant.REPLY_TOPIC,  paramMap, new SimpleResponseListener<String>() {
+        Request request = new SimpleRequest(ApiConstant.REPLY_TOPIC, paramMap, new SimpleResponseListener<String>() {
 
             @Override
             public void onResponse(String response) {
                 CommonResponse commonResponse = gson.fromJson(response, CommonResponse.class);
                 listener.onResponse(commonResponse);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onErrorResponse(error);
+            }
+        });
+        getHttpQueue().add(request);
+    }
+
+    /**
+     * 查询帖子
+     *
+     * @param keywords 关键字
+     * @param page     页码
+     * @param listener
+     */
+    public void searchTopic(String keywords, int page, final SimpleResponseListener<SearchTopicResponse> listener) {
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("keywords", keywords);
+        paramMap.put("page", String.valueOf(page));
+        Request request = new SimpleRequest(ApiConstant.SEARCH_TOPIC, paramMap, new SimpleResponseListener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                SearchTopicResponse searchTopicResponse = gson.fromJson(response, SearchTopicResponse.class);
+                if (!"".equals(searchTopicResponse.getErrMessage())) {
+                    VolleyError volleyError = new VolleyError(searchTopicResponse.getErrMessage());
+                    listener.onErrorResponse(volleyError);
+                } else {
+                    listener.onResponse(searchTopicResponse);
+                }
             }
 
             @Override

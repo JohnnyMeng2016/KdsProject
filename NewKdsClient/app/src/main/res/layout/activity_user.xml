@@ -117,7 +117,7 @@
             android:id="@+id/id_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/bg_color"
             android:foregroundGravity="center" />
 
     </android.support.v4.widget.SwipeRefreshLayout>

@@ -11,7 +11,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:visibility="gone"
-        app:mlpb_progress_color="#566da9"
+        app:mlpb_progress_color="@color/colorPrimary"
         app:mlpb_progress_stoke_width="3dp" />
 
     <TextView

@@ -42,18 +42,18 @@
     </style>
 
     <style name="BigBoldText">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/bold_text_color</item>
     </style>
 
     <style name="TitleText">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/bold_text_color</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/primary_text_color</item>
     </style>
 
     <style name="ContentText">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
     </style>
 
     <style name="RadioButtonEmotionDashboard">

@@ -91,7 +91,6 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
 
     @Override
     protected void initView() {
-        getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +103,8 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
         tvRegisterTime.setText(reply.getUserdata().getRegister());
         tvScore.setText("HP:" + reply.getUserdata().getHp() + " PP:" + reply.getUserdata().getPp());
 
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);
+        swipeRefreshLayout.setOnRefreshListener(this);
         topicAdapter = new UserTopicRecycleAdapter(this);
         final RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -149,7 +150,7 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
                         progressWheel.stopSpinning();
 
                         List<UserTopic> topicList = response.getThread();
-                        if (topicList == null || topicList.size() == 0) {
+                        if (topicList == null || topicList.size() < 40) {
                             isBottom = true;
                         }
                         if (loadedPage > 1) {
