@@ -23,6 +23,14 @@
             android:src="@mipmap/default_avater"
             app:civ_border_color="#FFFFFF"
             app:civ_border_width="1dp" />
+
+        <ImageView
+            android:id="@+id/iv_sex"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignBottom="@id/iv_avatar"
+            android:layout_alignRight="@id/iv_avatar"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <TextView

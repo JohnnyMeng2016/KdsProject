@@ -24,10 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.johnny.kdsclient.activity.AboutActivity;
 import com.johnny.kdsclient.activity.CollectActivity;
 import com.johnny.kdsclient.activity.DraftActivity;
 import com.johnny.kdsclient.activity.LoginActivity;
 import com.johnny.kdsclient.activity.SearchActivity;
+import com.johnny.kdsclient.activity.SettingActivity;
 import com.johnny.kdsclient.activity.WriteTopicActivity;
 import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
 import com.johnny.kdsclient.bean.Topic;
@@ -201,6 +203,12 @@ public class MainActivity extends BaseActivity
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return false;
+        } else if (id == R.id.nav_setting) {
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -229,15 +237,29 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
+        CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
+        ImageView ivSex = (ImageView) view.findViewById(R.id.iv_sex);
+        TextView tvUserName = (TextView) view.findViewById(R.id.tv_username);
+        TextView tvScore = (TextView) view.findViewById(R.id.tv_score);
+
         if (UserData.getInstance().getUserInfo() != null) {
             UserInfo userInfo = UserData.getInstance().getUserInfo();
-            ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
-            CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
-            TextView tvUserName = (TextView) view.findViewById(R.id.tv_username);
-            TextView tvScore = (TextView) view.findViewById(R.id.tv_score);
             Glide.with(this).load(userInfo.getImg_pic_id()).into(circleImageView);
+            if ("男".equals(userInfo.getSex())) {
+                ivSex.setVisibility(View.VISIBLE);
+                ivSex.setImageResource(R.mipmap.ic_profile_male);
+            } else if ("女".equals(userInfo.getSex())) {
+                ivSex.setVisibility(View.VISIBLE);
+                ivSex.setImageResource(R.mipmap.ic_profile_female);
+            } else {
+                ivSex.setVisibility(View.GONE);
+            }
             tvUserName.setText(userInfo.getUserName());
             tvScore.setText("HP:" + userInfo.getHp() + " PP:" + userInfo.getPp());
+        } else {
+            ivSex.setVisibility(View.GONE);
         }
     }
 

@@ -25,6 +25,14 @@
                 android:layout_height="36dp"
                 android:scaleType="centerCrop" />
 
+            <ImageView
+                android:id="@+id/iv_sex"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignBottom="@id/iv_avatar"
+                android:layout_alignRight="@id/iv_avatar"
+                android:src="@mipmap/ic_profile_male" />
+
             <TextView
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"

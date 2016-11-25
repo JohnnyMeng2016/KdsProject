@@ -67,4 +67,14 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <!-- App Widget -->
+    <style name="AppWidget" parent="Theme.AppCompat.Light" />
+
+    <!-- Deep Line -->
+    <style name="AppWidget.DeepLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
 </resources>

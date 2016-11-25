@@ -134,6 +134,15 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
                     ActivityCompat.startActivity((Activity) context, intent, options.toBundle());
                 }
             });
+            if("男".equals( reply.getUserdata().getSex())){
+                replyRecycleHolder.ivSex.setVisibility(View.VISIBLE);
+                replyRecycleHolder.ivSex.setImageResource(R.mipmap.ic_profile_male);
+            }else if("女".equals(reply.getUserdata().getSex())){
+                replyRecycleHolder.ivSex.setVisibility(View.VISIBLE);
+                replyRecycleHolder.ivSex.setImageResource(R.mipmap.ic_profile_female);
+            }else{
+                replyRecycleHolder.ivSex.setVisibility(View.GONE);
+            }
             StringBuffer userNameShow = new StringBuffer();
             userNameShow.append(reply.getNickName());
             userNameShow.append("(");
@@ -247,6 +256,8 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         CardView cardView;
         @BindView(R.id.iv_avatar)
         CircleImageView ivAvatar;
+        @BindView(R.id.iv_sex)
+        ImageView ivSex;
         @BindView(R.id.tv_username)
         TextView tvUserName;
         @BindView(R.id.tv_floor)

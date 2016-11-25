@@ -10,20 +10,6 @@
             android:id="@+id/nav_hot"
             android:icon="@mipmap/ic_whatshot_grey"
             android:title="热帖" />
-        <!--
-        <item
-            android:id="@+id/nav_daily_hot"
-            android:icon="@mipmap/ic_whatshot_grey"
-            android:title="今日热帖" />
-        <item
-            android:id="@+id/nav_week_hot"
-            android:icon="@mipmap/ic_mood_grey"
-            android:title="本周热帖" />
-        <item
-            android:id="@+id/nav_moonth_hot"
-            android:icon="@mipmap/ic_extension_grey"
-            android:title="本月热帖" />
-            -->
         <item
             android:id="@+id/nav_draft"
             android:icon="@mipmap/ic_content_paste_grey"
@@ -33,5 +19,18 @@
             android:icon="@mipmap/ic_grade_grey"
             android:title="收藏" />
     </group>
+
+    <item android:title="系统">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@mipmap/ic_settings_grey"
+                android:title="设置" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@mipmap/ic_info_grey"
+                android:title="关于" />
+        </menu>
+    </item>
 
 </menu>

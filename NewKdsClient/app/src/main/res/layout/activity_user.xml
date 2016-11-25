@@ -6,104 +6,126 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <RelativeLayout
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|snap">
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/layout_info"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/material_bg" />
-
-            <LinearLayout
-                android:id="@+id/layout_info"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways|snap">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/img_avatar"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_marginTop="24dp"
-                    android:src="@mipmap/default_avater" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/layout_info"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/material_bg" />
 
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    tools:text="TakWolf" />
-
-                <TextView
-                    android:id="@+id/tv_signature"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:textColor="@color/bold_text_color"
-                    android:textSize="14sp"
-                    tools:text="TakWolf@github.com" />
-
-                <FrameLayout
+                <LinearLayout
+                    android:id="@+id/layout_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:padding="16dp">
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/img_avatar"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_marginTop="24dp"
+                            android:src="@mipmap/default_avater" />
+
+                        <ImageView
+                            android:id="@+id/iv_sex"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignBottom="@id/img_avatar"
+                            android:layout_alignRight="@id/img_avatar"
+                            android:visibility="gone" />
+                    </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tv_register_time"
+                        android:id="@+id/tv_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
+                        android:layout_marginTop="8dp"
                         android:textColor="@android:color/white"
-                        android:textSize="12sp"
-                        tools:text="注册时间：2015-1-1 10:10:10" />
+                        android:textSize="18sp"
+                        tools:text="TakWolf" />
 
                     <TextView
-                        android:id="@+id/tv_score"
+                        android:id="@+id/tv_signature"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:textColor="@color/bold_text_color"
-                        android:textSize="12sp"
-                        tools:text="积分：20" />
+                        android:padding="4dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="14sp"
+                        tools:text="TakWolf@github.com" />
 
-                </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:padding="16dp">
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_register_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            tools:text="注册时间：2015-1-1 10:10:10" />
+
+                        <TextView
+                            android:id="@+id/tv_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            tools:text="积分：20" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <com.pnikosis.materialishprogress.ProgressWheel
+                    android:id="@+id/progress_wheel"
+                    android:layout_width="108dp"
+                    android:layout_height="108dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="18dp"
+                    app:matProg_barColor="@color/colorPrimary"
+                    app:matProg_barWidth="4dp"
+                    app:matProg_fillRadius="true"
+                    app:matProg_progressIndeterminate="true" />
+
+            </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#01000000"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <com.pnikosis.materialishprogress.ProgressWheel
-                android:id="@+id/progress_wheel"
-                android:layout_width="108dp"
-                android:layout_height="108dp"
-                android:layout_marginTop="18dp"
-                android:layout_centerHorizontal="true"
-                app:matProg_barColor="@color/colorPrimary"
-                app:matProg_progressIndeterminate="true"
-                app:matProg_barWidth="4dp"
-                app:matProg_fillRadius="true" />
-
-        </RelativeLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 

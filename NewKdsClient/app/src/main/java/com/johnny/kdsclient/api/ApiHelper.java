@@ -14,6 +14,7 @@ import com.johnny.kdsclient.bean.SearchTopicResponse;
 import com.johnny.kdsclient.bean.SendTopicRequest;
 import com.johnny.kdsclient.bean.TopicListResponse;
 import com.johnny.kdsclient.bean.TopicListTypeEnum;
+import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.bean.UserTopicResponse;
 
 import org.json.JSONException;
@@ -338,4 +339,27 @@ public class ApiHelper {
         getHttpQueue().add(request);
     }
 
+    /**
+     * 获取用户信息
+     *
+     * @param userId   用户ID
+     * @param listener
+     */
+    public void getUserInfo(String userId, final SimpleResponseListener<UserInfo> listener) {
+        String url = ApiConstant.GET_USER_INFO + "?userId=" + userId;
+        Request request = new SimpleRequest(url, new SimpleResponseListener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                UserInfo userInfo = gson.fromJson(response, UserInfo.class);
+                listener.onResponse(userInfo);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onErrorResponse(error);
+            }
+        });
+        getHttpQueue().add(request);
+    }
 }
