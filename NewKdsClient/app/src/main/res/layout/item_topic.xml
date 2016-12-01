@@ -12,20 +12,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="76dp"
+        android:background="?attr/widgetBackground"
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_pic"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginRight="8dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/no_image" />
+            android:src="@mipmap/no_image"
+            app:riv_corner_radius="5dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="8dp">
+            android:layout_height="60dp">
 
             <TextView
                 android:id="@+id/tv_title"

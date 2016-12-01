@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.utils.ThemeUtils;
 import com.johnny.kdsclient.widget.PhotoInfo;
 import com.johnny.kdsclient.widget.PhotoView;
 
@@ -36,6 +37,11 @@ public class ImageBrowserActivity extends BaseActivity {
     PhotoInfo[] infos;
     int position;
     private boolean isFirst = true;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {

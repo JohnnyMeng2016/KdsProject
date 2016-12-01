@@ -9,7 +9,7 @@
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="?colorPrimary"
         app:hint="请输入需要搜索的内容"
         app:maxSuggestionsCount="10" />
 
@@ -17,7 +17,7 @@
         android:id="@+id/id_swiperefreshlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_color">
+        android:background="?attr/recycleViewBg">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/id_recyclerview"

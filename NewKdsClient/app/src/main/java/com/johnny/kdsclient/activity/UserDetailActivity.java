@@ -28,6 +28,7 @@ import com.johnny.kdsclient.bean.UserDetailResponse;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.bean.UserTopic;
 import com.johnny.kdsclient.bean.UserTopicResponse;
+import com.johnny.kdsclient.utils.ThemeUtils;
 import com.johnny.kdsclient.widget.AppBarStateChangeListener;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
@@ -75,6 +76,11 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
     private int loadedPage;
     private int lastVisibleItem;
     private boolean isBottom;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {

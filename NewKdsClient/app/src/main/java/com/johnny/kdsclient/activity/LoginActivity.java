@@ -20,11 +20,13 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.SettingShared;
 import com.johnny.kdsclient.UserData;
 import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.api.SimpleResponseListener;
 import com.johnny.kdsclient.bean.LoginResponse;
 import com.johnny.kdsclient.utils.StringUtils;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,6 +51,11 @@ public class LoginActivity extends BaseActivity {
 
     ProgressDialog progressDialog;
     SharedPreferences sharedPreferences;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {
@@ -93,11 +100,9 @@ public class LoginActivity extends BaseActivity {
                 public void onResponse(LoginResponse response) {
                     progressDialog.dismiss();
                     if (response.getStatus().equals("Succes")) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("userName", userName);
-                        editor.putString("password", password);
-                        editor.putBoolean("autoLogin", cbAutoLogin.isChecked());
-                        editor.commit();
+                        SettingShared.saveUserName(LoginActivity.this, userName);
+                        SettingShared.savePassword(LoginActivity.this, password);
+                        SettingShared.setEnableAutoLogin(LoginActivity.this, cbAutoLogin.isChecked());
 
                         Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                         UserData.getInstance().setUserInfo(response.getUserInfo());

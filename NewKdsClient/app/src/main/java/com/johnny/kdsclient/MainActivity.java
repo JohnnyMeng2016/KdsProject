@@ -2,6 +2,7 @@ package com.johnny.kdsclient;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -37,6 +38,7 @@ import com.johnny.kdsclient.bean.TopicListTypeEnum;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.fragment.ImageFragment;
 import com.johnny.kdsclient.fragment.TopicFragment;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -65,6 +67,13 @@ public class MainActivity extends BaseActivity
     private String[] mTitles;
     private List<Fragment> fragmentList;
     private TabViewPagerAdapter tabViewPagerAdapter;
+    private long firstBackPressedTime = 0;
+    private boolean darkTheme;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {
@@ -73,6 +82,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void initDate() {
+        darkTheme = SettingShared.isEnableDarkTheme(this);
         mTitles = getResources().getStringArray(R.array.normal_tab_titles);
         fragmentList = new ArrayList<Fragment>();
         TopicFragment topicFragment = new TopicFragment();
@@ -133,11 +143,16 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            long secondBackPressedTime = System.currentTimeMillis();
+            if (secondBackPressedTime - firstBackPressedTime > 2000) {
+                Toast.makeText(MainActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
+                firstBackPressedTime = secondBackPressedTime;
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -238,6 +253,11 @@ public class MainActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
 
+        // 判断是否需要切换主题
+        if (SettingShared.isEnableDarkTheme(this) != darkTheme) {
+            ThemeUtils.notifyThemeApply(this, true);
+        }
+
         ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
         CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
         ImageView ivSex = (ImageView) view.findViewById(R.id.iv_sex);
@@ -264,7 +284,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void loginDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
+                darkTheme ? R.style.AppDialogDark : R.style.AppDialogLight);
         builder.setMessage("使用该功能需要先登录账号，是否登录?")
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
     android:fitsSystemWindows="true"
     tools:context="com.johnny.kdsclient.activity.WriteTopicActivity">
 
@@ -32,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:background="?attr/colorPrimary"
                 android:orientation="horizontal"
                 app:layout_scrollFlags="scroll|enterAlways|snap">
 
@@ -101,7 +99,7 @@
             android:id="@+id/ll_bottom_tab"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/bg_gray_bar"
+            android:background="?attr/bottomToolBarBg"
             android:orientation="horizontal"
             android:visibility="gone">
 

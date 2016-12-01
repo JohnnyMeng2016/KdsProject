@@ -1,35 +1,94 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="navHeaderBackground">@drawable/side_nav_bar</item>
+        <item name="recycleViewBg">@color/bg_color</item>
+        <item name="widgetBackground">@color/selectable_item_background_general_normal_light</item>
+        <item name="referenceBackground">@drawable/refrence_bg</item>
+        <item name="markTextColor">#94A0A7</item>
+        <item name="highLightTextColor">@color/bold_text_color</item>
+        <item name="contentPriTextColor">@color/primary_text_color</item>
+        <item name="contentSecTextColor">@color/secondary_text_color</item>
+        <item name="bottomToolBarBg">@color/bg_gray_bar</item>
+        <item name="darkMode">false</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="BaseAppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#212B30</item>
+        <item name="colorPrimaryDark">#0E1928</item>
+        <item name="colorAccent">#546E7A</item>
+        <item name="android:windowBackground">@color/window_background_dark</item>
+        <item name="android:textColorPrimary">@color/hint_text_color</item>
+        <item name="navHeaderBackground">@drawable/side_nav_bar_dark</item>
+        <item name="recycleViewBg">#212B30</item>
+        <item name="widgetBackground">#37474F</item>
+        <item name="referenceBackground">@drawable/dark_refrence_bg</item>
+        <item name="markTextColor">#748891</item>
+        <item name="highLightTextColor">#CACCCE</item>
+        <item name="contentPriTextColor">#CACCCE</item>
+        <item name="contentSecTextColor">#7F878B</item>
+        <item name="bottomToolBarBg">#212B30</item>
+        <item name="darkMode">true</item>
+    </style>
+
+    <style name="BaseAppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorControlNormal">@color/main_white</item>
+        <item name="colorControlNormal">@color/hint_text_color</item>
     </style>
 
-    <style name="AppTheme.NoActionBarWithNoColor">
+    <style name="BaseAppThemeDark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/hint_text_color</item>
+    </style>
+
+    <style name="BaseAppTheme.NoActionBarWithNoColor">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBarTran" parent="AppTheme.NoActionBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="AppTheme.NoActionBarDialog" parent="AppTheme.NoActionBar">
+    <style name="BaseAppTheme.NoActionBarDialog" parent="BaseAppTheme.NoActionBar">
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowAnimationStyle">@style/keyboard_anim_style</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="BaseAppThemeDark.NoActionBarDialog" parent="BaseAppThemeDark.NoActionBar">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowAnimationStyle">@style/keyboard_anim_style</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="AppDialogLight" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <style name="AppDialogDark" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">#212B30</item>
+        <item name="colorPrimaryDark">#0E1928</item>
+        <item name="colorAccent">#546E7A</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/window_background_dark</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -43,17 +102,22 @@
 
     <style name="BigBoldText">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/bold_text_color</item>
+        <item name="android:textColor">?attr/highLightTextColor</item>
     </style>
 
     <style name="TitleText">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/primary_text_color</item>
+        <item name="android:textColor">?attr/contentPriTextColor</item>
+    </style>
+
+    <style name="MarkText">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/markTextColor</item>
     </style>
 
     <style name="ContentText">
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/secondary_text_color</item>
+        <item name="android:textColor">?attr/contentSecTextColor</item>
     </style>
 
     <style name="RadioButtonEmotionDashboard">

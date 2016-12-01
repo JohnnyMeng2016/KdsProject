@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
+    android:background="?attr/recycleViewBg"
     android:fitsSystemWindows="true"
     tools:context="com.johnny.kdsclient.activity.TopicDetailActivity">
 
@@ -55,6 +55,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?attr/widgetBackground"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -100,8 +101,10 @@
                 android:id="@+id/bt_login"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:text="@string/sign_in" />
+                android:background="?attr/colorPrimary"
+                android:elevation="5dp"
+                android:text="@string/sign_in"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

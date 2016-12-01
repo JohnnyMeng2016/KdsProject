@@ -5,6 +5,8 @@ import android.view.View;
 
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.SettingShared;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,6 +22,11 @@ public class SettingActivity extends BaseActivity {
     SwitchCompat switchCompat;
 
     @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
+
+    @Override
     protected int layout() {
         return R.layout.activity_setting;
     }
@@ -30,7 +37,10 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        boolean isDarkTheme = SettingShared.isEnableDarkTheme(this);
+        if (isDarkTheme) {
+            switchCompat.setChecked(true);
+        }
     }
 
     @OnClick({R.id.ll_night_mode, R.id.switch_theme})
@@ -38,6 +48,8 @@ public class SettingActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.ll_night_mode:
                 switchCompat.toggle();
+                SettingShared.setEnableDarkTheme(this, switchCompat.isChecked());
+                ThemeUtils.notifyThemeApply(this, false);
                 break;
             case R.id.switch_theme:
                 break;

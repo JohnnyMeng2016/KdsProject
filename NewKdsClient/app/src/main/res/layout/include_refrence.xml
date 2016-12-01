@@ -3,16 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
-    android:padding="5dp"
-    android:background="@drawable/refrence_bg"
-    android:orientation="vertical" >
+    android:background="?attr/referenceBackground"
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/tv_refrence_content"
         style="@style/ContentText"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        />
+        android:layout_height="wrap_content" />
 
     <include
         android:id="@+id/include_refrence_image"

@@ -34,6 +34,7 @@ import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.EmotionUtils;
 import com.johnny.kdsclient.utils.ImageUtils;
 import com.johnny.kdsclient.utils.StringUtils;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,6 +87,11 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
     private List<String> imgAttachs = new ArrayList<String>();
     private DraftTopic draftTopic;
     private String userId;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {

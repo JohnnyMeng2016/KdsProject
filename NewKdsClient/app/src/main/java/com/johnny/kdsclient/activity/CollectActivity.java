@@ -11,6 +11,7 @@ import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.adapter.DraftRecycleAdapter;
 import com.johnny.kdsclient.adapter.TopicRecycleAdapter;
 import com.johnny.kdsclient.bean.Topic;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import java.util.List;
 
@@ -34,7 +35,11 @@ public class CollectActivity extends BaseActivity {
     List<Topic> collectTopicList;
 
     @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
+    @Override
     protected int layout() {
         return R.layout.activity_collect;
     }
@@ -68,6 +73,6 @@ public class CollectActivity extends BaseActivity {
                 boolean isEnd = true;
                 topicRecycleAdapter.setFooterViewType(isEnd);
             }
-        },200);
+        }, 200);
     }
 }
