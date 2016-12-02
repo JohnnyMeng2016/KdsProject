@@ -1,12 +1,14 @@
 package com.johnny.kdsclient.api;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.johnny.kdsclient.BuildConfig;
 import com.johnny.kdsclient.bean.CommonResponse;
 import com.johnny.kdsclient.bean.LoginResponse;
 import com.johnny.kdsclient.bean.ReplyListResponse;
@@ -80,6 +82,9 @@ public class ApiHelper {
                 url = ApiConstant.GET_TOPIC_LIST_MONTH + "?page=" + page + "&topicId=" + 15;
                 break;
         }
+        if (BuildConfig.ENCRYPT) {
+            url += "&encrypt=1";
+        }
         Request request = new SimpleRequest(url, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
@@ -113,6 +118,9 @@ public class ApiHelper {
                              final SimpleResponseListener<ReplyListResponse> listener) {
         String url = ApiConstant.GET_REPLY_LIST + "?bbsId=" + bbsId + "&page=" + page + "&topicId="
                 + 15 + "&ol=" + isOnlyLandlord;
+        if (BuildConfig.ENCRYPT) {
+            url += "&encrypt=1";
+        }
         Request request = new SimpleRequest(url, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
@@ -145,6 +153,9 @@ public class ApiHelper {
      */
     public void getUserTopicList(String userId, int page, final SimpleResponseListener listener) {
         String url = ApiConstant.GET_USER_TOPIC_LIST + "?userId=" + userId + "&page=" + page;
+        if (BuildConfig.ENCRYPT) {
+            url += "&encrypt=1";
+        }
         Request request = new SimpleRequest(url, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
@@ -179,6 +190,9 @@ public class ApiHelper {
         paramMap.put("system", "Android");
         paramMap.put("userName", userName);
         paramMap.put("passWord", password);
+        if (BuildConfig.ENCRYPT) {
+            paramMap.put("encrypt", String.valueOf(1));
+        }
         Request request = new SimpleRequest(ApiConstant.LOGIN, paramMap, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
@@ -215,6 +229,9 @@ public class ApiHelper {
         paramMap.put("sortId", sendTopicRequest.getSortId());
         paramMap.put("topicId", sendTopicRequest.getTopicId());
         paramMap.put("postUserId", sendTopicRequest.getPostUserId());
+        if (BuildConfig.ENCRYPT) {
+            paramMap.put("encrypt", String.valueOf(1));
+        }
         Request request = new SimpleRequest(ApiConstant.SEND_TOPIC, paramMap, new SimpleResponseListener<String>() {
             @Override
             public void onResponse(String response) {
@@ -249,6 +266,9 @@ public class ApiHelper {
         paramMap.put("topicId", "15");
         paramMap.put("isTopic", "1");
         paramMap.put("postUserId", userId);
+        if (BuildConfig.ENCRYPT) {
+            paramMap.put("encrypt", String.valueOf(1));
+        }
         Request request = new MultipartRequest(ApiConstant.UPLOAD_PICTURE, "attachments", photoFile, paramMap
                 , new SimpleResponseListener<String>() {
             @Override
@@ -291,6 +311,9 @@ public class ApiHelper {
         paramMap.put("postUserId", userId);
         paramMap.put("message", "");
         paramMap.put("topicId", "15");
+        if (BuildConfig.ENCRYPT) {
+            paramMap.put("encrypt", String.valueOf(1));
+        }
         Request request = new SimpleRequest(ApiConstant.REPLY_TOPIC, paramMap, new SimpleResponseListener<String>() {
 
             @Override
@@ -318,6 +341,9 @@ public class ApiHelper {
         HashMap<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("keywords", keywords);
         paramMap.put("page", String.valueOf(page));
+        if (BuildConfig.ENCRYPT) {
+            paramMap.put("encrypt", String.valueOf(1));
+        }
         Request request = new SimpleRequest(ApiConstant.SEARCH_TOPIC, paramMap, new SimpleResponseListener<String>() {
 
             @Override
@@ -347,6 +373,9 @@ public class ApiHelper {
      */
     public void getUserInfo(String userId, final SimpleResponseListener<UserInfo> listener) {
         String url = ApiConstant.GET_USER_INFO + "?userId=" + userId;
+        if (BuildConfig.ENCRYPT) {
+            url += "&encrypt=1";
+        }
         Request request = new SimpleRequest(url, new SimpleResponseListener<String>() {
 
             @Override
