@@ -30,17 +30,12 @@ import com.johnny.kdsclient.adapter.WriteTopicGridImgsAdapter;
 import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.api.SimpleResponseListener;
 import com.johnny.kdsclient.bean.CommonResponse;
-import com.johnny.kdsclient.bean.DraftTopic;
-import com.johnny.kdsclient.bean.Reply;
-import com.johnny.kdsclient.bean.SendTopicRequest;
 import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.EmotionUtils;
 import com.johnny.kdsclient.utils.ImageUtils;
 import com.johnny.kdsclient.utils.StringUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,6 +83,10 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
     private Topic topic;
     private String userId;
 
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBarDialog, R.style.BaseAppThemeDark_NoActionBarDialog);
+    }
 
     @Override
     protected int layout() {

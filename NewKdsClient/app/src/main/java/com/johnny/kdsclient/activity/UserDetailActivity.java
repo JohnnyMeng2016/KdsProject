@@ -28,6 +28,7 @@ import com.johnny.kdsclient.bean.UserDetailResponse;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.bean.UserTopic;
 import com.johnny.kdsclient.bean.UserTopicResponse;
+import com.johnny.kdsclient.utils.ThemeUtils;
 import com.johnny.kdsclient.widget.AppBarStateChangeListener;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
@@ -77,6 +78,11 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
     private boolean isBottom;
 
     @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
+
+    @Override
     protected int layout() {
         return R.layout.activity_user;
     }
@@ -116,7 +122,7 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
             ivSex.setImageResource(R.mipmap.ic_profile_female);
         }
         tvUsername.setText(reply.getNickName());
-        tvRegisterTime.setText("注册时间:" + reply.getUserdata().getRegister());
+//        tvRegisterTime.setText("注册时间:" + reply.getUserdata().getRegister());
         tvScore.setText("HP:" + reply.getUserdata().getHp() + " PP:" + reply.getUserdata().getPp());
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);

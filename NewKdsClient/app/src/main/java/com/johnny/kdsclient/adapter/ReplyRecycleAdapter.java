@@ -134,13 +134,13 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
                     ActivityCompat.startActivity((Activity) context, intent, options.toBundle());
                 }
             });
-            if("男".equals( reply.getUserdata().getSex())){
+            if ("男".equals(reply.getUserdata().getSex())) {
                 replyRecycleHolder.ivSex.setVisibility(View.VISIBLE);
                 replyRecycleHolder.ivSex.setImageResource(R.mipmap.ic_profile_male);
-            }else if("女".equals(reply.getUserdata().getSex())){
+            } else if ("女".equals(reply.getUserdata().getSex())) {
                 replyRecycleHolder.ivSex.setVisibility(View.VISIBLE);
                 replyRecycleHolder.ivSex.setImageResource(R.mipmap.ic_profile_female);
-            }else{
+            } else {
                 replyRecycleHolder.ivSex.setVisibility(View.GONE);
             }
             StringBuffer userNameShow = new StringBuffer();
@@ -157,8 +157,8 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
                 replyRecycleHolder.tvTitle.setVisibility(View.GONE);
                 replyRecycleHolder.tvFloor.setText("#" + reply.getFloor() + "楼");
             }
-            String score = "HP:" + reply.getUserdata().getHp() + " PP:" + reply.getUserdata().getPp();
-            replyRecycleHolder.tvScore.setText(score);
+            replyRecycleHolder.tvHpScore.setText(String.valueOf(reply.getUserdata().getHp()));
+            replyRecycleHolder.tvPpScore.setText(String.valueOf(reply.getUserdata().getPp()));
             replyRecycleHolder.tvDateTime.setText(reply.getPostTime());
 
             /**
@@ -262,8 +262,10 @@ public class ReplyRecycleAdapter extends RecyclerView.Adapter {
         TextView tvUserName;
         @BindView(R.id.tv_floor)
         TextView tvFloor;
-        @BindView(R.id.tv_score)
-        TextView tvScore;
+        @BindView(R.id.tv_hp_score)
+        TextView tvHpScore;
+        @BindView(R.id.tv_pp_score)
+        TextView tvPpScore;
         @BindView(R.id.tv_datetime)
         TextView tvDateTime;
         @BindView(R.id.tv_title)

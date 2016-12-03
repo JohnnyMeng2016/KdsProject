@@ -89,9 +89,10 @@ public class TopicRecycleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             TopicRecycleHolder topicRecycleHolder = (TopicRecycleHolder) holder;
             final Topic topic = datas.get(position);
             if (!topic.getPreview().contains("kdsLogo1.png")) {
+                topicRecycleHolder.ivPic.setVisibility(View.VISIBLE);
                 Glide.with(context).load(topic.getPreview()).into(topicRecycleHolder.ivPic);
             } else {
-                topicRecycleHolder.ivPic.setImageResource(R.mipmap.no_image);
+                topicRecycleHolder.ivPic.setVisibility(View.GONE);
             }
             topicRecycleHolder.tvTitle.setText(topic.getTitle());
             topicRecycleHolder.tvDatetime.setText("发表于:" + topic.getPostTime());

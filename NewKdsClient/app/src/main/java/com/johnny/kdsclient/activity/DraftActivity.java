@@ -10,6 +10,7 @@ import com.johnny.kdsclient.MyDbHelper;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.adapter.DraftRecycleAdapter;
 import com.johnny.kdsclient.bean.DraftTopic;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class DraftActivity extends BaseActivity {
     MyDbHelper myDbHelper;
     List<DraftTopic> draftTopicList;
     DraftRecycleAdapter draftRecycleAdapter;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {

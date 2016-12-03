@@ -30,6 +30,7 @@ import com.johnny.kdsclient.bean.Reply;
 import com.johnny.kdsclient.bean.ReplyListResponse;
 import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
+import com.johnny.kdsclient.utils.ThemeUtils;
 import com.johnny.kdsclient.widget.BottomViewBehavior;
 
 import java.util.List;
@@ -67,6 +68,11 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
     private int isOnlyLandLord;
     private String userId;
     MyDbHelper myDbHelper;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {
@@ -153,6 +159,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.reply_list, menu);
         return true;
     }

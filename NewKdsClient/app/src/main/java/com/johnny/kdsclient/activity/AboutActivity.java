@@ -4,6 +4,7 @@ import android.webkit.WebView;
 
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import butterknife.BindView;
 
@@ -16,6 +17,11 @@ import butterknife.BindView;
 public class AboutActivity extends BaseActivity {
     @BindView(R.id.webView)
     WebView webView;
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {

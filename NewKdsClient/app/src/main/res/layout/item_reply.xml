@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/widgetBackground"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -33,25 +34,43 @@
                 android:layout_alignRight="@id/iv_avatar"
                 android:src="@mipmap/ic_profile_male" />
 
-            <TextView
-                android:id="@+id/tv_username"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/iv_avatar"
-                android:text="用户名" />
+                android:layout_toRightOf="@id/iv_avatar">
 
-            <TextView
-                android:id="@+id/tv_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_username"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@id/iv_avatar"
-                android:text="hp:50 pp:0" />
+                <TextView
+                    android:id="@+id/tv_username"
+                    style="@style/MarkText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:text="用户名" />
+
+                <TextView
+                    android:id="@+id/tv_hp_score"
+                    style="@style/MarkText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_below="@id/tv_username"
+                    android:drawableLeft="@mipmap/hp_topic_content"
+                    android:text="50" />
+
+                <TextView
+                    android:id="@+id/tv_pp_score"
+                    style="@style/MarkText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_below="@id/tv_username"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tv_hp_score"
+                    android:drawableLeft="@mipmap/pp_topic_content"
+                    android:text="0" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_floor"
+                style="@style/MarkText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -90,6 +109,7 @@
 
         <TextView
             android:id="@+id/tv_datetime"
+            style="@style/MarkText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

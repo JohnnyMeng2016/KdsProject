@@ -28,7 +28,7 @@
         android:id="@+id/id_swiperefreshlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_color"
+        android:background="?attr/recycleViewBg"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/white"
+        android:background="?attr/bottomToolBarBg"
         android:orientation="vertical"
         app:layout_behavior="com.johnny.kdsclient.widget.BottomViewBehavior">
 

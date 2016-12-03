@@ -1,11 +1,15 @@
 package com.johnny.kdsclient;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,13 +34,16 @@ import com.johnny.kdsclient.activity.DraftActivity;
 import com.johnny.kdsclient.activity.LoginActivity;
 import com.johnny.kdsclient.activity.SearchActivity;
 import com.johnny.kdsclient.activity.SettingActivity;
+import com.johnny.kdsclient.activity.UserDetailActivity;
 import com.johnny.kdsclient.activity.WriteTopicActivity;
 import com.johnny.kdsclient.adapter.TabViewPagerAdapter;
+import com.johnny.kdsclient.bean.Reply;
 import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.bean.TopicListTypeEnum;
 import com.johnny.kdsclient.bean.UserInfo;
 import com.johnny.kdsclient.fragment.ImageFragment;
 import com.johnny.kdsclient.fragment.TopicFragment;
+import com.johnny.kdsclient.utils.ThemeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -61,10 +68,22 @@ public class MainActivity extends BaseActivity
     NavigationView navigationView;
     @BindView(R.id.viewpager)
     ViewPager viewPager;
+    CircleImageView circleImageView;
+    ImageView ivSex;
+    TextView tvUserName;
+    TextView tvScore;
 
     private String[] mTitles;
     private List<Fragment> fragmentList;
     private TabViewPagerAdapter tabViewPagerAdapter;
+    private long firstBackPressedTime = 0;
+    private boolean darkTheme;
+
+
+    @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
 
     @Override
     protected int layout() {
@@ -73,6 +92,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void initDate() {
+        darkTheme = SettingShared.isEnableDarkTheme(this);
         mTitles = getResources().getStringArray(R.array.normal_tab_titles);
         fragmentList = new ArrayList<Fragment>();
         TopicFragment topicFragment = new TopicFragment();
@@ -101,14 +121,11 @@ public class MainActivity extends BaseActivity
         tabLayout.setupWithViewPager(viewPager);
 
         ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
-        CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
-        circleImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+        circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
+        ivSex = (ImageView) view.findViewById(R.id.iv_sex);
+        tvUserName = (TextView) view.findViewById(R.id.tv_username);
+        tvScore = (TextView) view.findViewById(R.id.tv_score);
+
         navigationView.setNavigationItemSelectedListener(this);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,11 +150,16 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            long secondBackPressedTime = System.currentTimeMillis();
+            if (secondBackPressedTime - firstBackPressedTime > 2000) {
+                Toast.makeText(MainActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
+                firstBackPressedTime = secondBackPressedTime;
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -238,14 +260,13 @@ public class MainActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
 
-        ViewGroup view = (ViewGroup) navigationView.getHeaderView(0);
-        CircleImageView circleImageView = (CircleImageView) view.findViewById(R.id.iv_avatar);
-        ImageView ivSex = (ImageView) view.findViewById(R.id.iv_sex);
-        TextView tvUserName = (TextView) view.findViewById(R.id.tv_username);
-        TextView tvScore = (TextView) view.findViewById(R.id.tv_score);
+        // 判断是否需要切换主题
+        if (SettingShared.isEnableDarkTheme(this) != darkTheme) {
+            ThemeUtils.notifyThemeApply(this, true);
+        }
 
-        if (UserData.getInstance().getUserInfo() != null) {
-            UserInfo userInfo = UserData.getInstance().getUserInfo();
+        if (UserData.getInstance().getUserInfo() != null) {//已登录
+            final UserInfo userInfo = UserData.getInstance().getUserInfo();
             Glide.with(this).load(userInfo.getImg_pic_id()).into(circleImageView);
             if ("男".equals(userInfo.getSex())) {
                 ivSex.setVisibility(View.VISIBLE);
@@ -256,15 +277,34 @@ public class MainActivity extends BaseActivity
             } else {
                 ivSex.setVisibility(View.GONE);
             }
-            tvUserName.setText(userInfo.getUserName());
+            tvUserName.setText(userInfo.getNickName() + "(" + userInfo.getUserName() + ")");
             tvScore.setText("HP:" + userInfo.getHp() + " PP:" + userInfo.getPp());
-        } else {
+
+            circleImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this, "用户主页还没做好", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {//未登陆
+            circleImageView.setImageResource(R.mipmap.default_avater);
+            tvUserName.setText(getString(R.string.click_avatar_to_login));
+            tvScore.setText("");
             ivSex.setVisibility(View.GONE);
+
+            circleImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 
     private void loginDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this,
+                darkTheme ? R.style.AppDialogDark : R.style.AppDialogLight);
         builder.setMessage("使用该功能需要先登录账号，是否登录?")
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override

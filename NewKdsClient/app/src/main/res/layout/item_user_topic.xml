@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="8dp"
+        android:background="?attr/widgetBackground"
         android:padding="8dp">
 
         <TextView

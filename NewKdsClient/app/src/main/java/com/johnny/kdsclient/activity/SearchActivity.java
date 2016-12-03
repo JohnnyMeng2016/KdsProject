@@ -14,6 +14,7 @@ import com.johnny.kdsclient.api.ApiHelper;
 import com.johnny.kdsclient.api.SimpleResponseListener;
 import com.johnny.kdsclient.bean.SearchTopicResponse;
 import com.johnny.kdsclient.bean.Topic;
+import com.johnny.kdsclient.utils.ThemeUtils;
 import com.johnny.kdsclient.widget.KdsSearchBar;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 
@@ -46,13 +47,18 @@ public class SearchActivity extends BaseActivity {
     private boolean isEnd = true;
 
     @Override
+    protected void configTheme() {
+        ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBar, R.style.BaseAppThemeDark_NoActionBar);
+    }
+
+    @Override
     protected int layout() {
         return R.layout.activity_search;
     }
 
     @Override
     protected void initDate() {
-        sharedPreferences = this.getSharedPreferences("setting", this.MODE_WORLD_WRITEABLE);
+        sharedPreferences = this.getSharedPreferences("setting", this.MODE_PRIVATE);
         lastSearcheList = new ArrayList<>();
         lastSearches = sharedPreferences.getString("searchHistory", "");
         String[] lastSearcheArr = lastSearches.split(";");

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="recycleViewBg" format="color|reference" />
+    <attr name="widgetBackground" format="color|reference" />
+    <attr name="selectableItemBackgroundGeneral" format="color|reference" />
+    <attr name="navigationItemTextColor" format="color|reference" />
+    <attr name="referenceBackground" format="reference" />
+    <attr name="navHeaderBackground" format="color|reference" />
+    <attr name="markTextColor" format="color|reference" />
+    <attr name="highLightTextColor" format="color|reference" />
+    <attr name="contentPriTextColor" format="color|reference" />
+    <attr name="contentSecTextColor" format="color|reference" />
+    <attr name="bottomToolBarBg" format="color|reference" />
+    <attr name="darkMode" format="boolean" />
+
+</resources>
