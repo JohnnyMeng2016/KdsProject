@@ -7,11 +7,11 @@
 - 绿色，无广告，不多跑流量，无后台服务，无推送打扰。
 
 ##界面截图
-![Image](art/screenshot_01.png) ![Image](art/screenshot_02.png)
+![Image](art/Screenshot_01.png) ![Image](art/Screenshot_02.png)
 
-![Image](art/screenshot_03.png) ![Image](art/screenshot_04.png)
+![Image](art/Screenshot_03.png) ![Image](art/Screenshot_04.png)
 
-![Image](art/screenshot_05.png) ![Image](art/screenshot_06.png)
+![Image](art/Screenshot_05.png) ![Image](art/Screenshot_06.png)
 
 
 ##计划增加功能
