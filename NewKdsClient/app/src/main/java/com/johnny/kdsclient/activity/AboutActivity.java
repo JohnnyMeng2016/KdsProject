@@ -1,7 +1,11 @@
 package com.johnny.kdsclient.activity;
 
+import android.webkit.WebView;
+
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
+
+import butterknife.BindView;
 
 /**
  * 项目名称：NewKdsClient
@@ -10,6 +14,8 @@ import com.johnny.kdsclient.R;
  * 创建时间：2016/11/25
  */
 public class AboutActivity extends BaseActivity {
+    @BindView(R.id.webView)
+    WebView webView;
 
     @Override
     protected int layout() {
@@ -23,6 +29,6 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        webView.loadUrl(" file:///android_asset/README.html ");
     }
 }
