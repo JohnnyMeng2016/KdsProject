@@ -122,7 +122,7 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
             ivSex.setImageResource(R.mipmap.ic_profile_female);
         }
         tvUsername.setText(reply.getNickName());
-//        tvRegisterTime.setText("注册时间:" + reply.getUserdata().getRegister());
+        tvRegisterTime.setText("注册时间:" + reply.getUserdata().getRegister());
         tvScore.setText("HP:" + reply.getUserdata().getHp() + " PP:" + reply.getUserdata().getPp());
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);

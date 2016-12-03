@@ -265,6 +265,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
                         progressDialog.dismiss();
                         if (response.getFlag() == 1) {
                             Toast.makeText(TopicDetailActivity.this, "回复成功", Toast.LENGTH_SHORT).show();
+                            etMessage.setText("");
                             CommonUtils.closeKeybord(etMessage, TopicDetailActivity.this);
                         } else {
                             Toast.makeText(TopicDetailActivity.this, response.getMessage(), Toast.LENGTH_SHORT).show();

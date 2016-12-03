@@ -1,6 +1,8 @@
 package com.johnny.kdsclient.activity;
 
+import android.view.View;
 import android.webkit.WebView;
+import android.support.v7.widget.Toolbar;
 
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
@@ -15,6 +17,8 @@ import butterknife.BindView;
  * 创建时间：2016/11/25
  */
 public class AboutActivity extends BaseActivity {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.webView)
     WebView webView;
 
@@ -35,6 +39,13 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        webView.loadUrl(" file:///android_asset/README.html ");
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        webView.loadUrl("file:android_asset/README.html");
     }
 }

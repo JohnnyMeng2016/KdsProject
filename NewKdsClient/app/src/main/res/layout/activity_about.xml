@@ -33,6 +33,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:title="关于"
                 app:layout_collapseMode="pin"
+                app:navigationIcon="?attr/homeAsUpIndicator"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>

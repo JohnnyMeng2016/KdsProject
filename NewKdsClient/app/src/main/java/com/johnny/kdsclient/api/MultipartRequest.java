@@ -1,11 +1,15 @@
 package com.johnny.kdsclient.api;
 
+import android.util.Base64;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.johnny.kdsclient.BuildConfig;
 
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -163,6 +167,15 @@ public class MultipartRequest extends Request<String> {
 
     @Override
     protected void deliverResponse(String response) {
-        mListener.onResponse(response);
+        if (mListener != null) {
+            if (BuildConfig.ENCRYPT) {
+                byte[] asBytes = Base64.decode(response, Base64.DEFAULT);
+                try {
+                    response = new String(asBytes, "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                }
+            }
+            mListener.onResponse(response);
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.johnny.kdsclient.activity;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
@@ -20,6 +22,13 @@ import com.johnny.kdsclient.bean.LoginResponse;
  * 创建时间：2016/12/1
  */
 public class WelcomeActivity extends BaseActivity {
+
+    @Override
+    protected void configTheme() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
     @Override
     protected int layout() {
         return R.layout.activity_welcome;
@@ -27,6 +36,7 @@ public class WelcomeActivity extends BaseActivity {
 
     @Override
     protected void initDate() {
+        setBackEnable(false);
         boolean isAutoLogin = SettingShared.isEnableAutoLogin(this);
         String userName = SettingShared.getLoginName(this);
         String password = SettingShared.getLoginPassword(this);
