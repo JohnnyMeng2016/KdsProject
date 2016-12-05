@@ -1379,4 +1379,12 @@ public class PhotoView extends ImageView {
             mTranslate.start();
         }
     }
+
+    public boolean isLoaded() {
+        if (mBaseRect.centerX() == 0.0f) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

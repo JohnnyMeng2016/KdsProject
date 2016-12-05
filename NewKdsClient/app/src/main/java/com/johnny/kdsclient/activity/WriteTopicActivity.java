@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.johnny.kdsclient.BaseActivity;
+import com.johnny.kdsclient.MainActivity;
 import com.johnny.kdsclient.MyDbHelper;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.UserData;
@@ -499,5 +501,22 @@ public class WriteTopicActivity extends BaseActivity implements AdapterView.OnIt
         MyDbHelper dbHelper = new MyDbHelper(this);
         dbHelper.saveDraft(draftTopic);
         Toast.makeText(this, "已保存至草稿箱", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(WriteTopicActivity.this);
+        builder.setMessage("是否把当前内容保存至草稿?")
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveTopic();
+            }
+        }).show();
     }
 }

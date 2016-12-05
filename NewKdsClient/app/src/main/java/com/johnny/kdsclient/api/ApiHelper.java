@@ -223,7 +223,7 @@ public class ApiHelper {
     public void sendTopic(SendTopicRequest sendTopicRequest, final SimpleResponseListener<String> listener) {
         HashMap<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("htmlcode", sendTopicRequest.getHtmlcode());
-        paramMap.put("description", "");
+        paramMap.put("description", sendTopicRequest.getDescription());
         paramMap.put("title", sendTopicRequest.getTitle());
         paramMap.put("areaId", sendTopicRequest.getAreaId());
         paramMap.put("sortId", sendTopicRequest.getSortId());

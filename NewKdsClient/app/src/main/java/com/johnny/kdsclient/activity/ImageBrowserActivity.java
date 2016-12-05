@@ -135,12 +135,16 @@ public class ImageBrowserActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        photoViewArray[currentIndex].animaTo(infos[currentIndex], new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        });
+        if (photoViewArray[currentIndex].isLoaded()) {
+            photoViewArray[currentIndex].animaTo(infos[currentIndex], new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            });
+        } else {
+            finish();
+        }
     }
 
     @Override
