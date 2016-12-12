@@ -60,7 +60,7 @@ public class TopicFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         View view = inflater.inflate(R.layout.fragment_topic, null);
         ButterKnife.bind(this, view);
 
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
             @Override

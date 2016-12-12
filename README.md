@@ -26,21 +26,16 @@
 
 ## 下载
 
-- [Google Play](https://play.google.com/store/apps/details?id=org.cnodejs.android.md)
+- [FIR.im](http://fir.im/scuj)
 
-- [FIR.im](http://fir.im/CNodeMD)
+- [360手机助手](http://zhushou.360.cn/detail/index/soft_id/3585080)
 
-- [360手机助手](http://zhushou.360.cn/detail/index/soft_id/3060683)
-
-- [腾讯应用宝](http://android.myapp.com/myapp/detail.htm?apkName=org.cnodejs.android.md)
-
-- [魅族Flyme应用中心](http://app.flyme.cn/apps/public/detail?package_name=org.cnodejs.android.md)
+- [腾讯应用宝](http://sj.qq.com/myapp/detail.htm?apkName=com.johnny.kdsclient)
 
 - [小米应用商店](http://app.mi.com/detail/118728)
 
-- [豌豆荚](http://www.wandoujia.com/apps/org.cnodejs.android.md)
+- [豌豆荚](http://www.wandoujia.com/apps/com.johnny.kdsclient)
 
-- [酷安网](http://www.coolapk.com/apk/org.cnodejs.android.md)
 
 ##感谢
 - [Butter Knife](https://github.com/JakeWharton/butterknife)

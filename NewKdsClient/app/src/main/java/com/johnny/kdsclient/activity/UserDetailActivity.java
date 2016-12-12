@@ -125,7 +125,7 @@ public class UserDetailActivity extends BaseActivity implements SwipeRefreshLayo
         tvRegisterTime.setText("注册时间:" + reply.getUserdata().getRegister());
         tvScore.setText("HP:" + reply.getUserdata().getHp() + " PP:" + reply.getUserdata().getPp());
 
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
         topicAdapter = new UserTopicRecycleAdapter(this);
         final RecyclerView.LayoutManager layoutManager =

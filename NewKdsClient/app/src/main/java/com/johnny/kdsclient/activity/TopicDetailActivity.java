@@ -97,7 +97,7 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
         });
 
         progressDialog = new ProgressDialog(this);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_light);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.postDelayed(new Runnable() {
             @Override

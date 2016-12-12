@@ -71,26 +71,26 @@ public class SettingActivity extends BaseActivity {
                 ThemeUtils.notifyThemeApply(this, false);
                 break;
             case R.id.btn_switch_theme:
-                Toast.makeText(SettingActivity.this, "该功能还未做完", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "该功能还未完成", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_auto_clear_cache:
                 switchAutoClearCache.toggle();
                 break;
             case R.id.btn_clear_cache:
-                Toast.makeText(SettingActivity.this, "该功能还未做完", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "该功能还未完成", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_feedback:
-                Toast.makeText(SettingActivity.this, "该功能还未做完", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "该功能还未完成", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_rating:
                 try {
-                    Uri uri = Uri.parse("market://details?id="
+                    Uri uri = Uri.parse("market://details?id="+getPackageName()
                     );//需要评分的APP包名
                     Intent intent5 = new Intent(Intent.ACTION_VIEW, uri);
                     intent5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent5);
                 } catch (Exception e) {
-                    Toast.makeText(SettingActivity.this, "该功能还未做完", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingActivity.this, "该功能还未完成", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.tv_logout:
