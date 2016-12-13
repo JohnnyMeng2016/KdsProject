@@ -2,6 +2,8 @@ package com.johnny.kdsclient;
 
 import android.app.Application;
 
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.johnny.kdsclient.api.ApiHelper;
 
 /**
@@ -19,6 +21,7 @@ public class MyApplication extends Application {
         //初始化API
         ApiHelper.getInstance().init(getApplicationContext());
 
+        SpeechUtility.createUtility(MyApplication.this, SpeechConstant.APPID + "=584e62dd");
     }
 
 }

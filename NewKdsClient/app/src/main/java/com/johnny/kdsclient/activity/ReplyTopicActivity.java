@@ -1,5 +1,6 @@
 package com.johnny.kdsclient.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Point;
@@ -21,6 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.johnny.kdsclient.BaseActivity;
 import com.johnny.kdsclient.R;
 import com.johnny.kdsclient.UserData;
@@ -34,11 +41,17 @@ import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.EmotionUtils;
 import com.johnny.kdsclient.utils.ImageUtils;
+import com.johnny.kdsclient.utils.JsonParser;
 import com.johnny.kdsclient.utils.StringUtils;
 import com.johnny.kdsclient.utils.ThemeUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -83,6 +96,9 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
     private Topic topic;
     private String userId;
 
+    // 语音听写UI
+    private RecognizerDialog mIatDialog;
+
     @Override
     protected void configTheme() {
         ThemeUtils.configThemeBeforeOnCreate(this, R.style.BaseAppTheme_NoActionBarDialog, R.style.BaseAppThemeDark_NoActionBarDialog);
@@ -98,6 +114,8 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
         userId = UserData.getInstance().getUserInfo().getUserId();
         topic = (Topic) getIntent().getSerializableExtra("topic");
         initEmotion();
+
+        mIatDialog = new RecognizerDialog(this, mTtsInitListener);
     }
 
     @Override
@@ -221,6 +239,9 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
                 }
                 break;
             case R.id.iv_voice:
+                // 显示听写对话框
+                mIatDialog.setListener(mRecognizerDialogListener);
+                mIatDialog.show();
                 break;
             case R.id.rb_emotion_dashboard_emoji:
                 initEmotion();
@@ -230,6 +251,65 @@ public class ReplyTopicActivity extends BaseActivity implements AdapterView.OnIt
                 break;
         }
     }
+
+    /**
+     * 初始化语音合成监听。
+     */
+    private InitListener mTtsInitListener = new InitListener() {
+        @SuppressLint("ShowToast")
+        @Override
+        public void onInit(int code) {
+            if (code != ErrorCode.SUCCESS) {
+                // showTip("初始化失败,错误码：" + code);
+                Toast.makeText(getApplicationContext(), "初始化失败,错误码：" + code,
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // 初始化成功，之后可以调用startSpeaking方法
+                // 注：有的开发者在onCreate方法中创建完合成对象之后马上就调用startSpeaking进行合成，
+                // 正确的做法是将onCreate中的startSpeaking调用移至这里
+            }
+        }
+    };
+
+    /**
+     * 听写UI监听器
+     */
+    private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
+        public void onResult(RecognizerResult results, boolean isLast) {
+            String text = JsonParser.parseIatResult(results.getResultString());
+
+            String sn = null;
+            // 读取json结果中的sn字段
+            try {
+                JSONObject resultJson = new JSONObject(results.getResultString());
+                sn = resultJson.optString("sn");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            HashMap<String, String> iatResults = new LinkedHashMap<>();
+            iatResults.put(sn, text);
+
+            StringBuffer resultBuffer = new StringBuffer();
+            for (String key : iatResults.keySet()) {
+                resultBuffer.append(iatResults.get(key));
+            }
+
+            String beforeContent = etWriteContent.getText().toString();
+            String afterContent = beforeContent + resultBuffer.toString();
+            SpannableString content = StringUtils.getItemContent(
+                    ReplyTopicActivity.this, etWriteContent, afterContent);
+            etWriteContent.setText(content);
+            etWriteContent.setSelection(etWriteContent.length());
+        }
+
+        /**
+         * 识别回调错误.
+         */
+        public void onError(SpeechError error) {
+        }
+
+    };
 
     /**
      * 初始化表情面板内容

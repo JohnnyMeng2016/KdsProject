@@ -25,6 +25,12 @@ android {
             buildConfigField "boolean", "ENCRYPT", "true"
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
 }
 
 dependencies {
@@ -55,4 +61,5 @@ dependencies {
     compile 'com.github.mancj:MaterialSearchBar:0.3.1'
     compile files('libs/httpmime-4.2.5.jar')
     compile files('libs/httpcore-4.4.5.jar')
+    compile files('libs/Msc.jar')
 }
