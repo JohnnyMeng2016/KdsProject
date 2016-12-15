@@ -209,11 +209,11 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/btn_feedback"
+                    android:id="@+id/btn_share"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="意见反馈"
+                    android:text="推荐好友"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp" />
 

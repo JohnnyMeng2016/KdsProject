@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,11 @@ import com.johnny.kdsclient.bean.Topic;
 import com.johnny.kdsclient.utils.CommonUtils;
 import com.johnny.kdsclient.utils.ThemeUtils;
 import com.johnny.kdsclient.widget.BottomViewBehavior;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.util.List;
 
@@ -182,6 +188,15 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
             startActivity(intent);
             return true;
         } else if (id == R.id.action_share) {
+            UMImage imageurl = new UMImage(this, topic.getPreview());
+            imageurl.setThumb(new UMImage(this, topic.getPreview()));
+            new ShareAction(TopicDetailActivity.this)
+                    .withText(topic.getTitle())
+                    .withTitle("帖子分享")
+                    .withTargetUrl("http://club.kdslife.com/t_" + topic.getBbsId())
+                    .withMedia(imageurl)
+                    .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                    .setCallback(umShareListener).open();
             return true;
         } else if (id == R.id.action_collect) {
             myDbHelper.saveCollect(topic);
@@ -189,6 +204,28 @@ public class TopicDetailActivity extends BaseActivity implements SwipeRefreshLay
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(TopicDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(TopicDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
